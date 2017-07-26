@@ -1,0 +1,223 @@
+<!--<div *ngIf="role =='adm'">-->
+<div class="portlet portlet-default" *ngIf="addFormStatus">
+  <div class="portlet-heading">
+    <div class="portlet-title">
+      <h4> ISSUES LIST </h4>
+    </div>
+    <div class="portlet-widgets">
+      <a (click)="hideAddForm()" style="cursor: pointer !important"><i class="fa fa-times"></i></a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="portlet-body">
+    <form (ngSubmit)="getSelIssueData()" method="post" [formGroup]="issues_form" novalidate>
+      <div class="form-horizontal">
+        <div class="form-group">
+          <div class="col-md-3">
+            <label>Domain</label>
+            <select formControlName="domain" class="form-control">
+              <option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>
+              <!--<option selected value="verified_resolved">Verified Resolved</option>
+              <option selected value="Electrical">Electrical</option>-->
+          </select>
+          </div>
+          <div class="col-md-2">
+            <label for="email">Location/Serial Number</label>
+            <input type="text" class="form-control" name="location" value="location" formControlName="location" />
+          </div>
+          <div class="col-md-2">
+            <label for="email">Impact/Problem</label>
+            <input type="text" name="problem" class="form-control" value="problem" formControlName="problem" />
+          </div>
+          <div class="col-md-2">
+            <label for="email">Issue Description</label>
+            <!--<input type="text" class="form-control" />-->
+            <textarea class="form-control" name="issue_desc" value="issue_desc" formControlName="issue_desc"></textarea>
+          </div>
+          
+          <!--<div class="col-md-2">
+            <label for="email">From Date</label>
+            <app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="from_date" (dateChange)="dateChanged('start_date', $event)">
+            </app-date>
+          </div>
+          <div class="col-md-2">
+            <label for="email">To Date</label>
+            <app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="to_date" (dateChange)="dateChanged('end_date', $event)">
+            </app-date>
+          </div>-->
+          <!--<div class="col-md-2">
+            <label for="email">Status</label>
+            <select class="form-control" formControlName="selstatus">
+                   <option selected value="verified_resolved">Verified Resolved</option>
+                   <option selected value="resolution_in_progress">Resolution in Progress</option>
+                   <option value="pending">Pending</option>
+                   <option value="cannot_be_resolved">Cannot be resolved</option>
+                   <option value="user_deleted">User Deleted  </option> 
+                    <option value="all">All </option> 
+              </select>
+          </div>-->
+          <div class="col-md-2">
+            <button type="submit" [disabled]="!issues_form.valid" class="btn btn-default btn-square col-md-6" style="margin-top: 25px;">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!--</div>-->
+<div class="portlet portlet-default">
+  <div class="portlet-heading">
+    <div class="portlet-title">
+      <h4>Issue LIST</h4>
+    </div>
+    <div class="portlet-widgets">
+      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i> <span class="divider"></span> Add Issue</a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default" *ngFor="let item of domainsbyid; let i=index;">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion"  data-toggle="collapse" (click)="getDomain(item.domain)" href="#{{i}}">{{item.domain}}</a> 
+        </h4>
+      </div>
+      <div id="{{i}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          
+           <div class="table-responsive">
+            <table class="table table-green table-bordered table-hover" *ngIf="table">
+              <thead>
+                <tr>
+                  <th>Domain</th>
+                  <th>Location/Serial Number</th>
+                  <th>Impact/Problem</th>
+                  
+                  <th style="width: 13%">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let items of data1; let k=index;">
+                  <td>{{items.domain}} {{items.did}}</td>
+                  <td>{{items.location}}</td>
+                  <td>{{items.problem}}</td>
+                   
+                  <td>
+                    <!--<a class="btn btn-info btn-xs btn-square" style="margin-right: 5px; width: 50px;">Edit</a>
+                    <a class="btn btn-danger btn-xs btn-square">Delete</a>-->
+                      <a class="btn btn-info btn-xs btn-square"  (click)="details(items)" style="margin-right: 5px; width: 50px;">Edit</a>
+              <a class="btn btn-danger btn-xs btn-square" (click)="delete(items)" >Delete</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+      </div>
+    </div>
+    </div> 
+<app-modal #modal1>
+    <div class="app-modal-header">
+     <h4 style="color:black">View issue </h4> 
+    </div>
+    <div class="app-modal-body">
+      <form novalidate [formGroup]="taskeditForm" (ngSubmit)="editTask()" role="form">
+          <div class="box-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Raised By</label>
+              <div class="input-group col-sm-6">
+                <input  name="raised_by" type="text" value="{{by}}" class="form-control" disabled>
+
+
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Priority</label>
+              <div class="input-group col-sm-6">
+                 <select class="form-control" formControlName="priority" value="{{priority}}">
+                   <option selected value="high">high</option>
+                   <option selected value="low">low</option>
+                   <option value="medium">Medium</option>
+              </select>
+
+                
+              </div>
+            </div>
+           
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Status</label>
+              
+                <div class="input-group col-sm-6">
+            <select class="form-control" formControlName="status" value="{{status}}">
+                   <option selected value="verified_resolved">Verified Resolved</option>
+                   <option selected value="resolution_in_progress">Resolution in Progress</option>
+                   <option value="pending">Pending</option>
+                   <option value="cannot_be_resolved">Cannot be resolved</option>
+                   <option value="user_deleted">User Deleted  </option> 
+                    <option value="all">All </option> 
+              </select>
+          </div>
+         </div>
+            
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Repaired On</label>
+              <div class="input-group col-sm-6">
+
+              
+               <!--<app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="repaired_on" (dateChange)="dateChanged('repaired_on', $event)">
+            </app-date>-->
+            <date-picker formControlName="repaired_on" class="" ></date-picker>
+
+            
+              </div>
+            </div>
+             <div class="form-group">
+              <label class="col-sm-2 control-label">Assigned To</label>
+              <div class="input-group col-sm-6">
+                <input formControlName="repaired_by" value="{{repaired_by}}" name="repaired_by" type="text" value=""  class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Date of Resolution</label>
+              <div class="input-group col-sm-6">
+
+              
+                <!--<app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="date_of_resolution" (dateChange)="dateChanged('date_of_resolution', $event)">
+            </app-date>-->
+             <date-picker formControlName="date_of_resolution" class="form-group"></date-picker>
+            
+              </div>
+            </div>
+
+            <div class="form-group" >
+            <label class="col-sm-2 control-label">Notes</label>
+            <!--<input type="text" class="form-control" />-->
+            <textarea class="form-control" name="notes" value="{{notes}}" formControlName="notes" >
+
+            </textarea>
+          </div>
+
+
+            
+
+          </div>
+          <!--<div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button type="button"  class="btn btn-danger" (click)="delete()">Delete</button>
+            <button type="submit" class="btn btn-primary" >Save Changes</button>
+          </div>-->
+         
+        
+
+    
+      
+  
+    <div class="app-modal-footer">
+      <button type="submit" class="btn btn-primary" >Save Changes</button>
+      <button type="button" class="btn btn-default" (click)="modal1.hide()">Close</button>
+      <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
+    </div>
+    </form>
+    </div>
+ </app-modal>

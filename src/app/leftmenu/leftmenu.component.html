@@ -1,0 +1,85 @@
+<!-- begin SIDE NAVIGATION -->
+<nav class="navbar-side" role="navigation">
+    <div class="navbar-collapse sidebar-collapse collapse">
+        <ul id="side" class="nav navbar-nav side-nav">
+            <!-- begin SIDE NAV USER PANEL -->
+            <li class="side-user hidden-xs">
+                <img class="img-circle" src="assets/theme/img/profile-pic.jpg" alt="">
+                <p class="welcome">
+                    <i class="fa fa-key"></i> Logged in as
+                </p>
+                <p class="name tooltip-sidebar-logout">
+                    {{name}}
+                    <span class="last-name"></span> <a style="color: inherit" class="logout_open" (click)="logout()" data-toggle="tooltip"
+                        data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>
+                </p>
+                <div class="clearfix"></div>
+            </li>
+             
+            <li>
+                <a href="http://210.16.79.137/raghuerp"><i class="fa fa-dashboard"></i> Dashboard</a>
+            </li>
+            <li>
+                <a href="http://210.16.79.137/raghuerp/library"><i class="fa fa-book"></i> Library</a>
+            </li>
+            
+            <li class="panel">
+                <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#pages">
+                            <i class="fa fa-files-o"></i> Issue Register <i class="fa fa-caret-down"></i>
+                        </a>
+                <ul class="collapse nav" id="pages">
+
+                  <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')">
+                    <i class="fa fa-dashboard"></i>    VIEW ISSUES </a>
+                    </li>
+
+                    <!--<li *ngIf="role=='stf'"> <a (click)="sidebarchage('addissue')">-->
+                        <li> <a (click)="sidebarchage('addissue')">
+                    <i class="fa fa-dashboard"></i>    ADD/VIEW ISSUES </a>
+                    </li>
+                     
+                    <!--<li> <a (click)="sidebarchage('viewissues')">
+                    <i class="fa fa-dashboard"></i>    VIEW ISSUES </a>
+                    </li>-->
+                    
+                </ul>
+            </li>
+
+            
+
+                <li>
+                    <a href="http://210.16.79.137/raghuerp/leavesystem"><i class="fa fa-file-o"></i> Leave System</a>
+                </li>
+                <li>
+                    <a href="http://210.16.79.137/raghuerp/grievance"><i class="fa fa-comments"></i> Grievances & Complaints</a>
+                </li>
+                <!--<li *ngIf="role!='adm' && role!='cr'  ">  <a (click)="sidebarchage('addreport')" >
+                    <i class="fa fa-dashboard"></i> ADD REPORT</a>
+                    </li>
+                    <li *ngIf="role!='cr'">  <a (click)="sidebarchage('viewreport')" >
+                    <i class="fa fa-dashboard"></i> DAILY REPORT</a>
+                    </li>
+                    <li *ngIf="role!='cr'">  <a (click)="sidebarchage('monthreport')" >
+                    <i class="fa fa-dashboard"></i> MONTH REPORT</a>
+                    </li>
+                     <!--<li>  <a (click)="sidebarchage('timetable')" >
+                    <i class="fa fa-dashboard"></i> CREATE SECTIONS</a>
+                    </li>-->
+                <!--<li *ngIf="role=='hod'">  <a (click)="sidebarchage('branches')" >
+                    <i class="fa fa-dashboard"></i>  BATCHES</a>
+                    </li>
+                     <li *ngIf="role=='hod'">  <a (click)="sidebarchage('sections')" >
+                    <i class="fa fa-dashboard"></i>  SECTIONS </a>
+                    </li>
+                    <li *ngIf="role=='cr'">  <a (click)="sidebarchage('craddreport')" >
+                    <i class="fa fa-dashboard"></i>   REPORT </a>
+                    </li>
+                    <li *ngIf="role=='cr'">  <a (click)="sidebarchage('crreport')" >
+                    <i class="fa fa-dashboard"></i>    VIEW REPORT </a>
+                    </li>-->
+        </ul>
+        <!-- /.side-nav -->
+    </div>
+    <!-- /.navbar-collapse -->
+</nav>
+<!-- /.navbar-side -->
