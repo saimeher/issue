@@ -23,6 +23,7 @@ notes;
 start_date;
 end_date;
 //data:any;
+ role = localStorage.getItem('role');   
  public data;
     public filterQuery = "";
     public rowsOnPage = 10;
@@ -39,10 +40,20 @@ end_date;
       selstatus1:[]
     });
    // this.getIssuesList();
+   console.log(this.role);
+   if(this.role=='adm'){
+   this.getAllIssues();
+   }
     this.getCategories();
   }
 
- 
+ getAllIssues(){
+   this.api.getAllIssues().subscribe(alldata=>{
+     if(alldata){
+       this.data=alldata;
+     }
+   })
+ }
 
 getCategories(){
   this.api.getCategories().subscribe(categories=>{
@@ -60,12 +71,8 @@ getCategories(){
    this.by=item.repaired_by;
    this.resolution=item.date_of_resolution;
    this.notes=item.notes;
-
-  // this.name=project.name;
-  // this.city=project.city;
-        this.modal1.show();
-        // this.taskedForm.patchValue(value);
-    }
+   this.modal1.show();
+  }
 
 selCategory($event){
   this.data='';

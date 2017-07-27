@@ -8,14 +8,12 @@
     <div id="page-wrapper">
         <div class="">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="page-title">
-                        <h1>Dashboard
-                            <small>Content Overview</small>
-                        </h1>
+                 
+                    <div class="">
+                            
                         <ol class="breadcrumb">
-                            <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
-                            <li class="pull-right">
+                            <li class="active"><i class="fa fa-dashboard"></i> Dashboard / {{api.livePage|titlecase}}</li>
+                            <li class="pull-right"> 
                                 <!--<div id="reportrange" class="btn btn-green btn-square date-picker">
                                         <i class="fa fa-calendar"></i>
                                         <span class="date-range"></span> <i class="fa fa-caret-down"></i>
@@ -23,15 +21,16 @@
                             </li>
                         </ol>
                     </div>
-                </div>
+                
                 <!-- /.col-lg-12 -->
-            </div>
+           
            
 
            
             <app-view-issues *ngIf="this.api.livePage=='viewissues'" > </app-view-issues>
               <app-addissue *ngIf="this.api.livePage=='addissue'" > </app-addissue>
-
+              <app-myissues-list *ngIf="this.api.livePage=='myissues'"></app-myissues-list>
+               </div>
         </div>
         <!-- /.page-content -->
 

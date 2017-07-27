@@ -49,7 +49,8 @@ const parseFormat: { [type: string]: string[] } = {
 };
 
 const defaultFormat: { [type: string]: string; } = {
-    "date": "YYYY-M-D",
+  "date": "LL",
+   // "date": "YYYY-M-D",
     "datetime": "LLL",
     "time": "LT"
 };

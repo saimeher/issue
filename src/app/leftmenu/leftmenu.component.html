@@ -30,17 +30,17 @@
                 <ul class="collapse nav" id="pages">
 
                   <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')">
-                    <i class="fa fa-dashboard"></i>    VIEW ISSUES </a>
+                    <i class="fa fa-angle-double-right"></i>    View Issues </a>
                     </li>
 
                     <!--<li *ngIf="role=='stf'"> <a (click)="sidebarchage('addissue')">-->
-                        <li> <a (click)="sidebarchage('addissue')">
-                    <i class="fa fa-dashboard"></i>    ADD/VIEW ISSUES </a>
+                        <li *ngIf="role =='stf' || role=='std'"> <a  (click)="sidebarchage('addissue')">
+                    <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
+                    </li> 
+                      <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')">
+                    <i class="fa fa-angle-double-right"></i>    View All Issues </a>
                     </li>
-                     
-                    <!--<li> <a (click)="sidebarchage('viewissues')">
-                    <i class="fa fa-dashboard"></i>    VIEW ISSUES </a>
-                    </li>-->
+ 
                     
                 </ul>
             </li>
@@ -53,30 +53,7 @@
                 <li>
                     <a href="http://210.16.79.137/raghuerp/grievance"><i class="fa fa-comments"></i> Grievances & Complaints</a>
                 </li>
-                <!--<li *ngIf="role!='adm' && role!='cr'  ">  <a (click)="sidebarchage('addreport')" >
-                    <i class="fa fa-dashboard"></i> ADD REPORT</a>
-                    </li>
-                    <li *ngIf="role!='cr'">  <a (click)="sidebarchage('viewreport')" >
-                    <i class="fa fa-dashboard"></i> DAILY REPORT</a>
-                    </li>
-                    <li *ngIf="role!='cr'">  <a (click)="sidebarchage('monthreport')" >
-                    <i class="fa fa-dashboard"></i> MONTH REPORT</a>
-                    </li>
-                     <!--<li>  <a (click)="sidebarchage('timetable')" >
-                    <i class="fa fa-dashboard"></i> CREATE SECTIONS</a>
-                    </li>-->
-                <!--<li *ngIf="role=='hod'">  <a (click)="sidebarchage('branches')" >
-                    <i class="fa fa-dashboard"></i>  BATCHES</a>
-                    </li>
-                     <li *ngIf="role=='hod'">  <a (click)="sidebarchage('sections')" >
-                    <i class="fa fa-dashboard"></i>  SECTIONS </a>
-                    </li>
-                    <li *ngIf="role=='cr'">  <a (click)="sidebarchage('craddreport')" >
-                    <i class="fa fa-dashboard"></i>   REPORT </a>
-                    </li>
-                    <li *ngIf="role=='cr'">  <a (click)="sidebarchage('crreport')" >
-                    <i class="fa fa-dashboard"></i>    VIEW REPORT </a>
-                    </li>-->
+                
         </ul>
         <!-- /.side-nav -->
     </div>

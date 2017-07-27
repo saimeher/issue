@@ -54,7 +54,7 @@ role;
       // console.log(localStorage.removeItem('currentUser'));
         localStorage.removeItem('currentUser');
         localStorage.removeItem('reg_no');
-        localStorage.removeItem('username');
+        localStorage.removeItem('name');
         localStorage.removeItem('role');
       // this.router.navigate(['login']);
    

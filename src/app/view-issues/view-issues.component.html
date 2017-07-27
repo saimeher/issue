@@ -91,8 +91,8 @@ td {
               <th>
                 <mfDefaultSorter [by]="mobile">Mobile</mfDefaultSorter>
               </th>
-              <th>
-                <mfDefaultSorter [by]="status"> Status</mfDefaultSorter>
+              <th style=" color: white;">
+                <mfDefaultSorter [by]="status"> Status </mfDefaultSorter>
               </th>
               <th>
                 Options
@@ -117,7 +117,7 @@ td {
 
               <td>{{item.status}}</td>
               <td *ngIf="(item.status=='verified_resolved' || item.status=='resolution_in_progress' || item.status=='cannot_be_resolved' || item.status=='user_deleted' || item.status=='pending') && (item.repaired_on !=null || item.repaired_by !=null || item.date_of_resolution !=null || item.notes !=null) ">
-                <a (click)="details(item)" class="btn btn-danger">Details</a>
+                <a (click)="details(item)" class="btn btn-xs btn-danger">Details</a>
               </td>
               <td *ngIf="item.status == null || item.repaired_on ==null && item.repaired_by ==null && item.date_of_resolution ==null && item.notes ==null "> 
 

@@ -11,11 +11,16 @@ export class UrlService {
   public GETCATEGORIES: string = this.Url + 'getCategories';
   public GETISSUESLISTBYCATEGORY: string = this.Url + 'getIssuesListbyCategory';
   public GETISSUESLISTBYSELECTION: string = this.Url + 'getIssuesListBySelection';
-   public INSERTISSUE:     string = this.Url + 'INSERTISSUE';
+  public INSERTISSUE:     string = this.Url + 'INSERTISSUE';
   public GETDETAILS: string = this.Url + 'GETDETAILS';  
   public GETDOMAINSBYID: string = this.Url + 'getDomainsbyId'; 
-   public UPDATEISSUE: string = this.Url + 'UPDATEISSUE';
+  public UPDATEISSUE: string = this.Url + 'UPDATEISSUE';
   public DELETEISSUE: string = this.Url + 'DELETEISSUE';
+  public MODIFYISSUE: string = this.Url + 'modifyIssue';
+  public getissue: string = this.Url + 'getissue';
+  public GETALLISSUES: string = this.Url + 'getAllIssues';
+   
+  
   constructor() { }
 
 }

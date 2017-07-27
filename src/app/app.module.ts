@@ -23,6 +23,7 @@ import {  ModalComponent } from './modal.component';
  import { AddissueComponent } from './addissue/addissue.component';
 import { DatePickerModule } from "../datepicker/index";
 import { OverlayModule } from "angular-io-overlay";
+import { MyissuesListComponent } from './myissues-list/myissues-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import { OverlayModule } from "angular-io-overlay";
     DateComponent,
     ModalComponent,
     //RaiseIssueComponent,
-     AddissueComponent
+     AddissueComponent,
+    MyissuesListComponent
    // UrlService,
     // DataService,
    // AuthGuard,

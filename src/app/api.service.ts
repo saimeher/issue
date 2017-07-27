@@ -49,6 +49,10 @@ export class ApiService {
     let body = JSON.stringify(value);
     return this.callApi(this.url.INSERTISSUE, 'post', body);
   }
+  modifyIssue(value:any){
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.MODIFYISSUE, 'post', body);
+  }
   getdetails(id: any = '') {
     let body = JSON.stringify({ 'reg_no': id });
     return this.callApi(this.url.GETDETAILS, 'post', body);
@@ -58,11 +62,22 @@ export class ApiService {
      let body = JSON.stringify({ 'reg_no': id });
     return this.callApi(this.url.GETDOMAINSBYID, 'post', body);
   }
+  getissue(id:any='')
+  {
+    let body=JSON.stringify({'reg_no':id});
+    console.log(body)
+    return this.callApi(this.url.getissue,'post',body);
+  }
 
 UPDATEISSUE(value:any){
 let body =JSON.stringify(value);
 console.log(value);
 return this.callApi(this.url.UPDATEISSUE,'post',body);
+  }
+
+  getAllIssues(){
+  let body ='';
+  return this.callApi(this.url.GETALLISSUES,'get',body);
   }
 
 DELETEISSUE(value:any){
