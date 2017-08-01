@@ -19,8 +19,10 @@ export class UrlService {
   public MODIFYISSUE: string = this.Url + 'modifyIssue';
   public getissue: string = this.Url + 'getissue';
   public GETALLISSUES: string = this.Url + 'getAllIssues';
-   
-  
+  public updateissues: string = this.Url + 'updateissues';
+  public getImagesbyId: string = this.Url + 'getImagesbyId';
+   public getDatabyId_Domain: string = this.Url + 'getDatabyId_Domain';
+
   constructor() { }
 
 }

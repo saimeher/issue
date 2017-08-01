@@ -68,7 +68,12 @@ export class ApiService {
     console.log(body)
     return this.callApi(this.url.getissue,'post',body);
   }
-
+ updateissues(value:any)
+  {
+    let body=JSON.stringify(value);
+    console.log(body)
+    return this.callApi(this.url.updateissues,'post',body);
+  }
 UPDATEISSUE(value:any){
 let body =JSON.stringify(value);
 console.log(value);
@@ -78,6 +83,18 @@ return this.callApi(this.url.UPDATEISSUE,'post',body);
   getAllIssues(){
   let body ='';
   return this.callApi(this.url.GETALLISSUES,'get',body);
+}
+
+getImagesbyId(id:any,reg_no:any){
+  let body=JSON.stringify({'img_id':id,'reg_no':reg_no });
+    console.log(body)
+    return this.callApi(this.url.getImagesbyId,'post',body);
+}
+
+getDatabyId_Domain(val) {
+    let body = JSON.stringify(val);
+    console.log(body)
+    return this.callApi(this.url.getDatabyId_Domain, 'post', body);
   }
 
 DELETEISSUE(value:any){

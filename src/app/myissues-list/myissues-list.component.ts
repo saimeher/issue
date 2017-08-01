@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormsModule, Form, FormGroup, FormBuilder, Validat
 import { ApiService } from '../api.service';
 import { DateComponent } from '../date/date.component';
 import { ModalComponent } from '../modal.component';
+import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
 @Component({
   selector: 'app-myissues-list',
   templateUrl: './myissues-list.component.html',
@@ -11,11 +12,18 @@ import { ModalComponent } from '../modal.component';
 export class MyissuesListComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
   taskeditForm: FormGroup;
+  issues_form:FormGroup;
   role;
   data1;
   id;
   data2;
+  data;
+  data3;
+  from_date;
+  to_date;
   domain;
+  sellist
+  value1;
   repaired_onn;
   date_of_resolutionn;
   AC = [];
@@ -32,41 +40,66 @@ export class MyissuesListComponent implements OnInit {
   INFRASTRUCTURE = [];
   addFormStatus = false;
   table = false;
+  alldata=[];
+  total;
+  verified_resolved_tot;
+  resolution_in_progress_tot;
+  pending_tot;
+  user_deleted_tot;
+  cannot_be_resolved_tot;
   formsuccess = false;
+    public filterQuery = "";
+    public rowsOnPage = 10;
+    public sortBy = "name";
+    public sortOrder = "asc";
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
   constructor(public api: ApiService, public fb:FormBuilder) { }
 
   ngOnInit() {
     this.role=localStorage.getItem('role');
+     this.issues_form = this.fb.group({
+      seluserid: ['', Validators.required],
+      from_date: ['', Validators.required],
+      to_date: ['', Validators.required],
+      selstatus: ['', Validators.required]
+
+
+    });
+    
        
      
     this.taskeditForm= this.fb.group({
       priority:[''],
       status:[''],
-      repaired_on:[''],
-      repaired_by:[''],
-      date_of_resolution:[''],
+      repaired_on:['',[Validators.required]],
+      repaired_by:['',[Validators.required]],
+      date_of_resolution:['',[Validators.required]],
       notes:[],
-      did:[],
+      did:[]
     });
   
  this.getDomainsbyId();
  this.getdetails();
   }
   by;
+  Repaired_on1;
+  date_of_resolution1;
   details(item) {
     console.log(item);
+    this.value1=this.value1;
+    this.Repaired_on1=item.repaired_on;
+    this.date_of_resolution1=item.date_of_resolution;
     if (item.repaired_on != null) {
       this.repaired_onn = item.repaired_on
     } else {
-      this.repaired_onn = "YYYY-M-D"
+      this.repaired_onn = "YYYY-MM-DD"
     }
 
     if (item.date_of_resolution != null) {
       this.date_of_resolutionn = item.date_of_resolution
     } else {
-      this.date_of_resolutionn = "YYYY-M-D"
+      this.date_of_resolutionn = "YYYY-MM-DD"
     }
    this.by = item.raised_by;
     this.taskeditForm.patchValue({
@@ -93,9 +126,19 @@ export class MyissuesListComponent implements OnInit {
     data['did'] = this.taskeditForm.value.did;
     data['status'] = this.taskeditForm.value.status;
     data['priority'] = this.taskeditForm.value.priority;
-    data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
+    if(this.taskeditForm.value.repaired_on._d=='Invalid Date'){
+      data['repaired_on'] = this.Repaired_on1;
+    }else{
+      data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
+    }
+    if(this.taskeditForm.value.date_of_resolution._d=='Invalid Date'){
+      data['date_of_resolution'] = this.date_of_resolution1;
+    }else{
+      data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
+    }
+    //data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
     data['repaired_by'] = this.taskeditForm.value.repaired_by;
-    data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
+   // data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
     data['notes'] = this.taskeditForm.value.notes;
     console.log(data);
 
@@ -106,62 +149,55 @@ export class MyissuesListComponent implements OnInit {
 
         // this.taskeditForm.reset();
         this.modal1.hide();
-        this.getdetails();
+        // this.getdetails();
         // this.ngOnInit();
 
       });
   }
 
   getdetails() {
+    this.verified_resolved_tot = '';
+    this.resolution_in_progress_tot = '';
+    this.pending_tot = '';
+    this.user_deleted_tot = '';
+    this.cannot_be_resolved_tot = '';
+    this.total = '';
 
-    this.api.getdetails(this.reg_no).subscribe(data => {
+    this.api.getdetails(this.reg_no).subscribe(alldata => {
+       if (alldata) {
+        console.log(alldata.data);
+        console.log(alldata.data1);
+        this.data2 = alldata.data1;
+        this.data = alldata.data;
+        if (this.data2 == 'NoData') {
+          this.table = true;
+        } else {
+          this.table = false;
+          console.log(this.data2);
+          this.data2.forEach(element => {
+            this.total = element.t;
+            if (element.status == 'cannot_be_resolved') {
+              this.cannot_be_resolved_tot = element.tot;
+            }
+            if (element.status == 'pending') {
+              this.pending_tot = element.tot;
+            }
+            if (element.status == 'resolution_in_progress') {
+              this.resolution_in_progress_tot = element.tot;
+            }
+            if (element.status == 'user_deleted') {
+              this.user_deleted_tot = element.tot;
+            }
+            if (element.status == 'verified_resolved') {
+              this.verified_resolved_tot = element.tot;
+            }
+            console.log(element.status, '-', element.tot);
 
-      this.data1 = data;
-      this.data1.forEach(element => {
-        if (element.domain == 'ac') {
-          this.AC.push(element);
-          this.AC_LENGTH = this.AC.length;
+          });
         }
-        if (element.domain == 'electrical') {
-          this.ELECTRICAL.push(element);
-        }
-        if (element.domain == 'civil') {
-          this.CIVIL.push(element);
-        }
-        if (element.domain == 'water_supply') {
-          this.WATER_SUPPLY.push(element);
-        }
-        if (element.domain == 'sanitation') {
-          this.SANITATION.push(element);
-        }
-        if (element.domain == 'carpentary') {
-          this.CARPENTARY.push(element);
-        }
-        if (element.domain == 'transportation') {
-          this.TRANSPORTATION.push(element);
-        }
-        if (element.domain == 'house_keeping') {
-          this.HOUSE_KEEPING.push(element);
-        }
-        if (element.domain == 'gardening') {
-          this.GARDENING.push(element);
-        }
-        if (element.domain == 'misc') {
-          this.MISC.push(element);
-        }
-        if (element.domain == 'infrastructure') {
-          this.INFRASTRUCTURE.push(element);
-        }
-      });
-      console.log(this.AC);
-      //this.AC.push({'length':this.AC_LENGTH})
-      console.log(this.ELECTRICAL);
-
-      console.log(this.data1 + 'sdfsd');
-
+        
+      }
     })
-    console.log(this.data1);
-    // cons
   }
   domainsbyid;
   getDomainsbyId() {
@@ -173,26 +209,161 @@ export class MyissuesListComponent implements OnInit {
       }
     })
   }
+selection = {};
+  getSelIssueData() {
+    this.total = '';
+    this.data = '';
+    this.verified_resolved_tot = '';
+    this.resolution_in_progress_tot = '';
+    this.pending_tot = '';
+    this.user_deleted_tot = '';
+    this.cannot_be_resolved_tot = '';
+    this.selection['category'] = this.issues_form.value.seluserid;
+    this.selection['status'] = this.issues_form.value.selstatus;
+    this.selection['from_date'] = this.from_date;
+    this.selection['to_date'] = this.to_date;
+    console.log(this.selection);
+    this.api.getIssuesListBySelection(this.selection).subscribe(data => {
+      if (data) {
+        this.data = data.data;
+        this.data2 = data.data1;
+        if (this.data2 == 'NoData') {
+          this.table = true;
+        } else {
+          this.table = false;
+          console.log(this.data2);
+          this.data2.forEach(element => {
+            this.total = element.t;
+            if (element.status == 'cannot_be_resolved') {
+              this.cannot_be_resolved_tot = element.tot;
+            }
+            if (element.status == 'pending') {
+              this.pending_tot = element.tot;
+            }
+            if (element.status == 'resolution_in_progress') {
+              this.resolution_in_progress_tot = element.tot;
+            }
+            if (element.status == 'user_deleted') {
+              this.user_deleted_tot = element.tot;
+            }
+            if (element.status == 'verified_resolved') {
+              this.verified_resolved_tot = element.tot;
+            }
+          });
+        }
 
-
-  getDomain(value: any) {
-    this.table = true;
-    console.log(value);
-
-    switch (value) {
-      case 'ac': this.data1 = this.AC; break;
-      case 'electrical': this.data1 = this.ELECTRICAL; break;
-      case 'civil': this.data1 = this.CIVIL; break;
-      case 'water_supply': this.data1 = this.WATER_SUPPLY; break;
-      case 'sanitation': this.data1 = this.SANITATION; break;
-      case 'carpentary': this.data1 = this.CARPENTARY; break;
-      case 'transportation': this.data1 = this.TRANSPORTATION; break;
-      case 'infrastructure': this.data1 = this.INFRASTRUCTURE; break;
-      case 'house_keeping': this.data1 = this.HOUSE_KEEPING; break;
-      case 'gardening': this.data1 = this.GARDENING; break;
-      case 'misc': this.data1 = this.MISC; break;
-
-    }
+      }
+    })
 
   }
+  clear() {
+    this.issues_form.reset();
+
+  }
+
+
+  getDomain($event) {
+   console.log($event.target.value);
+    this.data = '';
+    this.total = '';
+    this.verified_resolved_tot = '';
+    this.resolution_in_progress_tot = '';
+    this.pending_tot = '';
+    this.user_deleted_tot = '';
+    this.cannot_be_resolved_tot = '';
+   
+  let value={
+  'domain':$event.target.value,
+  'reg_no':this.reg_no
+} 
+let value1=$event.target.value;
+if(value1 == "all")
+{
+  this.getdetails();
+}
+else{
+
+    this.api.getDatabyId_Domain(value).subscribe(sellist => {
+        if (sellist) {
+          console.log(sellist);
+          this.data = sellist.data;
+          this.data2 = sellist.data1;
+          if (this.data2 == 'NoData') {
+            this.table = true;
+          } else {
+            this.table = false;
+            console.log(this.data2);
+            this.data2.forEach(element => {
+              this.total = element.t;
+              if (element.status == 'cannot_be_resolved') {
+                this.cannot_be_resolved_tot = element.tot;
+              }
+              if (element.status == 'pending') {
+                this.pending_tot = element.tot;
+              }
+              if (element.status == 'resolution_in_progress') {
+                this.resolution_in_progress_tot = element.tot;
+              }
+              if (element.status == 'user_deleted') {
+                this.user_deleted_tot = element.tot;
+              }
+              if (element.status == 'verified_resolved') {
+                this.verified_resolved_tot = element.tot;
+              }
+            });
+          }
+          // this.data2.forEach(element => {
+
+          //    this.total=element.t;
+          //  });
+
+        } else {
+          this.data = '';
+        }
+
+      });
+      }
+    
+  }
+  
+   public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+    editableDateField: false,
+    disableWeekends: false,
+    // disableDays: this.service.holidays,
+    //  disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
+    // disableUntil: {year: , month: 5 , day: 17}
+
+  };
+
+ 
+public myDatePickerOptions2: IMyDpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+    editableDateField: false,
+    disableWeekends: false,
+
+    //  disableDays: this.service.holidays,
+    disableUntil: { year: 0, month: 0, day: 0 }
+    // disableUntil: {year: , month: 5 , day: 17}
+
+  };
+  picker1day;
+  picker1month;
+  picker1year;
+
+  onDateChanged(event: IMyDateModel) {
+
+    this.from_date = event.formatted;
+    this.myDatePickerOptions2.disableUntil.year = event.date.year
+    this.myDatePickerOptions2.disableUntil.month = event.date.month
+    this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
+  }
+
+  onDateChanged2(event: IMyDateModel) {
+    console.log(this.to_date, 'from date test');
+    this.to_date = event.formatted
+  }
+
 }

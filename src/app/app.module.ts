@@ -18,12 +18,16 @@ import { ViewIssuesComponent } from './view-issues/view-issues.component';
 import {DataTableModule} from "angular2-datatable";
 import {DataFilterPipe} from './datatable-filter';
 import {DateComponent} from './date/date.component';
+import {AuthGuard} from './authentication';
+// import { DatesComponent } from './dates/dates.component';
 import {  ModalComponent } from './modal.component';
 //import { RaiseIssueComponent } from './raise-issue/raise-issue.component';
  import { AddissueComponent } from './addissue/addissue.component';
 import { DatePickerModule } from "../datepicker/index";
 import { OverlayModule } from "angular-io-overlay";
 import { MyissuesListComponent } from './myissues-list/myissues-list.component';
+import { MyDatePickerModule } from 'mydatepicker';
+import { UploadService} from './upload.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,9 +56,10 @@ import { MyissuesListComponent } from './myissues-list/myissues-list.component';
     routing,
     DataTableModule,
     OverlayModule,
-    DatePickerModule
+    DatePickerModule,
+    MyDatePickerModule
   ],
-  providers: [ApiService,UrlService],
+  providers: [ApiService,UrlService,AuthGuard,UploadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

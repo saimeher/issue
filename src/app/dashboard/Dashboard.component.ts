@@ -12,6 +12,7 @@ reg_no=localStorage.getItem('reg_no');
     constructor(public router:Router,public api:ApiService,private activeR:ActivatedRoute) {
       // console.log(localStorage.getItem('currentUser'));
       // this.getRole();
+       this.getRole()
      }
 
   ngOnInit() {
@@ -19,20 +20,33 @@ reg_no=localStorage.getItem('reg_no');
       this.api.livePage=params['livePage'];
       console.log(params['livePage']);
       console.log(this.api.livePage);
-      this.getRole()
+     
       
     });    
   }
 
-  
+  role;
   getRole(){
     console.log(this.reg_no);
     
       this.api.getRole(this.reg_no).subscribe(data=>{
-      if(data){
-        console.log(data);
-       // console.log(data.role,'hello');
-         localStorage.setItem('role',data.role);
+       if(data.data){
+          console.log(data.data);
+        // console.log(data.role,'hello');
+        if(data.data=='failed'){
+          localStorage.setItem('role','other');
+          this.role='other';
+           this.api.livePage='addissue';
+        }else{
+        this.role=data.data.role;
+         localStorage.setItem('role',data.data.role);
+         if(this.role=='adm'){
+          this.api.livePage='viewissues';
+         }else{
+           this.api.livePage='addissue';
+         }
+        }
+      
      }
     });
     console.log('thell');
@@ -40,9 +54,7 @@ reg_no=localStorage.getItem('reg_no');
   }
    sidebarchage(type:string){
      this.api.livePage=type;
-
-     
-  this.router.navigate(['/dashboard/'+type]);
+     this.router.navigate(['/dashboard/'+type]);
  
  
 }

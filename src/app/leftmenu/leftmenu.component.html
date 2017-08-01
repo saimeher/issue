@@ -1,6 +1,6 @@
 <!-- begin SIDE NAVIGATION -->
 <nav class="navbar-side" role="navigation">
-    <div class="navbar-collapse sidebar-collapse collapse">
+    <div class="navbar-collapse sidebar-collapse ">
         <ul id="side" class="nav navbar-nav side-nav">
             <!-- begin SIDE NAV USER PANEL -->
             <li class="side-user hidden-xs">
@@ -23,21 +23,24 @@
                 <a href="http://210.16.79.137/raghuerp/library"><i class="fa fa-book"></i> Library</a>
             </li>
             
-            <li class="panel">
+            <li class="panel active">
                 <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#pages">
                             <i class="fa fa-files-o"></i> Issue Register <i class="fa fa-caret-down"></i>
                         </a>
-                <ul class="collapse nav" id="pages">
+                <ul class="nav" id="pages">
 
-                  <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')">
+                  <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')" [ngClass]="this.api.livePage == 'viewissues'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    View Issues </a>
                     </li>
 
                     <!--<li *ngIf="role=='stf'"> <a (click)="sidebarchage('addissue')">-->
-                        <li *ngIf="role =='stf' || role=='std'"> <a  (click)="sidebarchage('addissue')">
+                        <li *ngIf="role =='stf' "> <a  (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''" >
                     <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
                     </li> 
-                      <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')">
+                      <li *ngIf="role =='other' "> <a  (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''" >
+                    <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
+                    </li>
+                      <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')" [ngClass]="this.api.livePage == 'myissues'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    View All Issues </a>
                     </li>
  

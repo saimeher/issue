@@ -38,11 +38,25 @@ role;
     console.log(this.reg_no);
     
       this.api.getRole(this.reg_no).subscribe(data=>{
-      if(data){
-        // console.log(data);
+      if(data.data){
+          console.log(data.data);
         // console.log(data.role,'hello');
-       this.role=data.role;
-         localStorage.setItem('role',data.role);
+        if(data.data=='failed'){
+          localStorage.setItem('role','other');
+          console.log('fail case');
+          
+          this.role='other';
+           this.api.livePage='addissue';
+        }else{
+        this.role=data.data.role;
+         localStorage.setItem('role',data.data.role);
+         if(this.role=='adm'){
+          this.api.livePage='viewissues';
+         }else{
+           this.api.livePage='addissue';
+         }
+        }
+       
      }
     });
      
