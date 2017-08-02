@@ -132,7 +132,7 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="mf.data.length != 0">
           <tr *ngFor="let item of mf.data; let i=index;">
              <td>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
             <td>{{item.domain}}</td>
@@ -151,11 +151,11 @@
             <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
       <!--<td>{{-(item.days)}}-->
 
-        <td *ngIf="item.days <= 0  && item.status == 'pending'"> </td>
-        <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">0</td>
-        <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.days)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">0</td>
-        <td *ngIf="item.days <= 0  && item.status == 'user_deleted'">0</td>
+        <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
+        <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
+        <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
+        <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
+        <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
             <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
             <td>
               <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
@@ -165,6 +165,13 @@
             </td>
           </tr>
         </tbody>
+        <tbody *ngIf="mf.data.length == 0">
+        <tr rowspan="2">
+        <td colspan="12">
+        <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+        </td>
+        </tr>
+        </tbody> 
         <tfoot>
           <tr>
             <td colspan="12">
@@ -218,7 +225,7 @@
           </div>
 
 
-          <input type="hidden" formControlName="did" name="did" value="" class="form-control">
+          <!--<input type="hidden" formControlName="did" name="did" value="" class="form-control">-->
           <div class="form-group">
             <div class="col-sm-offset-4">
               <button type="submit" [disabled]="!this.issues_form.valid" class="btn btn-default btn-square col-md-6" style="margin-top: 25px;">Update</button>

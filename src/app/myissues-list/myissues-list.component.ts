@@ -11,6 +11,7 @@ import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
 })
 export class MyissuesListComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
+   @ViewChild('modal3') modal3: ModalComponent;
   taskeditForm: FormGroup;
   issues_form:FormGroup;
   role;
@@ -48,6 +49,7 @@ export class MyissuesListComponent implements OnInit {
   user_deleted_tot;
   cannot_be_resolved_tot;
   formsuccess = false;
+  img_url="http://localhost/issue_register/uploads";
     public filterQuery = "";
     public rowsOnPage = 10;
     public sortBy = "name";
@@ -261,7 +263,7 @@ selection = {};
 
   }
 
-
+showstatus=true;
   getDomain($event) {
    console.log($event.target.value);
     this.data = '';
@@ -277,12 +279,14 @@ selection = {};
   'reg_no':this.reg_no
 } 
 let value1=$event.target.value;
+ 
 if(value1 == "all")
 {
+  this.showstatus=false;
   this.getdetails();
 }
 else{
-
+this.showstatus=true;
     this.api.getDatabyId_Domain(value).subscribe(sellist => {
         if (sellist) {
           console.log(sellist);
@@ -365,5 +369,19 @@ public myDatePickerOptions2: IMyDpOptions = {
     console.log(this.to_date, 'from date test');
     this.to_date = event.formatted
   }
+
+  img_data;
+getImagesbyId(img_id,reg_no){
+  console.log(img_id,reg_no);
+  
+  this.api.getImagesbyId(img_id,reg_no).subscribe(data=>{
+    console.log(data);
+    this.img_data=data;
+     this.modal3.show();
+  })
+}
+imageclose(){
+ this.modal3.hide();
+}
 
 }

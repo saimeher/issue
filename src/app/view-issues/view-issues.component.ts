@@ -14,6 +14,7 @@ import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
 export class ViewIssuesComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
   @ViewChild('day') dayElement: ElementRef;
+  @ViewChild('modal3') modal3: ModalComponent;
   issues_form: FormGroup;
   issuesList;
   categoriesList;
@@ -30,6 +31,7 @@ export class ViewIssuesComponent implements OnInit {
   today = new Date();
   //data:any;
   role = localStorage.getItem('role');
+    img_url="http://localhost/issue_register/uploads";
   public data;
   public filterQuery = "";
   public rowsOnPage = 10;
@@ -136,7 +138,7 @@ export class ViewIssuesComponent implements OnInit {
     this.notes = item.notes;
     this.modal1.show();
   }
-
+showstatus=true;
   selCategory($event) {
     this.data = '';
     this.total = '';
@@ -149,9 +151,11 @@ export class ViewIssuesComponent implements OnInit {
     let value = $event.target.value;
     if (value == 'all') {
       // console.log('jsod');
+      this.showstatus=false;
       this.getAllIssues();
 
     } else {
+      this.showstatus=true;
       this.api.getIssuesListbyCategory(value).subscribe(sellist => {
         if (sellist) {
           console.log(sellist.data);
@@ -296,5 +300,17 @@ export class ViewIssuesComponent implements OnInit {
     console.log(this.to_date, 'from date test');
     this.to_date = event.formatted
   }
-
+img_data;
+getImagesbyId(img_id,reg_no){
+  console.log(img_id,reg_no);
+  
+  this.api.getImagesbyId(img_id,reg_no).subscribe(data=>{
+    console.log(data);
+    this.img_data=data;
+     this.modal3.show();
+  })
+}
+imageclose(){
+ this.modal3.hide();
+}
 }
