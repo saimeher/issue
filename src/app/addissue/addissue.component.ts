@@ -15,7 +15,7 @@ export class AddissueComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
   @ViewChild('modal2') modal2: ModalComponent;
   @ViewChild('modal3') modal3: ModalComponent;
-
+  @ViewChild('modal4') modal4: ModalComponent;
   constructor(public api: ApiService, public fb: FormBuilder,public upservice:UploadService) { }
   issues_form: FormGroup;
   taskeditForm: FormGroup;
@@ -51,7 +51,10 @@ export class AddissueComponent implements OnInit {
   formsuccess = false;
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
-  img_url="http://localhost/issue_register/uploads";
+ 
+  //img_url = "http://localhost/issue_register/uploads";
+  img_url="http://210.16.79.137/issueregister/server/uploads";
+ 
   // domains: Array<{ title: string, value: string }>;
   domains: Array<any> = [
     { title: 'Electrical', info: 'Electrical (Fans / Lights / Power Supply / Motors / Line)', value: 'electrical' },
@@ -115,19 +118,18 @@ export class AddissueComponent implements OnInit {
       .subscribe(data => {
         let id=data;
       if(this.picName){        
-          this.upservice.makeFileRequest('http://localhost/issue_register/api/insert_docs', id, this.picName).subscribe(() => {
-        console.log('sent');
+          this.upservice.makeFileRequest('http://210.16.79.137/issueregister/server/api/insert_docs', id, this.picName).subscribe(() => {
+      //this.upservice.makeFileRequest('http://localhost/issue_register/api/insert_docs', id, this.picName).subscribe(() => {
+
+       // console.log('sent');
        
      });
     }
         this.issues_form.reset();
-        // this.getdetails();
+       // this.getdetails();
         this.addFormStatus = false;
-        console.log(data);
-           this.getissue();
-
-        // console.log(this.issues_form.value);
-
+        this.getissue();
+ 
       });
   }
 
@@ -223,6 +225,47 @@ getImagesbyId(img_id,reg_no){
 }
 imageclose(){
  this.modal3.hide();
+}
+updateimg_id;
+updateImagepopup(id:any){
+  
+  this.modal4.show();
+  this.modal3.hide();
+  console.log(id);
+  this.updateimg_id=id;
+  // this.api.updateImage(id).subscribe(data=>{
+  //   console.log(data);
+    
+  // })
+}
+updateFile:any;
+imageChange(event) {
+     
+       console.log('onChange',event);
+         var files = event.srcElement.files;
+          this.updateFile = files;
+        console.log(files);
+         
+     }
+
+updateImage(id:any){
+     if(this.updateFile){        
+          this.upservice.makeFileRequest('http://210.16.79.137/issueregister/server/api/update_docs', id, this.updateFile).subscribe(data=> {
+        // this.upservice.makeFileRequest('http://localhost/issue_register/api/update_docs', id, this.updateFile).subscribe(data=> {
+
+        console.log(data);
+       if(data){
+       this.updateimg_id='';
+       this.modal4.hide();
+       this.getissue();
+       }
+     });
+    }
+}
+
+updateclose(){
+  this.updateimg_id='';
+ this.modal4.hide();
 }
  
 }

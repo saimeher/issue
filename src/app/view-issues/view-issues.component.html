@@ -19,10 +19,8 @@ td {
         <div class="form-group">
           <div class="col-md-3">
             <label>Category<span style="color:red">*</span></label>
-
-            <select formControlName="seluserid" class="form-group form-control" (change)="selCategory($event)">
-                
-                   <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
+            <select formControlName="seluserid" class="form-group form-control" [(ngModel)]="selecteddomain" (change)="selCategory($event)">                
+              <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
             <option selected  value="all">All</option>
           </select>
             <!--<span *ngIf="(issues_forms.get('seluserid').touched || issues_forms.get('seluserid').dirty) && issues_forms.get('seluserid').errors">
@@ -31,31 +29,25 @@ td {
           </div>
           <div class="col-md-2">
             <label for="email">From Date<span style="color:red">*</span></label>
-
             <!--<app-date type="day"     ngDefaultControl [endDate]="to_date" [startDate]="from_date"  (dateChange)="dateChanged('start_date', $event)">
             </app-date>-->
-
-            <my-date-picker   locale="en" #start formControlName="from_date" name="startdate" placeholder="Ex:YYYY-MM-DD"
-              required [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)"></my-date-picker>
+            <my-date-picker locale="en" #start formControlName="from_date" name="startdate" placeholder="Ex:YYYY-MM-DD" required [options]="myDatePickerOptions"
+              (dateChanged)="onDateChanged($event)"></my-date-picker>
             <!--<span *ngIf="(issues_forms.get('from_date').touched || issues_forms.get('from_date').dirty) && issues_forms.get('from_date').errors">
                     <span *ngIf="issues_forms.get('from_date').errors.required" style="color:red">  Please enter type </span>
                 </span> -->
-
           </div>
           <div class="col-md-2">
             <label for="email">To Date <span style="color:red">*</span></label>
-
-
-            <my-date-picker #end name="enddate" locale="en"   formControlName="to_date" [options]="myDatePickerOptions2"
-              placeholder="Ex:YYYY-MM-DD" required (dateChanged)="onDateChanged2($event)"></my-date-picker>
+            <my-date-picker #end name="enddate" locale="en" formControlName="to_date" [options]="myDatePickerOptions2" placeholder="Ex:YYYY-MM-DD"
+              required (dateChanged)="onDateChanged2($event)"></my-date-picker>
             <!--<div>
               <span *ngIf="(issues_forms.get('to_date').touched || issues_forms.get('to_date').dirty) && issues_forms.get('to_date').errors">
                     <span *ngIf="issues_forms.get('to_date').errors.required" style="color:red">  Please enter type </span>
                 </span>
                 </div>-->
-
           </div>
-          <div class="col-md-2"  >
+          <div class="col-md-2">
             <label for="email">Status <span style="color:red">*</span></label>
             <select class=" form-control" formControlName="selstatus">
               <option  value="">-Select-</option>
@@ -86,75 +78,123 @@ td {
       <label>No data Found</label>
     </div>
 
-    <div class="row" *ngIf="!table">
-      <div style="padding-bottom: 25px;" class="col-md-12">
+    <div class="row">
+      <div class="col-lg-8" *ngIf="!table">
+        <div class="row">
+          <div style="padding-bottom: 25px;" class="col-lg-12">
 
-        <ul class="topstats">
-          <!--<div *ngFor="let d2 of data2; let r=index; let last = last;">
-            <li *ngIf="d2.status=='pending'" class="right-border li-padding" style="width: 150px;">
-              <span class="title"><i class="fa fa-user"></i> <strong>Pending </strong></span>
-              <h3 style="text-align: center;" Class="color-up title1"> {{d2.tot}}</h3>
-                   </li>
-            <li *ngIf="d2.status=='verified_resolved'" class="right-border li-padding">
-              <span class="title"><i class="fa fa-user"></i> <strong>Verified Resolved  </strong></span>
-              <h3 style="text-align: center;" Class="color-up title1"> {{d2.tot}}</h3>
-                   </li>
-            <li *ngIf="d2.status=='resolution_in_progress'" class="right-border li-padding">
-              <span class="title"><i class="fa fa-user"></i> <strong>Resolution in Progress  </strong></span>
-              <h3 style="text-align: center;" Class="color-up title1"> {{d2.tot}}</h3>
-               </li>
-            <li *ngIf="d2.status=='cannot_be_resolved'" class="right-border li-padding" style="margin-left: -40px;">
-              <span class="title"><i class="fa fa-user"></i> <strong>Cannot be Resolved </strong></span>
-              <h3 style="text-align: center;" Class="color-up title1"> {{d2.tot}}</h3>
-                      </li>
-            <li *ngIf="d2.status=='user_deleted'" class="right-border li-padding">
-              <span class="title"><i class="fa fa-user"></i> <strong>User Deleted  </strong></span>
-              <h3 style="text-align: center;" Class="color-up title1"> {{d2.tot}}</h3>
-                     </li>
-          </div>-->
-          <li class="right-border li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>Pending</strong></span>
-            <h3 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{pending_tot}}</h3>
-            <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-          </li>
-          <li class="right-border li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>Verified Resolved</strong></span>
-            <h3 *ngIf="verified_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{verified_resolved_tot}}</h3>
-            <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-          </li>
-          <li class="right-border li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>Resolution In-Progress</strong></span>
-            <h3 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h3>
-            <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-          </li>
-          <li class="right-border li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>Cannot be Resolved</strong></span>
-            <h3 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h3>
-            <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-          </li>
-          <li class="right-border li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>User Deleted</strong></span>
-            <h3 *ngIf="user_deleted_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_deleted_tot}} </h3>
-            <h3 *ngIf="user_deleted_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-          </li>
-          <li class="li-padding">
-            <span class="title"><i class="fa fa-user"></i><strong>Total</strong></span>
-            <h3 style="text-align: center;" Class="color-up title1"> {{total}}</h3>
-          </li>
-        </ul>
+            <ul class="topstats">
+
+              <li class="right-border li-padding" style="margin-left: -37px;">
+                <span class="title"><strong>Pending</strong></span>
+                <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{pending_tot}}</h4>
+                <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>Assigned</strong></span>
+                <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
+                <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>Resolution In-Progress</strong></span>
+                <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
+                <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>Verified &  Resolved</strong></span>
+                <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
+                <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="li-padding">
+                <span class="title"><strong>User  Resolved</strong></span>
+                <h4 *ngIf="user_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_resolved_tot}} </h4>
+                <h3 *ngIf="user_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div  class="row">
+          <div style="padding-bottom: 25px;" class="col-lg-12">
+            <ul class="topstats">
+              <li class="right-border li-padding" style="margin-left: -37px;">
+                <span class="title"><strong>User Deleted</strong></span>
+                <h4 *ngIf="user_deleted_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_deleted_tot}} </h4>
+                <h3 *ngIf="user_deleted_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+
+              <li class="right-border li-padding">
+                <span class="title"><strong>On Hold</strong></span>
+                <h4 *ngIf="onhold_tot!=null" style="text-align: center; " Class="color-up title1"> {{onhold_tot}} </h4>
+                <h3 *ngIf="onhold_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>Cannot be Resolved</strong></span>
+                <h4 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h4>
+                <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <!--<option value="assigned">Assigned  </option>
+                     <option value="onhold">On Hold  </option>
+                      <option value="user_resolved">User Resolved  </option> -->
+
+
+
+              <li class="li-padding">
+                <span class="title"><strong>Total</strong></span>
+                <h4 style="text-align: center;" Class="color-up title1"> {{total}}</h4>
+              </li>
+            </ul>
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-lg-12" *ngIf="avgtable">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works </td>
+                </tr>
+              </thead>
+              <thead>
+                <tr>
+                  <th>Minimum</th>
+                  <th>Average</th>
+                  <th>Maximum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ad of avgdata;">
+                  <td>{{ad.minimum}}</td>
+                  <td>{{ad.average}}</td>
+                  <td>{{ad.maximum}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;">
+        <chart [options]="options"></chart>
       </div>
     </div>
-    <div class="" *ngIf="!table">
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12 tabel_overflow" *ngIf="!table">
       <table class="table table-responsive table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
         [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
         <thead>
 
           <tr>
-            <th style="min-width: 90px;">
+            <th style="min-width: 90px;" nowrap>
               <mfDefaultSorter by="insert_dt">Issue Raised On</mfDefaultSorter>
             </th>
-
-            <th>
+            <th style="min-width: 90px;" nowrap>
+              <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+            </th>
+            <th nowrap>
               <mfDefaultSorter by="issue_desc">Issue Description</mfDefaultSorter>
             </th>
             <th>
@@ -163,8 +203,8 @@ td {
             <th>
               <mfDefaultSorter by="problem">Impact</mfDefaultSorter>
             </th>
-            
-            <th>
+
+            <th nowrap>
               <mfDefaultSorter by="raised_by">Raised By</mfDefaultSorter>
             </th>
             <th>
@@ -176,13 +216,13 @@ td {
             <th style=" color: white;">
               <mfDefaultSorter [by]="status"> Status </mfDefaultSorter>
             </th>
-            <th>
+            <th nowrap>
               <mfDefaultSorter [by]="days">Elapsed Days</mfDefaultSorter>
             </th>
             <th style=" color: white;">
               <mfDefaultSorter [by]="img_name"> Img </mfDefaultSorter>
             </th>
-            <th>
+            <th nowrap>
               Details if Edited
             </th>
 
@@ -197,31 +237,33 @@ td {
           <tr *ngFor="let item of mf.data; let i=index;">
 
             <td>{{item.insert_dt|date:'dd-MM-yyyy'}}</td>
+            <td>{{item.domain|titlecase}}</td>
             <td>{{item.issue_desc}}</td>
             <td>{{item.location}}</td>
             <td>{{item.problem}}</td>
-           
+
             <td> {{item.raised_by}}</td>
             <td> {{item.mobile}}</td>
-             <td>{{item.priority}}</td>
+            <td>{{item.priority}}</td>
             <td *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
             <td *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
             <td *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
             <td *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
             <td *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
-   <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
-        <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
- 
- 
- <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>  
+            <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
+            <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+
+
+            <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
             <td *ngIf="(item.status=='verified_resolved' || item.status=='resolution_in_progress' || item.status=='cannot_be_resolved' || item.status=='user_deleted' || item.status=='pending') && (item.repaired_on !=null || item.repaired_by !=null || item.date_of_resolution !=null || item.notes !=null) ">
               <a (click)="details(item)" class="btn btn-xs btn-danger">Details</a>
             </td>
-            <td *ngIf="item.status == null || item.repaired_on ==null && item.repaired_by ==null && item.date_of_resolution ==null && item.notes ==null ">          </td>
-           
+            <td *ngIf="item.status == null || item.repaired_on ==null && item.repaired_by ==null && item.date_of_resolution ==null && item.notes ==null ">
+            </td>
+
 
 
 
@@ -237,7 +279,7 @@ td {
         </tfoot>
       </table>
     </div>
-
+</div>
 
     <div class="clearfix"></div>
   </div>

@@ -90,9 +90,10 @@
           </div>-->
       </div>
     </div>
-    <div class="table-responsive">
+    <div class="row">
+    <div class="col-md-12 tabel_overflow">
       <!--<table class="table table-green table-bordered table-hover">-->
-      <table class="table table-responsive table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
+      <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
         [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
         <thead>
           <tr>
@@ -134,8 +135,8 @@
         </thead>
         <tbody *ngIf="mf.data.length != 0">
           <tr *ngFor="let item of mf.data; let i=index;">
-             <td>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
-            <td>{{item.domain}}</td>
+            <td>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
+            <td>{{item.domain|titlecase}}</td>
 
             <td>{{item.location}}</td>
             <td>{{item.problem}}</td>
@@ -149,13 +150,13 @@
             <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
             <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
             <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
-      <!--<td>{{-(item.days)}}-->
+            <!--<td>{{-(item.days)}}-->
 
-        <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
-        <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
-        <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+            <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
+            <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
+            <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
             <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
             <td>
               <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
@@ -166,12 +167,12 @@
           </tr>
         </tbody>
         <tbody *ngIf="mf.data.length == 0">
-        <tr rowspan="2">
-        <td colspan="12">
-        <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
-        </td>
-        </tr>
-        </tbody> 
+          <tr rowspan="2">
+            <td colspan="12">
+              <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+            </td>
+          </tr>
+        </tbody>
         <tfoot>
           <tr>
             <td colspan="12">
@@ -180,6 +181,7 @@
           </tr>
         </tfoot>
       </table>
+    </div>
     </div>
   </div>
 </div>
@@ -283,22 +285,38 @@
     </h4>
   </div>
   <div class="app-modal-body">
-    <!--<table style="width:100%">
-  <tr *ngFor="let img of img_data;">
-    <td><img src="{{img_url}}/{{img.img_name}}" style="width:400px; height:auto; margin-left: 65px;"> </td> 
-    
-  </tr>
-    </table>-->
+
     <div *ngFor="let img of img_data; let i=index">
       <div class="col-md-6">
         <label>Image {{i+1}}</label>
         <img src="{{img_url}}/{{img.img_name}}" style="width:400px; height:auto; margin-left: 65px;">
+        <a (click)="updateImagepopup(img.id)" class="btn btn-sm btn-info">Update Image</a>
       </div>
       <div class="clearfix"></div>
     </div>
   </div>
   <div class="app-modal-footer" style="margin-top: 15px;">
-    <!--<button type="button" class="btn btn-default btn-square" (click)="delete1();">Yes</button>-->
+    <!--<button type="button" class="btn btn-default btn-square" (click)="updateImage();">Update</button>-->
     <button type="button" class="btn btn-danger btn-square" (click)="imageclose();">Close</button>
+  </div>
+</app-modal>
+<app-modal #modal4>
+  <div class="app-modal-header">
+    <h4 style="color:black">
+      <div>Update Image </div>
+    </h4>
+  </div>
+  <div class="app-modal-body">
+
+    <div class="col-md-2">
+      <label class="control-label">Choose Image</label>
+      <input type="file" name="photo" (change)="imageChange($event)" />
+    </div>
+
+  </div>
+  <div class="app-modal-footer" style="margin-top: 15px;">
+    <!--<button type="button" class="btn btn-default btn-square" (click)="delete1();">Yes</button>-->
+    <button type="button" class="btn btn-default btn-square" (click)="updateImage(updateimg_id);">Update</button>
+    <button type="button" class="btn btn-danger btn-square" (click)="updateclose();">Close</button>
   </div>
 </app-modal>

@@ -27,11 +27,18 @@ export class ViewIssuesComponent implements OnInit {
   start_date;
   end_date;
   data2;
-
+  data3;
+  avgtable=false;
+  avgdata;
+  options: Object;
+  overall: Object;
+  bardetail: Object;
   today = new Date();
+  selecteddomain:any;
   //data:any;
   role = localStorage.getItem('role');
-    img_url="http://localhost/issue_register/uploads";
+ //img_url = "http://localhost/issue_register/uploads";
+  img_url="http://210.16.79.137/issueregister/server/uploads";
   public data;
   public filterQuery = "";
   public rowsOnPage = 10;
@@ -62,12 +69,18 @@ export class ViewIssuesComponent implements OnInit {
   pending_tot;
   user_deleted_tot;
   cannot_be_resolved_tot;
+  assigned_tot;
+  onhold_tot;
+  user_resolved_tot;
   getAllIssues() {
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
     this.total = '';
     this.api.getAllIssues().subscribe(alldata => {
       if (alldata) {
@@ -97,9 +110,97 @@ export class ViewIssuesComponent implements OnInit {
             if (element.status == 'verified_resolved') {
               this.verified_resolved_tot = element.tot;
             }
+            if (element.status == 'assigned') {
+              this.assigned_tot = element.tot;
+            }
+            if (element.status == 'onhold') {
+              this.onhold_tot = element.tot;
+            }
+            if (element.status == 'user_resolved') {
+              this.user_resolved_tot = element.tot;
+            }
             console.log(element.status, '-', element.tot);
 
           });
+
+          this.options = {
+            credits: {
+              enabled: false
+            },
+
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 300,
+              width: 350,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 150,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'Resolution in Progress',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+              {
+                name: 'Verified & Resolved',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              },
+              {
+                name: 'User Deleted',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'Cannot be Resolved',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              }
+              ]
+            }]
+          };
         }
         //  this.data2.forEach(element => {
 
@@ -138,24 +239,33 @@ export class ViewIssuesComponent implements OnInit {
     this.notes = item.notes;
     this.modal1.show();
   }
-showstatus=true;
+  showstatus = true;
   selCategory($event) {
+    this.issues_form.patchValue({
+      selstatus: '',
+      from_date: '-select-',
+      to_date: '-select-'
+    })
     this.data = '';
     this.total = '';
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    //  this.pending_tot = 0;
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
     console.log('his', $event.target.value);
     let value = $event.target.value;
     if (value == 'all') {
       // console.log('jsod');
-      this.showstatus=false;
+      this.showstatus = false;
       this.getAllIssues();
 
     } else {
-      this.showstatus=true;
+      this.showstatus = true;
       this.api.getIssuesListbyCategory(value).subscribe(sellist => {
         if (sellist) {
           console.log(sellist.data);
@@ -183,7 +293,94 @@ showstatus=true;
               if (element.status == 'verified_resolved') {
                 this.verified_resolved_tot = element.tot;
               }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              if (element.status == 'user_resolved') {
+                this.user_resolved_tot = element.tot;
+              }
             });
+            this.options = {
+              credits: {
+                enabled: false
+              },
+
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
+
+                height: 300,
+                width: 350,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
+
+
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 150,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: false
+                  },
+                  showInLegend: true
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'user_deleted_tot',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'resolution_in_progress_tot',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'cannot_be_resolved_tot',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                },
+                {
+                  name: 'verified_resolved_tot',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                }
+                ]
+              }]
+            };
           }
           // this.data2.forEach(element => {
 
@@ -214,11 +411,15 @@ showstatus=true;
   getSelIssueData() {
     this.total = '';
     this.data = '';
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    //  this.pending_tot = 0;
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
     this.selection['category'] = this.issues_form.value.seluserid;
     this.selection['status'] = this.issues_form.value.selstatus;
     this.selection['from_date'] = this.from_date;
@@ -228,9 +429,12 @@ showstatus=true;
       if (data) {
         this.data = data.data;
         this.data2 = data.data1;
+       
+        console.log(this.data3);
         if (this.data2 == 'NoData') {
           this.table = true;
-        } else {
+        } 
+        else {
           this.table = false;
           console.log(this.data2);
           this.data2.forEach(element => {
@@ -250,9 +454,104 @@ showstatus=true;
             if (element.status == 'verified_resolved') {
               this.verified_resolved_tot = element.tot;
             }
+            if (element.status == 'assigned') {
+              this.assigned_tot = element.tot;
+            }
+            if (element.status == 'onhold') {
+              this.onhold_tot = element.tot;
+            }
+            if (element.status == 'user_resolved') {
+              this.user_resolved_tot = element.tot;
+            }
           });
-        }
+          this.options = {
+            credits: {
+              enabled: false
+            },
 
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 300,
+              width: 350,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 150,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'user_deleted_tot',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+              {
+                name: 'resolution_in_progress_tot',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+              {
+                name: 'cannot_be_resolved_tot',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              },
+              {
+                name: 'verified_resolved_tot',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              }
+              ]
+            }]
+          };
+        }
+        if(data.data2 =='NoAvgData'){        
+          this.avgtable=false;
+          
+        }else{
+            this.avgtable=true;
+             this.avgdata = data.data2;
+            console.log(this.avgdata);
+            
+        }
       }
     })
 
@@ -300,17 +599,17 @@ showstatus=true;
     console.log(this.to_date, 'from date test');
     this.to_date = event.formatted
   }
-img_data;
-getImagesbyId(img_id,reg_no){
-  console.log(img_id,reg_no);
-  
-  this.api.getImagesbyId(img_id,reg_no).subscribe(data=>{
-    console.log(data);
-    this.img_data=data;
-     this.modal3.show();
-  })
-}
-imageclose(){
- this.modal3.hide();
-}
+  img_data;
+  getImagesbyId(img_id, reg_no) {
+    console.log(img_id, reg_no);
+
+    this.api.getImagesbyId(img_id, reg_no).subscribe(data => {
+      console.log(data);
+      this.img_data = data;
+      this.modal3.show();
+    })
+  }
+  imageclose() {
+    this.modal3.hide();
+  }
 }

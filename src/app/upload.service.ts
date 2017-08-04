@@ -28,24 +28,24 @@ constructor() {
              console.log(localStorage.getItem('reg_no'));
         }
 
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    observer.next(JSON.parse(xhr.response));
-                    observer.complete();
-                } else {
-                    observer.error(xhr.response);
-                }
-            }
-        };
+        // xhr.onreadystatechange = () => {
+        //     if (xhr.readyState === 4) {
+        //         if (xhr.status === 200) {
+        //             observer.next(JSON.parse(xhr.response));
+        //             observer.complete();
+        //         } else {
+        //             observer.error(xhr.response);
+        //         }
+        //     }
+        // };
         
         
         
-        xhr.upload.onprogress = (event) => {
-            this.progress = Math.round(event.loaded / event.total * 100);
+        // xhr.upload.onprogress = (event) => {
+        //     this.progress = Math.round(event.loaded / event.total * 100);
 
-            this.progressObserver.next(this.progress);
-        };
+        //     this.progressObserver.next(this.progress);
+        // };
 
         xhr.open('POST', url, true);
          

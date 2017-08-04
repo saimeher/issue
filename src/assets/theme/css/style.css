@@ -2135,7 +2135,7 @@ input[type="checkbox"]:checked::after,
 .topstats .title {
     color      : rgb(44, 62, 80);
     font-weight: 600;
-    font-size  : 16px;
+    font-size  : 14px;
 }
 .topstats .title .fa {
     font-size   : 15px;
@@ -2161,25 +2161,31 @@ input[type="checkbox"]:checked::after,
 }
 
 .color-up {
-    color: #26a65b !important;
+    color: #1b45e6 !important;
 }
 .title1 {
     font-family: inherit;
-    font-weight: 400;
+    font-weight: 700;
+    letter-spacing: 1px;
     line-height: 1.6;
+    font-size: 21px;
     color      : #37363e;
+}
+.title > strong {
+    font-weight: 700;
 }
 .topstats{
     display: inline-flex;
 }
 .li-padding{
-    padding: 0px 30px 0px 20px;
+    padding: 0px 25px 0px 25px;;
 }
 .right-border{
     border-right: 2px solid;
 }
-
-
 li{
     list-style-type: none;
+}
+.tabel_overflow{
+    overflow: scroll;
 }

@@ -28,6 +28,23 @@ import { OverlayModule } from "angular-io-overlay";
 import { MyissuesListComponent } from './myissues-list/myissues-list.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { UploadService} from './upload.service';
+import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import * as highcharts from 'highcharts';
+ declare var require: any;
+
+export function highchartsFactory() {
+
+  var hc = require('highcharts');
+    var hcm = require('highcharts/highcharts-more');
+    var exp = require('highcharts/modules/drilldown');
+    var sg = require('highcharts/modules/solid-gauge');
+
+    hcm(hc);
+    exp(hc);
+    sg(hc);
+    return hc;
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,9 +74,14 @@ import { UploadService} from './upload.service';
     DataTableModule,
     OverlayModule,
     DatePickerModule,
-    MyDatePickerModule
+    //ChartModule.forRoot(require('highcharts')),
+    MyDatePickerModule ,
+    ChartModule
   ],
-  providers: [ApiService,UrlService,AuthGuard,UploadService],
+  providers: [ApiService,UrlService,AuthGuard,UploadService,{ provide: HighchartsStatic,
+      useFactory: highchartsFactory}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    
+ }

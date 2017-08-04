@@ -101,7 +101,14 @@ DELETEISSUE(value:any){
 let body =JSON.stringify(value);
 console.log(value);
 return this.callApi(this.url.DELETEISSUE,'post',body);
+ }
+
+ GETISSUELISTS(value: any) {
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.GETISSUELISTS, 'post', body);
   }
+ 
+
   callApi(url: string, method: string, body: Object): Observable<any> {
 
     const headers = new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });

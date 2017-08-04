@@ -11,9 +11,9 @@ import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
 })
 export class MyissuesListComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
-   @ViewChild('modal3') modal3: ModalComponent;
+  @ViewChild('modal3') modal3: ModalComponent;
   taskeditForm: FormGroup;
-  issues_form:FormGroup;
+  issues_form: FormGroup;
   role;
   data1;
   id;
@@ -41,26 +41,36 @@ export class MyissuesListComponent implements OnInit {
   INFRASTRUCTURE = [];
   addFormStatus = false;
   table = false;
-  alldata=[];
+  alldata = [];
   total;
   verified_resolved_tot;
   resolution_in_progress_tot;
   pending_tot;
   user_deleted_tot;
   cannot_be_resolved_tot;
+  assigned_tot;
+  onhold_tot;
+  user_resolved_tot;
   formsuccess = false;
-  img_url="http://localhost/issue_register/uploads";
-    public filterQuery = "";
-    public rowsOnPage = 10;
-    public sortBy = "name";
-    public sortOrder = "asc";
+  options: Object;
+  overall: Object;
+  bardetail: Object;
+  avgtable=false;
+  avgdata;
+  selecteddomain:any;
+//img_url = "http://localhost/issue_register/uploads";
+  img_url="http://210.16.79.137/issueregister/server/uploads";
+  public filterQuery = "";
+  public rowsOnPage = 10;
+  public sortBy = "name";
+  public sortOrder = "asc";
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
-  constructor(public api: ApiService, public fb:FormBuilder) { }
+  constructor(public api: ApiService, public fb: FormBuilder) { }
 
   ngOnInit() {
-    this.role=localStorage.getItem('role');
-     this.issues_form = this.fb.group({
+    this.role = localStorage.getItem('role');
+    this.issues_form = this.fb.group({
       seluserid: ['', Validators.required],
       from_date: ['', Validators.required],
       to_date: ['', Validators.required],
@@ -68,30 +78,30 @@ export class MyissuesListComponent implements OnInit {
 
 
     });
-    
-       
-     
-    this.taskeditForm= this.fb.group({
-      priority:[''],
-      status:[''],
-      repaired_on:['',[Validators.required]],
-      repaired_by:['',[Validators.required]],
-      date_of_resolution:['',[Validators.required]],
-      notes:[],
-      did:[]
+
+
+
+    this.taskeditForm = this.fb.group({
+      priority: [''],
+      status: [''],
+      repaired_on: ['', [Validators.required]],
+      repaired_by: ['', [Validators.required]],
+      date_of_resolution: ['', [Validators.required]],
+      notes: [],
+      did: []
     });
-  
- this.getDomainsbyId();
- this.getdetails();
+
+    this.getDomainsbyId();
+    this.getdetails();
   }
   by;
   Repaired_on1;
   date_of_resolution1;
   details(item) {
     console.log(item);
-    this.value1=this.value1;
-    this.Repaired_on1=item.repaired_on;
-    this.date_of_resolution1=item.date_of_resolution;
+    this.value1 = this.value1;
+    this.Repaired_on1 = item.repaired_on;
+    this.date_of_resolution1 = item.date_of_resolution;
     if (item.repaired_on != null) {
       this.repaired_onn = item.repaired_on
     } else {
@@ -103,12 +113,12 @@ export class MyissuesListComponent implements OnInit {
     } else {
       this.date_of_resolutionn = "YYYY-MM-DD"
     }
-   this.by = item.raised_by;
+    this.by = item.raised_by;
     this.taskeditForm.patchValue({
-       
+
       repaired_on: this.repaired_onn,
       date_of_resolution: this.date_of_resolutionn,
-      
+
     });
     this.taskeditForm.patchValue(item);
     this.modal1.show();
@@ -128,19 +138,19 @@ export class MyissuesListComponent implements OnInit {
     data['did'] = this.taskeditForm.value.did;
     data['status'] = this.taskeditForm.value.status;
     data['priority'] = this.taskeditForm.value.priority;
-    if(this.taskeditForm.value.repaired_on._d=='Invalid Date'){
+    if (this.taskeditForm.value.repaired_on._d == 'Invalid Date') {
       data['repaired_on'] = this.Repaired_on1;
-    }else{
+    } else {
       data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
     }
-    if(this.taskeditForm.value.date_of_resolution._d=='Invalid Date'){
+    if (this.taskeditForm.value.date_of_resolution._d == 'Invalid Date') {
       data['date_of_resolution'] = this.date_of_resolution1;
-    }else{
+    } else {
       data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
     }
     //data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
     data['repaired_by'] = this.taskeditForm.value.repaired_by;
-   // data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
+    // data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
     data['notes'] = this.taskeditForm.value.notes;
     console.log(data);
 
@@ -158,15 +168,18 @@ export class MyissuesListComponent implements OnInit {
   }
 
   getdetails() {
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
     this.total = '';
 
     this.api.getdetails(this.reg_no).subscribe(alldata => {
-       if (alldata) {
+      if (alldata) {
         console.log(alldata.data);
         console.log(alldata.data1);
         this.data2 = alldata.data1;
@@ -193,11 +206,98 @@ export class MyissuesListComponent implements OnInit {
             if (element.status == 'verified_resolved') {
               this.verified_resolved_tot = element.tot;
             }
+            if (element.status == 'assigned') {
+              this.assigned_tot = element.tot;
+            }
+            if (element.status == 'onhold') {
+              this.onhold_tot = element.tot;
+            }
+            if (element.status == 'user_resolved') {
+              this.user_resolved_tot = element.tot;
+            }
             console.log(element.status, '-', element.tot);
 
           });
+          this.options = {
+            credits: {
+              enabled: false
+            },
+
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 300,
+              width: 350,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 150,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'User Deleted',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+              {
+                name: 'Resolution in Progress',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+              {
+                name: 'Cannot be Resolved',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              },
+              {
+                name: 'Verified Resolved',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              }
+              ]
+            }]
+          };
         }
-        
+
       }
     })
   }
@@ -211,21 +311,27 @@ export class MyissuesListComponent implements OnInit {
       }
     })
   }
-selection = {};
+  selection = {};
   getSelIssueData() {
     this.total = '';
     this.data = '';
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
     this.selection['category'] = this.issues_form.value.seluserid;
     this.selection['status'] = this.issues_form.value.selstatus;
     this.selection['from_date'] = this.from_date;
     this.selection['to_date'] = this.to_date;
+    this.selection['reg_no'] =this.reg_no;
     console.log(this.selection);
-    this.api.getIssuesListBySelection(this.selection).subscribe(data => {
+    
+    this.api.GETISSUELISTS(this.selection).subscribe(data => {
+    // this.api.getIssuesListBySelection(this.selection).subscribe(data => {
       if (data) {
         this.data = data.data;
         this.data2 = data.data1;
@@ -251,7 +357,103 @@ selection = {};
             if (element.status == 'verified_resolved') {
               this.verified_resolved_tot = element.tot;
             }
+            if (element.status == 'assigned') {
+              this.assigned_tot = element.tot;
+            }
+            if (element.status == 'onhold') {
+              this.onhold_tot = element.tot;
+            }
+            if (element.status == 'user_resolved') {
+              this.user_resolved_tot = element.tot;
+            }
           });
+          this.options = {
+            credits: {
+              enabled: false
+            },
+
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 300,
+              width: 350,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 150,
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: false
+                },
+                showInLegend: true
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'User Deleted',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+              {
+                name: 'Resolution in Progress',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+              {
+                name: 'Cannot be Resolved',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              },
+              {
+                name: 'Verified Resolved',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              }
+              ]
+            }]
+          };
+        }
+        if(data.data2 =='NoAvgData'){        
+          this.avgtable=false;
+          
+        }else{
+            this.avgtable=true;
+             this.avgdata = data.data2;
+            console.log(this.avgdata);
+            
         }
 
       }
@@ -263,31 +465,38 @@ selection = {};
 
   }
 
-showstatus=true;
+  showstatus = true;
   getDomain($event) {
-   console.log($event.target.value);
+    this.issues_form.patchValue({
+      selstatus: '',
+      from_date: '-select-',
+      to_date: '-select-'
+    })
+    console.log($event.target.value);
     this.data = '';
     this.total = '';
-    this.verified_resolved_tot = '';
-    this.resolution_in_progress_tot = '';
-    this.pending_tot = '';
-    this.user_deleted_tot = '';
-    this.cannot_be_resolved_tot = '';
-   
-  let value={
-  'domain':$event.target.value,
-  'reg_no':this.reg_no
-} 
-let value1=$event.target.value;
- 
-if(value1 == "all")
-{
-  this.showstatus=false;
-  this.getdetails();
-}
-else{
-this.showstatus=true;
-    this.api.getDatabyId_Domain(value).subscribe(sellist => {
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
+
+    let value = {
+      'domain': $event.target.value,
+      'reg_no': this.reg_no
+    }
+    let value1 = $event.target.value;
+
+    if (value1 == "all") {
+      this.showstatus = false;
+      this.getdetails();
+    }
+    else {
+      this.showstatus = true;
+      this.api.getDatabyId_Domain(value).subscribe(sellist => {
         if (sellist) {
           console.log(sellist);
           this.data = sellist.data;
@@ -314,7 +523,94 @@ this.showstatus=true;
               if (element.status == 'verified_resolved') {
                 this.verified_resolved_tot = element.tot;
               }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              if (element.status == 'user_resolved') {
+                this.user_resolved_tot = element.tot;
+              }
             });
+            this.options = {
+              credits: {
+                enabled: false
+              },
+
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
+
+                height: 300,
+              width: 350,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
+
+
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 150,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: false
+                  },
+                  showInLegend: true
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              }
+                ]
+              }]
+            };
           }
           // this.data2.forEach(element => {
 
@@ -326,11 +622,11 @@ this.showstatus=true;
         }
 
       });
-      }
-    
+    }
+
   }
-  
-   public myDatePickerOptions: IMyDpOptions = {
+
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd',
     editableDateField: false,
@@ -341,8 +637,8 @@ this.showstatus=true;
 
   };
 
- 
-public myDatePickerOptions2: IMyDpOptions = {
+
+  public myDatePickerOptions2: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd',
     editableDateField: false,
@@ -371,17 +667,17 @@ public myDatePickerOptions2: IMyDpOptions = {
   }
 
   img_data;
-getImagesbyId(img_id,reg_no){
-  console.log(img_id,reg_no);
-  
-  this.api.getImagesbyId(img_id,reg_no).subscribe(data=>{
-    console.log(data);
-    this.img_data=data;
-     this.modal3.show();
-  })
-}
-imageclose(){
- this.modal3.hide();
-}
+  getImagesbyId(img_id, reg_no) {
+    console.log(img_id, reg_no);
+
+    this.api.getImagesbyId(img_id, reg_no).subscribe(data => {
+      console.log(data);
+      this.img_data = data;
+      this.modal3.show();
+    })
+  }
+  imageclose() {
+    this.modal3.hide();
+  }
 
 }

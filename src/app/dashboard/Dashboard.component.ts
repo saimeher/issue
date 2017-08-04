@@ -55,8 +55,6 @@ reg_no=localStorage.getItem('reg_no');
    sidebarchage(type:string){
      this.api.livePage=type;
      this.router.navigate(['/dashboard/'+type]);
- 
- 
-}
+ }
 
 }
