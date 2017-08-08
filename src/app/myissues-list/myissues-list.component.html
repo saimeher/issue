@@ -168,7 +168,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;">
+      <div *ngIf="!table" class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;">
              <chart [options]="options"></chart> 
       </div>
     </div>

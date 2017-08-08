@@ -12,7 +12,10 @@ export class LeftmenuComponent implements OnInit {
   
 name=localStorage.getItem('name');
 reg_no=localStorage.getItem('reg_no');
+gender = localStorage.getItem('gender');
+dp =   localStorage.getItem('dp');
 role;
+img;
 
   constructor(public api:ApiService,public router:Router) {
     // this.api.getRole(this.user_id).subscribe(data=>{
@@ -20,7 +23,24 @@ role;
     //     this.role=data.role
     //   }
     // });
+    console.log(this.dp);
+    console.log(this.gender);
+       if (this.dp != '' && this.dp != 'null' ) {
+        this.img = "http://210.16.79.137/raghuerp/server/img/dps/" + this.dp;
+      }
+      else {
+        if (this.gender == 'M') {
+          this.img = "http://210.16.79.137/raghuerp/server/img/dps/M.png";
+        }
+        else if (this.gender == 'F') {
+          this.img = "http://210.16.79.137/raghuerp/server/img/dps/F.png";
+        }
+         else {
+          this.img = "http://210.16.79.137/raghuerp/server/img/dps/no_dp.jpg";
+        }
+      }
     this.getRole();
+
    }
 
   ngOnInit() {
@@ -70,6 +90,8 @@ role;
         localStorage.removeItem('reg_no');
         localStorage.removeItem('name');
         localStorage.removeItem('role');
+        localStorage.removeItem('gender');
+        localStorage.removeItem('dp');
       // this.router.navigate(['login']);
    
       

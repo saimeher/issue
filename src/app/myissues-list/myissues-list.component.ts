@@ -228,7 +228,7 @@ export class MyissuesListComponent implements OnInit {
             chart: {
 
               height: 300,
-              width: 350,
+              width: 300,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -249,7 +249,7 @@ export class MyissuesListComponent implements OnInit {
             },
             plotOptions: {
               pie: {
-                size: 150,
+                size: 160,
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
@@ -377,7 +377,7 @@ export class MyissuesListComponent implements OnInit {
             chart: {
 
               height: 300,
-              width: 350,
+              width: 300,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -398,7 +398,7 @@ export class MyissuesListComponent implements OnInit {
             },
             plotOptions: {
               pie: {
-                size: 150,
+                size: 160,
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
@@ -543,7 +543,7 @@ export class MyissuesListComponent implements OnInit {
               chart: {
 
                 height: 300,
-              width: 350,
+              width: 300,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -564,7 +564,7 @@ export class MyissuesListComponent implements OnInit {
               },
               plotOptions: {
                 pie: {
-                  size: 150,
+                  size: 160,
                   allowPointSelect: true,
                   cursor: 'pointer',
                   dataLabels: {

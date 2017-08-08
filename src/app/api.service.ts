@@ -107,7 +107,16 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     let body = JSON.stringify(value);
     return this.callApi(this.url.GETISSUELISTS, 'post', body);
   }
- 
+  // getIssuesListbyStatus(value) {
+  //   let body = JSON.stringify(value);
+  //   console.log(body);
+  //   return this.callApi(this.url.GETISSUESLISTBYSTATUS, 'post', body);
+  // }
+  getIssuesListbyStatus(value) {
+    let body = JSON.stringify(value);
+    console.log(body);
+    return this.callApi(this.url.GETISSUESLISTBYSTATUS, 'post', body);
+  }
 
   callApi(url: string, method: string, body: Object): Observable<any> {
 

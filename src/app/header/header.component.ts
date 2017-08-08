@@ -23,7 +23,8 @@ export class HeaderComponent implements OnInit {
         localStorage.removeItem('reg_no');
         localStorage.removeItem('name');
         localStorage.removeItem('role'); 
-      
+       localStorage.removeItem('gender');
+        localStorage.removeItem('dp');
        
        //this.router.navigate(['login']);
          

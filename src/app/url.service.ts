@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UrlService {
-  Url: string = 'http://210.16.79.137/issueregister/server/api/';
-  //   Url: string = 'http://localhost/issue_register/api/';
+  // Url: string = 'http://210.16.79.137/issueregister/server/api/';
+    Url: string = 'http://localhost/issue_register/api/';
   //Url: string = 'http://210.16.79.137/raghuerp/dailyreport/server/api/';
   //public LOGIN_API: string = 'http://210.16.79.137/raghuerp/server/api/validLogin';
   public LOGIN_API: string = this.Url + 'loginCheck';
@@ -25,6 +25,7 @@ export class UrlService {
   public getDatabyId_Domain: string = this.Url + 'getDatabyId_Domain';
   //public updateImage: string = this.Url + 'updateImage';
   public GETISSUELISTS:string  = this.Url +'GETISSUELISTS';
+ public  GETISSUESLISTBYSTATUS : string = this.Url + 'getIssuesListbyStatus';
 
   constructor() { }
 
