@@ -34,7 +34,10 @@ export class ViewIssuesComponent implements OnInit {
   overall: Object;
   bardetail: Object;
   today = new Date();
-  selecteddomain:any;
+  // selecteddomain:any;
+  selecteddomain1 = "all";
+  selecteddomain ="all";
+  // selstatus ="all";
   //data:any;
   role = localStorage.getItem('role');
  //img_url = "http://localhost/issue_register/uploads";
@@ -133,8 +136,8 @@ export class ViewIssuesComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 300,
-              width: 300,
+              height: 370,
+              width: 350,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -156,7 +159,7 @@ export class ViewIssuesComponent implements OnInit {
             plotOptions: {
               pie: {
                 size: 160,
-                allowPointSelect: true,
+               allowPointSelect: false,
                 cursor: 'pointer',
                 dataLabels: {
                   enabled: false
@@ -242,12 +245,15 @@ export class ViewIssuesComponent implements OnInit {
   }
   showstatus = true;
   selectvalue;
+  categoryvalue;
   selCategory($event) {
-    // this.issues_form.patchValue({
-    //   selstatus: '-select-',
-    //   from_date: '-select-',
-    //   to_date: '-select-'
-    // })
+    this.issues_form.patchValue({
+      selstatus: 'all',
+      from_date: '',
+      to_date: ''
+    })
+    // if(status != "null")
+      
     this.data = '';
     this.total = '0';
     this.verified_resolved_tot = '0';
@@ -262,6 +268,7 @@ export class ViewIssuesComponent implements OnInit {
     console.log('his', $event.target.value);
     let value = $event.target.value;
     this.selectvalue=$event.target.value;
+    this.categoryvalue=$event.target.value;
     if (value == 'all') {
       // console.log('jsod');
       this.showstatus = false;
@@ -315,8 +322,8 @@ export class ViewIssuesComponent implements OnInit {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 300,
-                width: 300,
+                height: 370,
+                width: 350,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -336,6 +343,14 @@ export class ViewIssuesComponent implements OnInit {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
               },
               plotOptions: {
+                series: {
+            events: {
+                legendItemClick: function () {
+                   
+                    return false;
+                }
+            }
+        },
                 pie: {
                   size: 160,
                   allowPointSelect: true,
@@ -396,7 +411,6 @@ export class ViewIssuesComponent implements OnInit {
 
       });
     }
-
   }
   from_date;
   to_date;
@@ -466,8 +480,8 @@ export class ViewIssuesComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 300,
-              width: 300,
+              height: 370,
+              width: 350,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -554,211 +568,16 @@ export class ViewIssuesComponent implements OnInit {
     this.issues_form.reset();
 
   }
-
-  public myDatePickerOptions: IMyDpOptions = {
-    // other options...
-    dateFormat: 'yyyy-mm-dd',
-    editableDateField: false,
-    disableWeekends: false,
-
-  };
-  public myDatePickerOptions2: IMyDpOptions = {
-    // other options...
-    dateFormat: 'yyyy-mm-dd',
-    editableDateField: false,
-    disableWeekends: false,
-
-    //  disableDays: this.service.holidays,
-    disableUntil: { year: 0, month: 0, day: 0 }
-    // disableUntil: {year: , month: 5 , day: 17}
-
-  };
-  picker1day;
-  picker1month;
-  picker1year;
-
-  onDateChanged(event: IMyDateModel) {
-
-    this.from_date = event.formatted;
-    this.myDatePickerOptions2.disableUntil.year = event.date.year
-    this.myDatePickerOptions2.disableUntil.month = event.date.month
-    this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
-  }
-
-  onDateChanged2(event: IMyDateModel) {
-    console.log(this.to_date, 'from date test');
-    this.to_date = event.formatted
-  }
-  img_data;
-  getImagesbyId(img_id, reg_no) {
-    console.log(img_id, reg_no);
-
-    this.api.getImagesbyId(img_id, reg_no).subscribe(data => {
-      console.log(data);
-      this.img_data = data;
-      this.modal3.show();
-    })
-  }
-  imageclose() {
-    this.modal3.hide();
-  }
-
-  // selStatus($event) {
-  //   this.data = '';
-  //   this.total = '';
-  //   this.verified_resolved_tot = '0';
-  //   this.resolution_in_progress_tot = '0';
-  //   this.pending_tot = '0';
-  //     // this.pending_tot = 0;
-  //   this.user_deleted_tot = '0';
-  //   this.cannot_be_resolved_tot = '0';
-  //   this.assigned_tot = '0';
-  //   this.onhold_tot = '0';
-  //   this.user_resolved_tot = '0';
-  //   console.log('his', $event.target.value);
-  //   this.selectvalue;
-  // console.log(this.selectvalue);
-  // let value1 = $event.target.value;
-  // console.log(value1);
-  // let value = {
-  //     'status': $event.target.value,
-  //     'category': this.selectvalue,
-  //   }
-  // console.log(value);
-  //     console.log(value);
-  //     //  this.showstatus = true;
-  //    this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
-  //       if (sellist1) {
-  //         console.log(sellist1.data);
-  //         this.data = sellist1.data;
-  //         this.data2 = sellist1.data1;
-  //         if (this.data2 == 'NoData') {
-  //           this.table = true;
-  //         } 
-  //         else {
-  //           this.table = false;
-  //           console.log(this.data2);
-  //           this.data2.forEach(element => {
-  //             this.total = element.t;
-  //             if (element.status == 'cannot_be_resolved') {
-  //               this.cannot_be_resolved_tot = element.tot;
-  //             }
-  //             if (element.status == 'pending') {
-  //               this.pending_tot = element.tot;
-  //             }
-  //             if (element.status == 'resolution_in_progress') {
-  //               this.resolution_in_progress_tot = element.tot;
-  //             }
-  //             if (element.status == 'user_deleted') {
-  //               this.user_deleted_tot = element.tot;
-  //             }
-  //             if (element.status == 'verified_resolved') {
-  //               this.verified_resolved_tot = element.tot;
-  //             }
-  //             if (element.status == 'assigned') {
-  //               this.assigned_tot = element.tot;
-  //             }
-  //             if (element.status == 'onhold') {
-  //               this.onhold_tot = element.tot;
-  //             }
-  //             if (element.status == 'user_resolved') {
-  //               this.user_resolved_tot = element.tot;
-  //             }
-  //           });
-  //           this.options = {
-  //             credits: {
-  //               enabled: false
-  //             },
-
-  //             colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-  //               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-  //             chart: {
-
-  //               height: 300,
-  //               width: 300,
-  //               borderWidth: 1,
-  //               borderRadius: 4,
-  //               borderColor: '#2C3E50 ',
-  //               plotBackgroundColor: null,
-  //               plotBorderWidth: null,
-  //               plotShadow: false,
-  //               type: 'pie',
-
-  //             },
-  //             exporting: {
-
-
-  //               enabled: false
-  //             },
-  //             title: false,
-  //             tooltip: {
-  //               pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-  //             },
-  //             plotOptions: {
-  //               pie: {
-  //                 size: 160,
-  //                 allowPointSelect: true,
-  //                 cursor: 'pointer',
-  //                 dataLabels: {
-  //                   enabled: false
-  //                 },
-  //                 showInLegend: true
-  //               }
-  //             },
-  //             series: [{
-  //               name: 'Total',
-  //               colorByPoint: true,
-  //               data: [{
-  //                 name: 'Pending',
-  //                 y: JSON.parse(this.pending_tot),
-  //               },
-  //               {
-  //                 name: 'user_deleted_tot',
-  //                 y: JSON.parse(this.user_deleted_tot),
-  //               },
-  //               {
-  //                 name: 'resolution_in_progress_tot',
-  //                 y: JSON.parse(this.resolution_in_progress_tot),
-  //               },
-  //               {
-  //                 name: 'cannot_be_resolved_tot',
-  //                 y: JSON.parse(this.cannot_be_resolved_tot),
-  //               },
-  //               {
-  //                 name: 'verified_resolved_tot',
-  //                 y: JSON.parse(this.verified_resolved_tot),
-  //               },
-  //               {
-  //                 name: 'Assigned',
-  //                 y: JSON.parse(this.assigned_tot),
-  //               },
-  //               {
-  //                 name: 'On Hold',
-  //                 y: JSON.parse(this.onhold_tot),
-  //               },
-  //               {
-  //                 name: 'User Resolved',
-  //                 y: JSON.parse(this.user_resolved_tot),
-  //               }
-  //               ]
-  //             }]
-  //           };
-  //         }
-  //       } if(sellist1.data2 =='NoAvgData'){        
-  //         this.avgtable=false;
-          
-  //       }else{
-  //           this.avgtable=true;
-  //            this.avgdata = sellist1.data2;
-  //           console.log(this.avgdata);
-            
-  //       }
-
-  //     });
-    
-
-  // }
-selStatus($event) {
+  r=1;
+  selStatus($event,checked) {
+    if(checked=='checked'){
+      if(this.r==1)
+        {
+           this.selectvalue="all";
+        }
+     
+      ++this.r;
+    }
     this.data = '';
     this.total = '0';
     this.verified_resolved_tot = '0';
@@ -772,14 +591,14 @@ selStatus($event) {
     this.user_resolved_tot = '0';
     console.log('his', $event.target.value);
     this.selectvalue;
-  console.log(this.selectvalue);
-  let value1 = $event.target.value;
-  console.log(value1);
-  let value = {
+   console.log(this.selectvalue);
+   let value1 = $event.target.value;
+   console.log(value1);
+   let value = {
       'status': $event.target.value,
-      // 'category': this.selectvalue,
+      'category': this.selectvalue,
     }
-  console.log(value);
+   console.log(value);
       console.log(value);
       //  this.showstatus = true;
      this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
@@ -829,8 +648,8 @@ selStatus($event) {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 300,
-                width: 300,
+                height: 370,
+                width: 350,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -852,7 +671,7 @@ selStatus($event) {
               plotOptions: {
                 pie: {
                   size: 160,
-                  allowPointSelect: true,
+                  allowPointSelect: false,
                   cursor: 'pointer',
                   dataLabels: {
                     enabled: false
@@ -899,12 +718,218 @@ selStatus($event) {
               }]
             };
           }
-        } else {
-          this.data = '';
+        }
+       if(sellist1.data2 =='NoAvgData'){        
+          this.avgtable=false;
+          
+        }
+        else{
+            this.avgtable=true;
+             this.avgdata = sellist1.data2;
+            console.log(this.avgdata);
+            
         }
 
       });
     
 
   }
+// selStatus($event) {
+//     this.data = '';
+//     this.total = '0';
+//     this.verified_resolved_tot = '0';
+//     this.resolution_in_progress_tot = '0';
+//     this.pending_tot = '0';
+//       // this.pending_tot = 0;
+//     this.user_deleted_tot = '0';
+//     this.cannot_be_resolved_tot = '0';
+//     this.assigned_tot = '0';
+//     this.onhold_tot = '0';
+//     this.user_resolved_tot = '0';
+//     console.log('his', $event.target.value);
+//     this.selectvalue;
+//   console.log(this.selectvalue);
+//   let value1 = $event.target.value;
+//   console.log(value1);
+//   let value = {
+//       'status': $event.target.value,
+//       // 'category': this.selectvalue,
+//     }
+//   console.log(value);
+//       console.log(value);
+//       //  this.showstatus = true;
+//      this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
+//         if (sellist1) {
+//           console.log(sellist1.data);
+//           this.data = sellist1.data;
+//           this.data2 = sellist1.data1;
+//           if (this.data2 == 'NoData') {
+//             this.table = true;
+//           } 
+//           else {
+//             this.table = false;
+//             console.log(this.data2);
+//             this.data2.forEach(element => {
+//               this.total = element.t;
+//               if (element.status == 'cannot_be_resolved') {
+//                 this.cannot_be_resolved_tot = element.tot;
+//               }
+//               if (element.status == 'pending') {
+//                 this.pending_tot = element.tot;
+//               }
+//               if (element.status == 'resolution_in_progress') {
+//                 this.resolution_in_progress_tot = element.tot;
+//               }
+//               if (element.status == 'user_deleted') {
+//                 this.user_deleted_tot = element.tot;
+//               }
+//               if (element.status == 'verified_resolved') {
+//                 this.verified_resolved_tot = element.tot;
+//               }
+//               if (element.status == 'assigned') {
+//                 this.assigned_tot = element.tot;
+//               }
+//               if (element.status == 'onhold') {
+//                 this.onhold_tot = element.tot;
+//               }
+//               if (element.status == 'user_resolved') {
+//                 this.user_resolved_tot = element.tot;
+//               }
+//             });
+//             this.options = {
+//               credits: {
+//                 enabled: false
+//               },
+
+//               colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+//                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+//               chart: {
+
+//                 height: 300,
+//                 width: 300,
+//                 borderWidth: 1,
+//                 borderRadius: 4,
+//                 borderColor: '#2C3E50 ',
+//                 plotBackgroundColor: null,
+//                 plotBorderWidth: null,
+//                 plotShadow: false,
+//                 type: 'pie',
+
+//               },
+//               exporting: {
+
+
+//                 enabled: false
+//               },
+//               title: false,
+//               tooltip: {
+//                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//               },
+//               plotOptions: {
+//                 pie: {
+//                   size: 160,
+//                   allowPointSelect: true,
+//                   cursor: 'pointer',
+//                   dataLabels: {
+//                     enabled: false
+//                   },
+//                   showInLegend: true
+//                 }
+//               },
+//               series: [{
+//                 name: 'Total',
+//                 colorByPoint: true,
+//                 data: [{
+//                   name: 'Pending',
+//                   y: JSON.parse(this.pending_tot),
+//                 },
+//                 {
+//                   name: 'user_deleted_tot',
+//                   y: JSON.parse(this.user_deleted_tot),
+//                 },
+//                 {
+//                   name: 'resolution_in_progress_tot',
+//                   y: JSON.parse(this.resolution_in_progress_tot),
+//                 },
+//                 {
+//                   name: 'cannot_be_resolved_tot',
+//                   y: JSON.parse(this.cannot_be_resolved_tot),
+//                 },
+//                 {
+//                   name: 'verified_resolved_tot',
+//                   y: JSON.parse(this.verified_resolved_tot),
+//                 },
+//                 {
+//                   name: 'Assigned',
+//                   y: JSON.parse(this.assigned_tot),
+//                 },
+//                 {
+//                   name: 'On Hold',
+//                   y: JSON.parse(this.onhold_tot),
+//                 },
+//                 {
+//                   name: 'User Resolved',
+//                   y: JSON.parse(this.user_resolved_tot),
+//                 }
+//                 ]
+//               }]
+//             };
+//           }
+//         } else {
+//           this.data = '';
+//         }
+
+//       });
+    
+
+//   }
+
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+    editableDateField: false,
+    disableWeekends: false,
+
+  };
+  public myDatePickerOptions2: IMyDpOptions = {
+    // other options...
+    dateFormat: 'yyyy-mm-dd',
+    editableDateField: false,
+    disableWeekends: false,
+
+    //  disableDays: this.service.holidays,
+    disableUntil: { year: 0, month: 0, day: 0 }
+    // disableUntil: {year: , month: 5 , day: 17}
+
+  };
+  picker1day;
+  picker1month;
+  picker1year;
+
+  onDateChanged(event: IMyDateModel) {
+
+    this.from_date = event.formatted;
+    this.myDatePickerOptions2.disableUntil.year = event.date.year
+    this.myDatePickerOptions2.disableUntil.month = event.date.month
+    this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
+  }
+
+  onDateChanged2(event: IMyDateModel) {
+    console.log(this.to_date, 'from date test');
+    this.to_date = event.formatted
+  }
+  img_data;
+  getImagesbyId(img_id, reg_no) {
+    console.log(img_id, reg_no);
+
+    this.api.getImagesbyId(img_id, reg_no).subscribe(data => {
+      console.log(data);
+      this.img_data = data;
+      this.modal3.show();
+    })
+  }
+  imageclose() {
+    this.modal3.hide();
+  }
+
  }

@@ -26,6 +26,7 @@ export class UrlService {
   //public updateImage: string = this.Url + 'updateImage';
   public GETISSUELISTS:string  = this.Url +'GETISSUELISTS';
  public  GETISSUESLISTBYSTATUS : string = this.Url + 'getIssuesListbyStatus';
+ public getDatabyId_Status: string = this.Url + 'getDatabyId_Status';
 
   constructor() { }
 

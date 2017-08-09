@@ -57,7 +57,10 @@ export class MyissuesListComponent implements OnInit {
   bardetail: Object;
   avgtable=false;
   avgdata;
-  selecteddomain:any;
+  // selecteddomain:any;
+  selecteddomain1 ="all";
+  selecteddomain = "all";
+  // value1:any;
 //img_url = "http://localhost/issue_register/uploads";
   img_url="http://210.16.79.137/issueregister/server/uploads";
   public filterQuery = "";
@@ -176,7 +179,7 @@ export class MyissuesListComponent implements OnInit {
     this.assigned_tot = '0';
     this.onhold_tot = '0';
     this.user_resolved_tot = '0';
-    this.total = '';
+    this.total = '0';
 
     this.api.getdetails(this.reg_no).subscribe(alldata => {
       if (alldata) {
@@ -227,8 +230,8 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 300,
-              width: 300,
+              height: 370,
+              width: 350,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -313,7 +316,7 @@ export class MyissuesListComponent implements OnInit {
   }
   selection = {};
   getSelIssueData() {
-    this.total = '';
+    this.total = '0';
     this.data = '';
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
@@ -376,8 +379,8 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 300,
-              width: 300,
+              height: 350,
+              width: 350,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -466,15 +469,16 @@ export class MyissuesListComponent implements OnInit {
   }
 
   showstatus = true;
+  selectvalue;
   getDomain($event) {
     this.issues_form.patchValue({
-      selstatus: '',
-      from_date: '-select-',
-      to_date: '-select-'
+      selstatus: 'all',
+      from_date: '',
+      to_date: ''
     })
     console.log($event.target.value);
     this.data = '';
-    this.total = '';
+    this.total = '0';
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
     this.pending_tot = '0';
@@ -488,7 +492,8 @@ export class MyissuesListComponent implements OnInit {
       'domain': $event.target.value,
       'reg_no': this.reg_no
     }
-    let value1 = $event.target.value;
+    let  value1 = $event.target.value;
+    this.selectvalue=$event.target.value;
 
     if (value1 == "all") {
       this.showstatus = false;
@@ -542,8 +547,8 @@ export class MyissuesListComponent implements OnInit {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 300,
-              width: 300,
+                height: 350,
+                width: 350,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -623,6 +628,152 @@ export class MyissuesListComponent implements OnInit {
 
       });
     }
+
+  }
+  getStatus($event) {
+   console.log($event.target.value);
+    this.data = '';
+    this.total = '0';
+    this.verified_resolved_tot = '0';
+    this.resolution_in_progress_tot = '0';
+    this.pending_tot = '0';
+    this.user_deleted_tot = '0';
+    this.cannot_be_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
+
+    let value = {
+      'status': $event.target.value,
+      'reg_no': this.reg_no,
+      'category': this.selectvalue
+    }
+  let  value1 = $event.target.value;
+  // this.selectvalue=$event.target.value;
+
+    
+      // this.showstatus = true;
+      this.api.getDatabyId_Status(value).subscribe(sellist1 => {
+        if (sellist1) {
+          console.log(sellist1);
+          this.data = sellist1.data;
+          this.data2 = sellist1.data1;
+          if (this.data2 == 'NoData') {
+            this.table = true;
+          } else {
+            this.table = false;
+            console.log(this.data2);
+            this.data2.forEach(element => {
+              this.total = element.t;
+              if (element.status == 'cannot_be_resolved') {
+                this.cannot_be_resolved_tot = element.tot;
+              }
+              if (element.status == 'pending') {
+                this.pending_tot = element.tot;
+              }
+              if (element.status == 'resolution_in_progress') {
+                this.resolution_in_progress_tot = element.tot;
+              }
+              if (element.status == 'user_deleted') {
+                this.user_deleted_tot = element.tot;
+              }
+              if (element.status == 'verified_resolved') {
+                this.verified_resolved_tot = element.tot;
+              }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              if (element.status == 'user_resolved') {
+                this.user_resolved_tot = element.tot;
+              }
+            });
+            this.options = {
+              credits: {
+                enabled: false
+              },
+
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
+
+                height: 350,
+                width: 350,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
+
+
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 160,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: false
+                  },
+                  showInLegend: true
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              }
+                ]
+              }]
+            };
+          }
+        } else {
+          this.data = '';
+        }
+
+      });
 
   }
 

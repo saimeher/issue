@@ -19,19 +19,22 @@ td {
         <div class="form-group">
           <div class="col-md-3">
             <label>Category<span style="color:red">*</span></label>
+
             <select formControlName="seluserid" class="form-group form-control" [(ngModel)]="selecteddomain" (change)="selCategory($event)">                
+               <option value="all">All </option> 
               <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
-            <option selected  value="all">All</option>
+            <!-- <option selected  value="all">All</option> -->
           </select>
             <!--<span *ngIf="(issues_forms.get('seluserid').touched || issues_forms.get('seluserid').dirty) && issues_forms.get('seluserid').errors">
                     <span *ngIf="issues_forms.get('seluserid').errors.required" style="color:red">  Please enter type </span>
                 </span>-->
           </div>
-               <div class="col-md-2">
+          <div class="col-md-2">
             <label for="email">Status <span style="color:red">*</span></label>
-             <!-- <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" /> -->
-             <select class=" form-control" formControlName="selstatus" (change)="selStatus($event)">
-              <option  value="">-Select-</option>
+            <!-- <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" /> -->
+            <select class=" form-control" formControlName="selstatus" [(ngModel)]="selecteddomain1" (change)="selStatus($event,'checked')">
+               <!-- <option  value="">-Select-</option>  -->
+               <option value="all">All </option> 
                    <option value="verified_resolved">Verified Resolved</option>
                    <option value="resolution_in_progress">Resolution in Progress</option>
                    <option value="pending">Pending</option>
@@ -40,8 +43,8 @@ td {
                     <option value="assigned">Assigned  </option>
                      <option value="onhold">On Hold  </option>
                       <option value="user_resolved">User Resolved  </option> 
-                    <option value="all">All </option> 
-              </select> 
+                   
+              </select>
             <!--<span *ngIf="(issues_forms.get('selstatus').touched || issues_forms.get('selstatus').dirty) && issues_forms.get('selstatus').errors">
                     <span *ngIf="issues_forms.get('selstatus').errors.required" style="color:red">  Please enter type </span>
                 </span>-->
@@ -66,7 +69,7 @@ td {
                 </span>
                 </div>-->
           </div>
-         
+
           <div class="col-md-3">
             <button type="submit" [disabled]="!issues_form.valid" class="btn btn-default btn-square" style="margin-top: 25px; margin-right: 5px;">Submit</button>
             <a class="btn btn-danger btn-square" style="margin-top: 25px;" (click)="clear()">Clear Data</a>
@@ -84,41 +87,39 @@ td {
       <div class="col-lg-8">
         <div class="row">
           <div style="padding-bottom: 25px;" class="col-lg-12">
-
             <ul class="topstats">
-
-              <li class="right-border li-padding" style="margin-left: -37px;">
+              <li class="right-border li-padding" style="margin-left: -37px; padding: 0 37px 0 37px;">
                 <span class="title"><strong>Pending</strong></span>
                 <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{pending_tot}}</h4>
                 <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="right-border li-padding">
+              <li class="right-border li-padding" style="padding: 0px 39px 0px 44px;">
                 <span class="title"><strong>Assigned</strong></span>
                 <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
                 <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="right-border li-padding">
+              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
                 <span class="title"><strong>Resolution In-Progress</strong></span>
                 <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
                 <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="right-border li-padding">
+              <li class="li-padding">
                 <span class="title"><strong>Verified &  Resolved</strong></span>
                 <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
                 <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="li-padding">
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div style="padding-bottom: 25px;" class="col-lg-12">
+            <ul class="topstats">
+              <li class="li-padding right-border" style="margin-left: -37px;">
                 <span class="title"><strong>User  Resolved</strong></span>
                 <h4 *ngIf="user_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_resolved_tot}} </h4>
                 <h3 *ngIf="user_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-            </ul>
-          </div>
-        </div>
-        <div  class="row">
-          <div style="padding-bottom: 25px;" class="col-lg-12">
-            <ul class="topstats">
-              <li class="right-border li-padding" style="margin-left: -37px;">
+              <li class="right-border li-padding">
                 <span class="title"><strong>User Deleted</strong></span>
                 <h4 *ngIf="user_deleted_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_deleted_tot}} </h4>
                 <h3 *ngIf="user_deleted_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
@@ -129,17 +130,14 @@ td {
                 <h4 *ngIf="onhold_tot!=null" style="text-align: center; " Class="color-up title1"> {{onhold_tot}} </h4>
                 <h3 *ngIf="onhold_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="right-border li-padding">
+              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
                 <span class="title"><strong>Cannot be Resolved</strong></span>
                 <h4 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h4>
                 <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
               <!--<option value="assigned">Assigned  </option>
-                     <option value="onhold">On Hold  </option>
-                      <option value="user_resolved">User Resolved  </option> -->
-
-
-
+                  <option value="onhold">On Hold  </option>
+                  <option value="user_resolved">User Resolved  </option> -->
               <li class="li-padding">
                 <span class="title"><strong>Total</strong></span>
                 <h3 *ngIf="cannot_be_resolved_to=='0' && onhold_tot=='0' &&  user_deleted_tot=='0' && user_resolved_tot=='0' && pending_tot=='0' && assigned_tot=='0' &&  resolution_in_progress_tot=='0'  && verified_resolved_tot=='0'">{{0}}</h3>
@@ -148,9 +146,9 @@ td {
             </ul>
           </div>
         </div>
-         <div class="row">
+        <div class="row">
           <div class="col-lg-12" *ngIf="avgtable">
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="width: 94%;">
               <thead>
                 <tr>
                   <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works </td>
@@ -184,109 +182,109 @@ td {
 
 
 
-<div class="row">
-    <div class="col-md-12 tabel_overflow">
-      <table class="table table-responsive table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
-        [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-        <thead>
+    <div class="row">
+      <div class="col-md-12 tabel_overflow">
+        <table class="table table-responsive table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
+          [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+          <thead>
 
-          <tr>
-            <th style="min-width: 90px;" nowrap>
-              <mfDefaultSorter by="insert_dt">Issue Raised On</mfDefaultSorter>
-            </th>
-            <th style="min-width: 90px;" nowrap>
-              <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
-            </th>
-            <th nowrap>
-              <mfDefaultSorter by="issue_desc">Issue Description</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="location">Location</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="problem">Impact</mfDefaultSorter>
-            </th>
+            <tr>
+              <th style="min-width: 90px;" nowrap>
+                <mfDefaultSorter by="insert_dt">Issue Raised On</mfDefaultSorter>
+              </th>
+              <th style="min-width: 90px;" nowrap>
+                <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+              </th>
+              <th nowrap>
+                <mfDefaultSorter by="issue_desc">Issue Description</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="location">Location</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="problem">Impact</mfDefaultSorter>
+              </th>
 
-            <th nowrap>
-              <mfDefaultSorter by="raised_by">Raised By</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter [by]="mobile">Mobile</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
-            </th>
-            <th style=" color: white;">
-              <mfDefaultSorter [by]="status"> Status </mfDefaultSorter>
-            </th>
-            <th nowrap>
-              <mfDefaultSorter [by]="days">Elapsed Days</mfDefaultSorter>
-            </th>
-            <th style=" color: white;">
-              <mfDefaultSorter [by]="img_name"> Img </mfDefaultSorter>
-            </th>
-            <th nowrap>
-              Details if Edited
-            </th>
-
-
-          </tr>
-          <tr>
-
-          </tr>
-        </thead>
-        <tbody *ngIf="mf.data.length != 0">
-          <!--[ngClass]="item.status == 'pending' ? 'danger' : ''"-->
-          <tr *ngFor="let item of mf.data; let i=index;">
-
-            <td>{{item.insert_dt|date:'dd-MM-yyyy'}}</td>
-            <td>{{item.domain|titlecase}}</td>
-            <td>{{item.issue_desc}}</td>
-            <td>{{item.location}}</td>
-            <td>{{item.problem}}</td>
-
-            <td> {{item.raised_by}}</td>
-            <td> {{item.mobile}}</td>
-            <td>{{item.priority}}</td>
-            <td *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
-            <td *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
-            <td *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
-            <td *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
-            <td *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
-            <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
-            <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+              <th nowrap>
+                <mfDefaultSorter by="raised_by">Raised By</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter [by]="mobile">Mobile</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
+              </th>
+              <th style=" color: white;">
+                <mfDefaultSorter [by]="status"> Status </mfDefaultSorter>
+              </th>
+              <th nowrap>
+                <mfDefaultSorter [by]="days">Elapsed Days</mfDefaultSorter>
+              </th>
+              <th style=" color: white;">
+                <mfDefaultSorter [by]="img_name"> Img </mfDefaultSorter>
+              </th>
+              <th nowrap>
+                Details if Edited
+              </th>
 
 
-            <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-            <td *ngIf="(item.status=='verified_resolved' || item.status=='resolution_in_progress' || item.status=='cannot_be_resolved' || item.status=='user_deleted' || item.status=='pending') && (item.repaired_on !=null || item.repaired_by !=null || item.date_of_resolution !=null || item.notes !=null) ">
-              <a (click)="details(item)" class="btn btn-xs btn-danger">Details</a>
-            </td>
-            <td *ngIf="item.status == null || item.repaired_on ==null && item.repaired_by ==null && item.date_of_resolution ==null && item.notes ==null ">
-            </td>
+            </tr>
+            <tr>
 
-          </tr>
-        </tbody>
-         <tbody *ngIf="mf.data.length == 0">
-          <tr rowspan="2">
-            <td colspan="12">
-              <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
-            </td>
-          </tr>
-        </tbody>
+            </tr>
+          </thead>
+          <tbody *ngIf="mf.data.length != 0">
+            <!--[ngClass]="item.status == 'pending' ? 'danger' : ''"-->
+            <tr *ngFor="let item of mf.data; let i=index;">
 
-        <tfoot>
-          <tr>
-            <td colspan="12">
-              <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+              <td>{{item.insert_dt|date:'dd-MM-yyyy'}}</td>
+              <td>{{item.domain|titlecase}}</td>
+              <td>{{item.issue_desc}}</td>
+              <td>{{item.location}}</td>
+              <td>{{item.problem}}</td>
+
+              <td> {{item.raised_by}}</td>
+              <td> {{item.mobile}}</td>
+              <td>{{item.priority}}</td>
+              <td *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
+              <td *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
+              <td *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
+              <td *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
+              <td *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
+              <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
+              <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;" >{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_deleted'" style="text-align: center;"></td>
+
+
+              <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
+              <td *ngIf="(item.status=='verified_resolved' || item.status=='resolution_in_progress' || item.status=='cannot_be_resolved' || item.status=='user_deleted' || item.status=='pending') && (item.repaired_on !=null || item.repaired_by !=null || item.date_of_resolution !=null || item.notes !=null) ">
+                <a (click)="details(item)" class="btn btn-xs btn-danger" style="text-align: center;">Details</a>
+              </td>
+              <td *ngIf="item.status == null || item.repaired_on ==null && item.repaired_by ==null && item.date_of_resolution ==null && item.notes ==null ">
+              </td>
+
+            </tr>
+          </tbody>
+          <tbody *ngIf="mf.data.length == 0">
+            <tr rowspan="2">
+              <td colspan="12">
+                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="12">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
-</div>
 
     <div class="clearfix"></div>
   </div>
