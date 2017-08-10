@@ -13,7 +13,7 @@
             <label>Category<span style="color:red">*</span></label>
             <select formControlName="seluserid" class="form-group form-control" [(ngModel)]="selecteddomain" (change)="getDomain($event)">                
               <option *ngFor="let item of domainsbyid; let i=index;" value="{{item.domain}}">{{item.domain}}</option>
-              <option value="all">all </option>    
+              <option value="all">All </option>    
             </select>
             <!--<span *ngIf="(issues_forms.get('seluserid').touched || issues_forms.get('seluserid').dirty) && issues_forms.get('seluserid').errors">
                     <span *ngIf="issues_forms.get('seluserid').errors.required" style="color:red">  Please enter type </span>
@@ -21,17 +21,18 @@
           </div>
               <div class="col-md-2">
             <label for="email">Status <span style="color:red">*</span></label>
-            <select class=" form-control" formControlName="selstatus" [(ngModel)]="selecteddomain1" (change)="getStatus($event)">
-              <option  value="">-Select-</option>
-              <option value="verified_resolved">Verified Resolved</option>
-              <option value="resolution_in_progress">Resolution in Progress</option>
-              <option value="pending">Pending</option>
-              <option value="cannot_be_resolved">Cannot be resolved</option>
-              <option value="user_deleted">User Deleted  </option> 
-              <option value="assigned">Assigned  </option>
-              <option value="onhold">On Hold  </option>
-              <option value="user_resolved">User Resolved  </option> 
+            <select class=" form-control" formControlName="selstatus" [(ngModel)]="selecteddomain1" (change)="getStatus($event,'checked')">
+              <!-- <option  value="">-Select-</option> -->
               <option value="all">All </option> 
+             <option value="pending">Pending</option>
+                <option value="assigned">Assigned  </option>
+                 <option value="resolution_in_progress">Resolution in Progress</option>
+                <option value="verified_resolved">Verified Resolved</option>
+                <option value="user_resolved">User Resolved  </option> 
+                <option value="user_deleted">User Deleted  </option> 
+                <option value="onhold">On Hold  </option>
+                  <option value="cannot_be_resolved">Cannot be resolved</option> 
+              
             </select>
            
           </div>
@@ -63,11 +64,12 @@
         </div>
       </div>
     </form>
-    <div class="row" *ngIf="table">
+    <!-- <div class="row" *ngIf="table">
       <label>No data Found</label>
-    </div>
+    </div> -->
     <div class="row ">
-      <div *ngIf="!table" class="col-lg-8">
+      <!-- <div *ngIf="!table" class="col-lg-8"> -->
+        <div class="col-lg-8">
         <div class="row">
           <div style="padding-bottom: 25px;" class="col-lg-12">
             <ul class="topstats">
@@ -81,7 +83,7 @@
                 <h3 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h3>
                 <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="right-border li-padding">
+              <li class="right-border li-padding" style="padding: 0 35px 0 35px;">
                 <span class="title"><strong>Resolution In-Progress</strong></span>
                 <h3 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h3>
                 <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
@@ -117,7 +119,7 @@
                 <h3 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h3>
                 <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
               </li>
-              <li class="li-padding">
+              <li class="li-padding" style="padding: 0px 35px 0 35px;">
                 <span class="title"><strong>Total</strong></span>
                 <h3 style="text-align: center;" Class="color-up title1"> {{total}}</h3>
               </li>
@@ -127,7 +129,7 @@
         <div class="row">
           <div class="col-lg-12" *ngIf="avgtable">
             <div class="">
-              <table class="table table-bordered" style="width: 97%;">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
                     <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works </td>
@@ -135,16 +137,16 @@
                 </thead>
                 <thead>
                   <tr>
-                    <th>Minimum</th>
-                    <th>Average</th>
-                    <th>Maximum</th>
+                    <th style="text-align: center;">Minimum</th>
+                    <th style="text-align: center;">Average</th>
+                    <th style="text-align: center;">Maximum</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let ad of avgdata;">
-                    <td>{{ad.minimum}}</td>
-                    <td>{{ad.average}}</td>
-                    <td>{{ad.maximum}}</td>
+                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
+                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
+                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -152,12 +154,14 @@
           </div>
         </div>
       </div>
-      <div *ngIf="!table" class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;">
+       <div *ngIf="!table" class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;"> 
+         <!-- <div class="col-lg-4" style="padding-bottom: 25px; padding-left: 0px;"> -->
         <chart [options]="options"></chart>
       </div>
     </div>
     <div class="row">
-      <div *ngIf="!table" class="col-md-12 tabel_overflow">
+      <!-- <div *ngIf="!table" class="col-md-12 tabel_overflow"> -->
+         <div  class="col-md-12 tabel_overflow">
         <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
           [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
           <thead>
@@ -195,7 +199,9 @@
               <th>
                 <mfDefaultSorter by="img_name"> Img</mfDefaultSorter>
               </th>
-              <th>Action</th>
+               <th nowrap>
+                Details if Edited
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -221,11 +227,18 @@
               <td>{{items.priority}}</td>
               <td> <a *ngIf="items.img_name" (click)="getImagesbyId(items.did,items.reg_no)"> View </a> </td>
 
-              <td>
+              <td style="text-align: center">
                 <!--<a class="btn btn-info btn-xs btn-square" style="margin-right: 5px; width: 50px;">Edit</a>
                     <a class="btn btn-danger btn-xs btn-square">Delete</a>-->
                 <a class="btn btn-info btn-xs btn-square" (click)="details(items)" style="margin-right: 5px; width: 50px;">Edit</a>
                 <!--<a class="btn btn-danger btn-xs btn-square" (click)="delete(items)" >Delete</a>-->
+              </td>
+            </tr>
+          </tbody>
+           <tbody *ngIf="mf.data.length == 0">
+            <tr rowspan="2">
+              <td colspan="12">
+                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
               </td>
             </tr>
           </tbody>

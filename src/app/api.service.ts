@@ -117,8 +117,8 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     console.log(body);
     return this.callApi(this.url.GETISSUESLISTBYSTATUS, 'post', body);
   }
-  getDatabyId_Status(val) {
-    let body = JSON.stringify(val);
+  getDatabyId_Status(value) {
+    let body = JSON.stringify(value);
     console.log(body)
     return this.callApi(this.url.getDatabyId_Status, 'post', body);
   }

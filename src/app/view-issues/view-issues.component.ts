@@ -37,6 +37,7 @@ export class ViewIssuesComponent implements OnInit {
   // selecteddomain:any;
   selecteddomain1 = "all";
   selecteddomain ="all";
+  // selectchart='pie';
   // selstatus ="all";
   //data:any;
   role = localStorage.getItem('role');
@@ -54,8 +55,8 @@ export class ViewIssuesComponent implements OnInit {
       seluserid: ['', Validators.required],
       from_date: ['', Validators.required],
       to_date: ['', Validators.required],
-      selstatus: ['', Validators.required]
-
+      selstatus: ['', Validators.required],
+      // selectchart:['',Validators.required]
 
     });
     console.log('date', this.from_date)
@@ -65,6 +66,7 @@ export class ViewIssuesComponent implements OnInit {
       this.getAllIssues();
     }
     this.getCategories();
+    // this.selStatus();
   }
   total;
   verified_resolved_tot;
@@ -136,15 +138,15 @@ export class ViewIssuesComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 370,
-              width: 350,
+              height: 390,
+              width: 420,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
               plotBackgroundColor: null,
               plotBorderWidth: null,
               plotShadow: false,
-              type: 'pie',
+              type: 'pie'
 
             },
             exporting: {
@@ -154,17 +156,17 @@ export class ViewIssuesComponent implements OnInit {
             },
             title: false,
             tooltip: {
-              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
             },
             plotOptions: {
               pie: {
-                size: 160,
+                size: 180,
                allowPointSelect: false,
                 cursor: 'pointer',
                 dataLabels: {
-                  enabled: false
+                  enabled: true
                 },
-                showInLegend: true
+                showInLegend: false
               }
             },
             series: [{
@@ -206,10 +208,16 @@ export class ViewIssuesComponent implements OnInit {
             }]
           };
         }
-        //  this.data2.forEach(element => {
-
-        //    this.total=element.t;
-        //  });
+         if(alldata.data2 =='NoAvgData'){        
+          this.avgtable=false;
+          
+        }
+        else{
+            this.avgtable=true;
+             this.avgdata = alldata.data2;
+            console.log(this.avgdata);
+            
+        }
       }
     })
   }
@@ -322,8 +330,8 @@ export class ViewIssuesComponent implements OnInit {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 370,
-                width: 350,
+                height: 390,
+                width: 420,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -340,62 +348,54 @@ export class ViewIssuesComponent implements OnInit {
               },
               title: false,
               tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+               pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
               },
               plotOptions: {
-                series: {
-            events: {
-                legendItemClick: function () {
-                   
-                    return false;
-                }
-            }
-        },
                 pie: {
-                  size: 160,
+                  size: 180,
                   allowPointSelect: true,
                   cursor: 'pointer',
                   dataLabels: {
-                    enabled: false
+                    enabled: true
                   },
-                  showInLegend: true
+                  showInLegend: false
                 }
               },
               series: [{
                 name: 'Total',
                 colorByPoint: true,
                 data: [{
-                  name: 'Pending',
-                  y: JSON.parse(this.pending_tot),
-                },
-                {
-                  name: 'user_deleted_tot',
-                  y: JSON.parse(this.user_deleted_tot),
-                },
-                {
-                  name: 'resolution_in_progress_tot',
-                  y: JSON.parse(this.resolution_in_progress_tot),
-                },
-                {
-                  name: 'cannot_be_resolved_tot',
-                  y: JSON.parse(this.cannot_be_resolved_tot),
-                },
-                {
-                  name: 'verified_resolved_tot',
-                  y: JSON.parse(this.verified_resolved_tot),
-                },
-                {
-                  name: 'Assigned',
-                  y: JSON.parse(this.assigned_tot),
-                },
-                {
-                  name: 'On Hold',
-                  y: JSON.parse(this.onhold_tot),
-                },
-                {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
-                }
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'Resolution in Progress',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+               {
+                name: 'Verified Resolved',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              },
+              {
+                name: 'User Deleted',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+               {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'Cannot be Resolved',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              }      
                 ]
               }]
             };
@@ -405,8 +405,19 @@ export class ViewIssuesComponent implements OnInit {
           //    this.total=element.t;
           //  });
 
-        } else {
-          this.data = '';
+        } 
+        // else {
+        //   this.data = '';
+        // }
+        if(sellist.data2 =='NoAvgData'){        
+          this.avgtable=false;
+          
+        }
+        else{
+            this.avgtable=true;
+             this.avgdata = sellist.data2;
+            console.log(this.avgdata);
+            
         }
 
       });
@@ -498,7 +509,7 @@ export class ViewIssuesComponent implements OnInit {
             },
             title: false,
             tooltip: {
-              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> - {point.y}'
             },
             plotOptions: {
               pie: {
@@ -596,7 +607,7 @@ export class ViewIssuesComponent implements OnInit {
    console.log(value1);
    let value = {
       'status': $event.target.value,
-      'category': this.selectvalue,
+      'category': this.selecteddomain,
     }
    console.log(value);
       console.log(value);
@@ -649,7 +660,7 @@ export class ViewIssuesComponent implements OnInit {
               chart: {
 
                 height: 370,
-                width: 350,
+                width: 400,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -666,54 +677,54 @@ export class ViewIssuesComponent implements OnInit {
               },
               title: false,
               tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-              },
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+            },
               plotOptions: {
                 pie: {
-                  size: 160,
+                  size: 180,
                   allowPointSelect: false,
                   cursor: 'pointer',
                   dataLabels: {
-                    enabled: false
+                    enabled: true
                   },
-                  showInLegend: true
+                  showInLegend: false
                 }
               },
               series: [{
                 name: 'Total',
                 colorByPoint: true,
                 data: [{
-                  name: 'Pending',
-                  y: JSON.parse(this.pending_tot),
-                },
-                {
-                  name: 'user_deleted_tot',
-                  y: JSON.parse(this.user_deleted_tot),
-                },
-                {
-                  name: 'resolution_in_progress_tot',
-                  y: JSON.parse(this.resolution_in_progress_tot),
-                },
-                {
-                  name: 'cannot_be_resolved_tot',
-                  y: JSON.parse(this.cannot_be_resolved_tot),
-                },
-                {
-                  name: 'verified_resolved_tot',
-                  y: JSON.parse(this.verified_resolved_tot),
-                },
-                {
-                  name: 'Assigned',
-                  y: JSON.parse(this.assigned_tot),
-                },
-                {
-                  name: 'On Hold',
-                  y: JSON.parse(this.onhold_tot),
-                },
-                {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
-                }
+                name: 'Pending',
+                y: JSON.parse(this.pending_tot),
+              },
+              {
+                name: 'Assigned',
+                y: JSON.parse(this.assigned_tot),
+              },
+              {
+                name: 'Resolution in Progress',
+                y: JSON.parse(this.resolution_in_progress_tot),
+              },
+               {
+                name: 'Verified Resolved',
+                y: JSON.parse(this.verified_resolved_tot),
+              },
+              {
+                name: 'User Resolved',
+                y: JSON.parse(this.user_resolved_tot),
+              },
+              {
+                name: 'User Deleted',
+                y: JSON.parse(this.user_deleted_tot),
+              },
+               {
+                name: 'On Hold',
+                y: JSON.parse(this.onhold_tot),
+              },
+              {
+                name: 'Cannot be Resolved',
+                y: JSON.parse(this.cannot_be_resolved_tot),
+              }      
                 ]
               }]
             };

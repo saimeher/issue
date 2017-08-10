@@ -130,12 +130,14 @@
             <th>
               <mfDefaultSorter by="status"> Images </mfDefaultSorter>
             </th>
-            <th>Action</th>
+           <th nowrap>
+                Details if Edited
+              </th>
           </tr>
         </thead>
         <tbody *ngIf="mf.data.length != 0">
           <tr *ngFor="let item of mf.data; let i=index;">
-            <td>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
+            <td nowrap>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
             <td>{{item.domain|titlecase}}</td>
 
             <td>{{item.location}}</td>
@@ -158,7 +160,7 @@
             <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
             <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
             <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-            <td>
+            <td nowrap>
               <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
               <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
               <!--<a class="btn btn-danger btn-xs btn-square" (click)="delete(item)" >Delete</a>-->
