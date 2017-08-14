@@ -144,10 +144,19 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let ad of avgdata;">
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
-                  </tr>
+                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
+                     <td *ngIf ="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
+                     <td *ngIf ="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+                  
+                     <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
+                      <td *ngIf ="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
+                     <td *ngIf ="ad.average  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+                    
+                     <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
+                      <td *ngIf ="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
+                     <td *ngIf ="ad.maximum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+                  
+                    </tr>
                 </tbody>
               </table>
             </div>
@@ -218,12 +227,19 @@
               <td nowrap *ngIf="items.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
               <td nowrap *ngIf="items.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
               <td nowrap *ngIf="items.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
+              <td nowrap *ngIf="items.status=='onhold'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
+              <td nowrap *ngIf="items.status=='user_resolved'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
+              <td nowrap *ngIf="items.status=='assigned'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
               <!--<td>{{item.days}}</td>-->
               <td *ngIf="items.days <= 0  && items.status == 'pending'" style="text-align: center;">{{-(items.day)}} </td>
-              <td *ngIf="items.days <= 0  && items.status == 'verified_resolved'">{{-(items.days)}}</td>
-              <td *ngIf="items.days <= 0  && items.status == 'resolution_in_progress'">{{-(items.day)}}</td>
-              <td *ngIf="items.days <= 0  && items.status == 'cannot_be_resolved'">{{-(items.days)}}</td>
-              <td *ngIf="items.days <= 0  && items.status == 'user_deleted'"></td>
+              <td *ngIf="items.days <= 0  && items.status == 'verified_resolved'" style="text-align: center;">{{-(items.days)}}</td>
+              <td *ngIf="items.days <= 0  && items.status == 'resolution_in_progress'" style="text-align: center;">{{-(items.day)}}</td>
+              <td *ngIf="items.days <= 0  && items.status == 'cannot_be_resolved'" style="text-align: center;">{{-(items.days)}}</td>
+              <td *ngIf="items.days <= 0  && items.status == 'user_deleted'"  style="text-align: center;"></td>
+              <td *ngIf="items.days <= 0  && items.status == 'onhold'"  style="text-align: center;">{{-(items.day)}}</td>
+              <td *ngIf="items.days <= 0  && items.status == 'user_resolved'"  style="text-align: center;">{{-(items.days)}}</td>
+              <td *ngIf="items.days <= 0  && items.status == 'assigned'"  style="text-align: center;">{{-(items.day)}}</td>
+            
               <td>{{items.priority}}</td>
               <td> <a *ngIf="items.img_name" (click)="getImagesbyId(items.did,items.reg_no)"> View </a> </td>
 

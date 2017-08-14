@@ -79,20 +79,8 @@ td {
       </div>
 
     </form>
-    <!-- <div class="row" *ngIf="table">
-      <label>No data Found</label>
-    </div> -->
- <!-- <select class=" form-control" formControlName="chart" [(ngModel)]="selectchart">
-               
-               <option value="pie">Pie</option> 
-                <option value="line">Line</option>
-                <option value="bar">Bar  </option>
-                 <option value="spline">Spline</option>
-              
-                   
-              </select> -->
     <div class="row">
-      <div class="col-lg-7">
+      <div *ngIf="!summarydata" class="col-lg-7">
         <div class="">
           <div style="padding-bottom: 25px;">
             <ul class="topstats">
@@ -170,10 +158,117 @@ td {
                   </tr>
                 </thead>
                 <tbody>
+                  
                   <tr *ngFor="let ad of avgdata;">
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
-                    <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
+                    <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
+                      <td *ngIf ="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
+                     <td *ngIf ="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+
+                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
+                     <td  *ngIf ="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
+                      <td *ngIf ="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
+
+                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
+                    <td *ngIf ="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
+                    <td *ngIf ="ad.maximum == null"  style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="summarydata" class="col-lg-7">
+        <div class="">
+          <div style="padding-bottom: 25px;">
+            <ul class="topstats">
+              <li class="right-border li-padding" style="margin-left: -37px;">
+                <span class="title"><strong>ac total</strong></span>
+                <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{ac_total}}</h4>
+                <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding" style="padding: 0px 32px 0px 32px;">
+                <span class="title"><strong>Assigned</strong></span>
+                <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
+                <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+                <span class="title"><strong>Resolution In-Progress</strong></span>
+                <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
+                <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="li-padding">
+                <span class="title"><strong>Verified &  Resolved</strong></span>
+                <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
+                <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div style="padding-bottom: 25px;" class="col-lg-12">
+            <ul class="topstats">
+              <li class="li-padding right-border" style="margin-left: -37px;">
+                <span class="title"><strong>User  Resolved</strong></span>
+                <h4 *ngIf="user_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_resolved_tot}} </h4>
+                <h3 *ngIf="user_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>User Deleted</strong></span>
+                <h4 *ngIf="user_deleted_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_deleted_tot}} </h4>
+                <h3 *ngIf="user_deleted_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+
+              <li class="right-border li-padding">
+                <span class="title"><strong>On Hold</strong></span>
+                <h4 *ngIf="onhold_tot!=null" style="text-align: center; " Class="color-up title1"> {{onhold_tot}} </h4>
+                <h3 *ngIf="onhold_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+                <span class="title"><strong>Cannot be Resolved</strong></span>
+                <h4 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h4>
+                <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              </li>
+              <!--<option value="assigned">Assigned  </option>
+                  <option value="onhold">On Hold  </option>
+                  <option value="user_resolved">User Resolved  </option> -->
+              <li class="li-padding">
+                <span class="title"><strong>Total &nbsp;</strong></span>
+                <!-- <h3 *ngIf="cannot_be_resolved_to=='0' && onhold_tot=='0' &&  user_deleted_tot=='0' && user_resolved_tot=='0' && pending_tot=='0' && assigned_tot=='0' &&  resolution_in_progress_tot=='0'  && verified_resolved_tot=='0'">{{0}}</h3> -->
+                <h4 style="text-align: center;" Class="color-up title1"> {{total}}</h4>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12" *ngIf="avgtable">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works in days </td>
+                </tr>
+              </thead>
+              <thead>
+                  <tr>
+                    <th style="text-align: center;">Minimum</th>
+                    <th style="text-align: center;">Average</th>
+                    <th style="text-align: center;">Maximum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr *ngFor="let ad of avgdata;">
+                    <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
+                      <td *ngIf ="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
+                     <td *ngIf ="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+
+                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
+                     <td  *ngIf ="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
+                      <td *ngIf ="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
+
+                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
+                    <td *ngIf ="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
+                    <td *ngIf ="ad.maximum == null"  style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
                   </tr>
                 </tbody>
             </table>
@@ -259,11 +354,21 @@ td {
               <td *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
               <td *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
               <td *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
+               <td *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
+             <td  *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
+             <td  *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
+
+
+
               <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'user_deleted'" style="text-align: center;"></td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
+
 
 
               <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>

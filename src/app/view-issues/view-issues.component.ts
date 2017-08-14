@@ -28,7 +28,7 @@ export class ViewIssuesComponent implements OnInit {
   end_date;
   data2;
   data3;
-  avgtable=false;
+  avgtable = false;
   avgdata;
   options: Object;
   overall: Object;
@@ -36,13 +36,13 @@ export class ViewIssuesComponent implements OnInit {
   today = new Date();
   // selecteddomain:any;
   selecteddomain1 = "all";
-  selecteddomain ="all";
+  selecteddomain = "all";
   // selectchart='pie';
   // selstatus ="all";
   //data:any;
   role = localStorage.getItem('role');
- //img_url = "http://localhost/issue_register/uploads";
-  img_url="http://210.16.79.137/issueregister/server/uploads";
+  //img_url = "http://localhost/issue_register/uploads";
+  img_url = "http://210.16.79.137/issueregister/server/uploads";
   public data;
   public filterQuery = "";
   public rowsOnPage = 10;
@@ -95,7 +95,7 @@ export class ViewIssuesComponent implements OnInit {
         this.data = alldata.data;
         if (this.data2 == 'NoData') {
           this.table = true;
-    
+
         } else {
           this.table = false;
           console.log(this.data2);
@@ -161,7 +161,7 @@ export class ViewIssuesComponent implements OnInit {
             plotOptions: {
               pie: {
                 size: 180,
-               allowPointSelect: false,
+                allowPointSelect: false,
                 cursor: 'pointer',
                 dataLabels: {
                   enabled: true
@@ -208,15 +208,15 @@ export class ViewIssuesComponent implements OnInit {
             }]
           };
         }
-         if(alldata.data2 =='NoAvgData'){        
-          this.avgtable=false;
-          
+        if (alldata.data2 == 'NoAvgData') {
+          this.avgtable = false;
+
         }
-        else{
-            this.avgtable=true;
-             this.avgdata = alldata.data2;
-            console.log(this.avgdata);
-            
+        else {
+          this.avgtable = true;
+          this.avgdata = alldata.data2;
+          console.log(this.avgdata);
+
         }
       }
     })
@@ -261,7 +261,7 @@ export class ViewIssuesComponent implements OnInit {
       to_date: ''
     })
     // if(status != "null")
-      
+
     this.data = '';
     this.total = '0';
     this.verified_resolved_tot = '0';
@@ -275,8 +275,8 @@ export class ViewIssuesComponent implements OnInit {
     this.user_resolved_tot = '0';
     console.log('his', $event.target.value);
     let value = $event.target.value;
-    this.selectvalue=$event.target.value;
-    this.categoryvalue=$event.target.value;
+    this.selectvalue = $event.target.value;
+    this.categoryvalue = $event.target.value;
     if (value == 'all') {
       // console.log('jsod');
       this.showstatus = false;
@@ -348,7 +348,7 @@ export class ViewIssuesComponent implements OnInit {
               },
               title: false,
               tooltip: {
-               pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
               },
               plotOptions: {
                 pie: {
@@ -365,37 +365,37 @@ export class ViewIssuesComponent implements OnInit {
                 name: 'Total',
                 colorByPoint: true,
                 data: [{
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
-              },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
-              },
-              {
-                name: 'Resolution in Progress',
-                y: JSON.parse(this.resolution_in_progress_tot),
-              },
-               {
-                name: 'Verified Resolved',
-                y: JSON.parse(this.verified_resolved_tot),
-              },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
-              },
-              {
-                name: 'User Deleted',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-               {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'Cannot be Resolved',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              }      
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                }
                 ]
               }]
             };
@@ -405,19 +405,19 @@ export class ViewIssuesComponent implements OnInit {
           //    this.total=element.t;
           //  });
 
-        } 
+        }
         // else {
         //   this.data = '';
         // }
-        if(sellist.data2 =='NoAvgData'){        
-          this.avgtable=false;
-          
+        if (sellist.data2 == 'NoAvgData') {
+          this.avgtable = false;
+
         }
-        else{
-            this.avgtable=true;
-             this.avgdata = sellist.data2;
-            console.log(this.avgdata);
-            
+        else {
+          this.avgtable = true;
+          this.avgdata = sellist.data2;
+          console.log(this.avgdata);
+
         }
 
       });
@@ -447,11 +447,11 @@ export class ViewIssuesComponent implements OnInit {
       if (data) {
         this.data = data.data;
         this.data2 = data.data1;
-       
+
         console.log(this.data3);
         if (this.data2 == 'NoData') {
           this.table = true;
-        } 
+        }
         else {
           this.table = false;
           console.log(this.data2);
@@ -509,7 +509,7 @@ export class ViewIssuesComponent implements OnInit {
             },
             title: false,
             tooltip: {
-              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> - {point.y}'
+              pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
             },
             plotOptions: {
               pie: {
@@ -517,9 +517,9 @@ export class ViewIssuesComponent implements OnInit {
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
-                  enabled: false
+                  enabled: true
                 },
-                showInLegend: true
+                showInLegend: false
               }
             },
             series: [{
@@ -561,14 +561,14 @@ export class ViewIssuesComponent implements OnInit {
             }]
           };
         }
-        if(data.data2 =='NoAvgData'){        
-          this.avgtable=false;
-          
-        }else{
-            this.avgtable=true;
-             this.avgdata = data.data2;
-            console.log(this.avgdata);
-            
+        if (data.data2 == 'NoAvgData') {
+          this.avgtable = false;
+
+        } else {
+          this.avgtable = true;
+          this.avgdata = data.data2;
+          console.log(this.avgdata);
+
         }
       }
     })
@@ -579,14 +579,38 @@ export class ViewIssuesComponent implements OnInit {
     this.issues_form.reset();
 
   }
-  r=1;
-  selStatus($event,checked) {
-    if(checked=='checked'){
-      if(this.r==1)
-        {
-           this.selectvalue="all";
-        }
-     
+  r = 1;
+  ac;
+  ac_total;
+  carpentary;
+  carpentary_total;
+  electrical; 
+  electrical_total;
+  civil;
+  civil_total;
+  misc;
+  misc_total;
+  infrastructure;
+  infrastructure_total;
+  transportation;
+  transportation_total;
+  gardening;
+  gardening_total;
+  sanitation;
+  sanitation_total;
+  water_supply;
+  water_supply_total;
+  house_keeping;
+  house_keeping_total;
+  summarydata=false;
+ eventvalue;
+  domainname;
+  selStatus($event, checked) {
+    if (checked == 'checked') {
+      if (this.r == 1) {
+        this.selectvalue = "all";
+      }
+
       ++this.r;
     }
     this.data = '';
@@ -594,7 +618,7 @@ export class ViewIssuesComponent implements OnInit {
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
     this.pending_tot = '0';
-      // this.pending_tot = 0;
+    // this.pending_tot = 0;
     this.user_deleted_tot = '0';
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
@@ -602,31 +626,122 @@ export class ViewIssuesComponent implements OnInit {
     this.user_resolved_tot = '0';
     console.log('his', $event.target.value);
     this.selectvalue;
-   console.log(this.selectvalue);
-   let value1 = $event.target.value;
-   console.log(value1);
-   let value = {
+    console.log(this.selectvalue);
+    let value1 = $event.target.value;
+    console.log(value1);
+    let value = {
       'status': $event.target.value,
       'category': this.selecteddomain,
     }
-   console.log(value);
-      console.log(value);
-      //  this.showstatus = true;
-     this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
-        if (sellist1) {
-          console.log(sellist1.data);
-          this.data = sellist1.data;
-          this.data2 = sellist1.data1;
-          if (this.data2 == 'NoData') {
-            this.table = true;
-          } 
-          else {
-            this.table = false;
-            console.log(this.data2);
-            this.data2.forEach(element => {
-              this.total = element.t;
+    console.log(value);
+    console.log(value);
+    //  this.showstatus = true;
+    this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
+      if (sellist1) {
+        console.log(sellist1.data);
+        this.data = sellist1.data;
+        this.data2 = sellist1.data1;
+        if (this.data2 == 'NoData') {
+          this.table = true;
+        }
+        else {
+          this.table = false;
+          console.log(this.data2);
+          this.data2.forEach(element => {
+            this.total = element.t;
+            console.log('hjhj', element.tot)
+            console.log('hio', element.status);
+            this.domainname=this.selecteddomain;
+            if ($event.target.value != 'all' && this.domainname == 'all') {
+                // this.ac_total='0';
+                // this.civil_total='0';
+                // this.electrical_total='0';
+                // this.carpentary_total='0';
+                // this.misc_total='0';
+                // this.sanitation_total='0';
+                // this.transportation_total='0';
+                // this.gardening_total='0';
+                // this.infrastructure_total='0';
+                // this.water_supply_total='0';
+                // this.house_keeping_total='0';
+              this.summarydata=true;
+              console.log('saiiiiii');
+              
+               if (element.status == 'ac') {  
+                this.ac=  element.status;
+                this.ac_total=element.tot;
+              }
+              if (element.status == 'carpentary') {
+                this.carpentary=  element.status;
+                this.carpentary_total=element.tot;
+              }
+               if (element.status == 'electrical') {
+                this.electrical=  element.status;
+                this.electrical_total=element.tot;
+              }
+               if (element.status == 'civil') {
+                this.civil=  element.status;
+                this.civil_total=element.tot;
+              }
+               if (element.status == 'misc') {
+                this.misc=  element.status;
+                this.misc_total=element.tot;
+              } 
+              if (element.status == 'transportation') {
+                this.transportation=  element.status;
+                this.transportation_total=element.tot;
+              }
+              if (element.status == 'gardening') {
+                this.gardening=  element.status;
+                this.gardening_total=element.tot;
+              }
+              if (element.status == 'infrastructure') {
+                this.infrastructure=  element.status;
+                this.infrastructure_total=element.tot;
+              }
+              if (element.status == 'sanitation') {
+                this.sanitation=  element.status;
+                this.sanitation_total=element.tot;
+              }
+              if (element.status == 'water_supply') {
+                this.water_supply=  element.status;
+                this.water_supply_total=element.tot;
+              }
+               if (element.status == 'house_keeping') {
+                this.house_keeping=  element.status;
+                this.house_keeping_total=element.tot;
+              }
+
+
+              // if (this.selecteddomain == 'resolution_in_progress') {
+              //   this.resolution_in_progress_tot = element.tot;
+              // }
+              // if (this.selecteddomain == 'user_deleted') {
+              //   this.user_deleted_tot = element.tot;
+              // }
+              // if (this.selecteddomain == 'verified_resolved') {
+              //   this.verified_resolved_tot = element.tot;
+              // }
+              // if (this.selecteddomain == 'assigned') {
+              //   this.assigned_tot = element.tot;
+              // }
+              // if (this.selecteddomain == 'onhold') {
+              //   this.onhold_tot = element.tot;
+              // }
+              // if (this.selecteddomain == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+             
+              // if (element.status == 'ac') {
+              //   this.ac=  element.status;
+              // }
+              
+
+            }
+            else {
+              this.summarydata=false;
               if (element.status == 'cannot_be_resolved') {
-                this.cannot_be_resolved_tot = element.tot;
+               this.ac= this.cannot_be_resolved_tot = element.tot;
               }
               if (element.status == 'pending') {
                 this.pending_tot = element.tot;
@@ -649,51 +764,152 @@ export class ViewIssuesComponent implements OnInit {
               if (element.status == 'user_resolved') {
                 this.user_resolved_tot = element.tot;
               }
-            });
-            this.options = {
-              credits: {
-                enabled: false
-              },
+            }
 
-              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-              chart: {
-
-                height: 370,
-                width: 400,
-                borderWidth: 1,
-                borderRadius: 4,
-                borderColor: '#2C3E50 ',
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie',
-
-              },
-              exporting: {
-
-
-                enabled: false
-              },
-              title: false,
-              tooltip: {
-                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+          });
+          
+          if($event.target.value != 'all' && this.domainname == 'all'){
+this.options = {
+            credits: {
+              enabled: false
             },
-              plotOptions: {
-                pie: {
-                  size: 180,
-                  allowPointSelect: false,
-                  cursor: 'pointer',
-                  dataLabels: {
-                    enabled: true
-                  },
-                  showInLegend: false
-                }
+
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 370,
+              width: 400,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 180,
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: true
+                },
+                showInLegend: false
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
+                name: 'ac',
+                y: JSON.parse(this.ac_total)? JSON.parse(this.ac_total):0,
               },
-              series: [{
-                name: 'Total',
-                colorByPoint: true,
-                data: [{
+              {
+                name: 'carpentary',
+                y: JSON.parse(this.carpentary_total)? JSON.parse(this.carpentary_total):0,
+              },
+              {
+                name: 'electrical',
+                y: JSON.parse(this.electrical_total)? JSON.parse(this.electrical_total):0,
+              },
+              {
+                name: 'civil',
+                y: JSON.parse(this.civil_total)? JSON.parse(this.civil_total):0,
+              },
+              {
+                name: 'misc',
+                y: JSON.parse(this.misc_total)? JSON.parse(this.misc_total):0,
+              },
+              {
+                name: 'infrastructure',
+                y: JSON.parse(this.infrastructure_total)? JSON.parse(this.infrastructure_total):0,
+              },
+              {
+                name: 'transportation',
+                y: JSON.parse(this.transportation_total)? JSON.parse(this.transportation_total):0,
+              },
+              {
+                name: 'gardening',
+                y: JSON.parse(this.gardening_total)? JSON.parse(this.gardening_total):0,
+              },
+              {
+                name: 'sanitation',
+                y: JSON.parse(this.sanitation_total)? JSON.parse(this.sanitation_total):0,
+              },
+              {
+                name:  'water_supply',
+                y: JSON.parse(this.water_supply_total)? JSON.parse(this.water_supply_total):0,
+              },
+              {
+                name:  'house_keeping',
+                y: JSON.parse(this.house_keeping_total)? JSON.parse(this.house_keeping_total):0,
+              }
+              ]
+            }]
+
+          };
+          }
+        
+        
+        
+        
+          else{
+            this.options = {
+            credits: {
+              enabled: false
+            },
+
+            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+            chart: {
+
+              height: 370,
+              width: 400,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: '#2C3E50 ',
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false,
+              type: 'pie',
+
+            },
+            exporting: {
+
+
+              enabled: false
+            },
+            title: false,
+            tooltip: {
+              pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+            },
+            plotOptions: {
+              pie: {
+                size: 180,
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                  enabled: true
+                },
+                showInLegend: false
+              }
+            },
+            series: [{
+              name: 'Total',
+              colorByPoint: true,
+              data: [{
                 name: 'Pending',
                 y: JSON.parse(this.pending_tot),
               },
@@ -705,7 +921,7 @@ export class ViewIssuesComponent implements OnInit {
                 name: 'Resolution in Progress',
                 y: JSON.parse(this.resolution_in_progress_tot),
               },
-               {
+              {
                 name: 'Verified Resolved',
                 y: JSON.parse(this.verified_resolved_tot),
               },
@@ -717,183 +933,40 @@ export class ViewIssuesComponent implements OnInit {
                 name: 'User Deleted',
                 y: JSON.parse(this.user_deleted_tot),
               },
-               {
+              {
                 name: 'On Hold',
                 y: JSON.parse(this.onhold_tot),
               },
               {
                 name: 'Cannot be Resolved',
                 y: JSON.parse(this.cannot_be_resolved_tot),
-              }      
-                ]
-              }]
-            };
-          }
-        }
-       if(sellist1.data2 =='NoAvgData'){        
-          this.avgtable=false;
-          
-        }
-        else{
-            this.avgtable=true;
-             this.avgdata = sellist1.data2;
-            console.log(this.avgdata);
-            
-        }
+              }
+              ]
+            }]
 
-      });
-    
+          };
+
+          }
+
+
+
+        }
+      }
+      if (sellist1.data2 == 'NoAvgData') {
+        this.avgtable = false;
+
+      }
+      else {
+        this.avgtable = true;
+        this.avgdata = sellist1.data2;
+        console.log(this.avgdata);
+
+      }
+
+    });
+
 
   }
-// selStatus($event) {
-//     this.data = '';
-//     this.total = '0';
-//     this.verified_resolved_tot = '0';
-//     this.resolution_in_progress_tot = '0';
-//     this.pending_tot = '0';
-//       // this.pending_tot = 0;
-//     this.user_deleted_tot = '0';
-//     this.cannot_be_resolved_tot = '0';
-//     this.assigned_tot = '0';
-//     this.onhold_tot = '0';
-//     this.user_resolved_tot = '0';
-//     console.log('his', $event.target.value);
-//     this.selectvalue;
-//   console.log(this.selectvalue);
-//   let value1 = $event.target.value;
-//   console.log(value1);
-//   let value = {
-//       'status': $event.target.value,
-//       // 'category': this.selectvalue,
-//     }
-//   console.log(value);
-//       console.log(value);
-//       //  this.showstatus = true;
-//      this.api.getIssuesListbyStatus(value).subscribe(sellist1 => {
-//         if (sellist1) {
-//           console.log(sellist1.data);
-//           this.data = sellist1.data;
-//           this.data2 = sellist1.data1;
-//           if (this.data2 == 'NoData') {
-//             this.table = true;
-//           } 
-//           else {
-//             this.table = false;
-//             console.log(this.data2);
-//             this.data2.forEach(element => {
-//               this.total = element.t;
-//               if (element.status == 'cannot_be_resolved') {
-//                 this.cannot_be_resolved_tot = element.tot;
-//               }
-//               if (element.status == 'pending') {
-//                 this.pending_tot = element.tot;
-//               }
-//               if (element.status == 'resolution_in_progress') {
-//                 this.resolution_in_progress_tot = element.tot;
-//               }
-//               if (element.status == 'user_deleted') {
-//                 this.user_deleted_tot = element.tot;
-//               }
-//               if (element.status == 'verified_resolved') {
-//                 this.verified_resolved_tot = element.tot;
-//               }
-//               if (element.status == 'assigned') {
-//                 this.assigned_tot = element.tot;
-//               }
-//               if (element.status == 'onhold') {
-//                 this.onhold_tot = element.tot;
-//               }
-//               if (element.status == 'user_resolved') {
-//                 this.user_resolved_tot = element.tot;
-//               }
-//             });
-//             this.options = {
-//               credits: {
-//                 enabled: false
-//               },
-
-//               colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-//                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-//               chart: {
-
-//                 height: 300,
-//                 width: 300,
-//                 borderWidth: 1,
-//                 borderRadius: 4,
-//                 borderColor: '#2C3E50 ',
-//                 plotBackgroundColor: null,
-//                 plotBorderWidth: null,
-//                 plotShadow: false,
-//                 type: 'pie',
-
-//               },
-//               exporting: {
-
-
-//                 enabled: false
-//               },
-//               title: false,
-//               tooltip: {
-//                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-//               },
-//               plotOptions: {
-//                 pie: {
-//                   size: 160,
-//                   allowPointSelect: true,
-//                   cursor: 'pointer',
-//                   dataLabels: {
-//                     enabled: false
-//                   },
-//                   showInLegend: true
-//                 }
-//               },
-//               series: [{
-//                 name: 'Total',
-//                 colorByPoint: true,
-//                 data: [{
-//                   name: 'Pending',
-//                   y: JSON.parse(this.pending_tot),
-//                 },
-//                 {
-//                   name: 'user_deleted_tot',
-//                   y: JSON.parse(this.user_deleted_tot),
-//                 },
-//                 {
-//                   name: 'resolution_in_progress_tot',
-//                   y: JSON.parse(this.resolution_in_progress_tot),
-//                 },
-//                 {
-//                   name: 'cannot_be_resolved_tot',
-//                   y: JSON.parse(this.cannot_be_resolved_tot),
-//                 },
-//                 {
-//                   name: 'verified_resolved_tot',
-//                   y: JSON.parse(this.verified_resolved_tot),
-//                 },
-//                 {
-//                   name: 'Assigned',
-//                   y: JSON.parse(this.assigned_tot),
-//                 },
-//                 {
-//                   name: 'On Hold',
-//                   y: JSON.parse(this.onhold_tot),
-//                 },
-//                 {
-//                   name: 'User Resolved',
-//                   y: JSON.parse(this.user_resolved_tot),
-//                 }
-//                 ]
-//               }]
-//             };
-//           }
-//         } else {
-//           this.data = '';
-//         }
-
-//       });
-    
-
-//   }
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -943,4 +1016,4 @@ export class ViewIssuesComponent implements OnInit {
     this.modal3.hide();
   }
 
- }
+}

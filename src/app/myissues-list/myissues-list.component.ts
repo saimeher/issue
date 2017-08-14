@@ -125,6 +125,7 @@ export class MyissuesListComponent implements OnInit {
     });
     this.taskeditForm.patchValue(item);
     this.modal1.show();
+    
   }
   close() {
     this.taskeditForm.reset();
@@ -163,6 +164,7 @@ export class MyissuesListComponent implements OnInit {
         console.log(data);
 
         // this.taskeditForm.reset();
+        this.getdetails();
         this.modal1.hide();
         // this.getdetails();
         // this.ngOnInit();
@@ -230,7 +232,7 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 370,
+              height: 340,
               width: 350,
               borderWidth: 1,
               borderRadius: 4,
@@ -389,7 +391,7 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 350,
+              height: 340,
               width: 350,
               borderWidth: 1,
               borderRadius: 4,
@@ -411,7 +413,7 @@ export class MyissuesListComponent implements OnInit {
             },
             plotOptions: {
               pie: {
-                size: 180,
+                size: 160,
                 allowPointSelect: true,
                 cursor: 'pointer',
                 dataLabels: {
@@ -559,7 +561,7 @@ export class MyissuesListComponent implements OnInit {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 350,
+                height: 340,
                 width: 350,
                 borderWidth: 1,
                 borderRadius: 4,
@@ -581,7 +583,7 @@ export class MyissuesListComponent implements OnInit {
               },
               plotOptions: {
                 pie: {
-                  size: 180,
+                  size: 160,
                   allowPointSelect: true,
                   cursor: 'pointer',
                   dataLabels: {
@@ -744,7 +746,7 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 350,
+              height: 340,
               width: 350,
               borderWidth: 1,
               borderRadius: 4,

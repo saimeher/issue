@@ -13,39 +13,37 @@
     <form (ngSubmit)="getSelIssueData()" method="post" [formGroup]="issues_form" novalidate>
       <div class="form-horizontal">
         <div class="form-group">
-          <div class="col-md-3">
-            <label>Domain</label>
-            <select formControlName="domain" class="form-control">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-2">
+                <label>Domain</label>
+                <select formControlName="domain" class="form-control">
               <option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>
               <!--<option selected value="verified_resolved">Verified Resolved</option>
               <option selected value="Electrical">Electrical</option>-->
-          </select>
+            </select>
+              </div>
+              <div class="col-md-3">
+                <label for="email">Location/Serial Number</label>
+                <input type="text" class="form-control" name="location" value="location" formControlName="location" />
+              </div>
+              <div class="col-md-2">
+                <label for="email">Impact/Problem</label>
+                <input type="text" name="problem" class="form-control" value="problem" formControlName="problem" />
+              </div>
+              <div class="col-md-2">
+                <label for="email">Issue Description</label>
+                <!--<input type="text" class="form-control" />-->
+                <textarea class="form-control" name="issue_desc" value="issue_desc" formControlName="issue_desc" style="resize: vertical;"></textarea>
+              </div>              
+              <div class="col-md-2">
+                <label class="control-label">file upload</label>
+                <input type="file" multiple name="photo" (change)="onChange($event)"/>
+              </div>
+            </div>
           </div>
-          <div class="col-md-3">
-            <label for="email">Location/Serial Number</label>
-            <input type="text" class="form-control" name="location" value="location" formControlName="location" />
-          </div>
-          <div class="col-md-2">
-            <label for="email">Impact/Problem</label>
-            <input type="text" name="problem" class="form-control" value="problem" formControlName="problem" />
-          </div>
-          <div class="col-md-2">
-            <label for="email">Issue Description</label>
-            <!--<input type="text" class="form-control" />-->
-            <textarea class="form-control" name="issue_desc" value="issue_desc" formControlName="issue_desc"></textarea>
-          </div>
-
-
-
-
-          <div class="col-md-2">
-            <label class="control-label">file upload</label>
-            <input type="file" multiple name="photo" (change)="onChange($event)" />
-          </div>
-
-
-          <div class="col-md-2">
-            <button type="submit" [disabled]="!issues_form.valid" class="btn btn-default btn-square col-md-6" style="margin-top: 25px;">Submit</button>
+          <div class="col-md-12">
+            <button type="submit" [disabled]="!issues_form.valid" class="btn btn-default btn-square pull-right" style="margin-top: 25px;">Submit</button>
           </div>
         </div>
       </div>
@@ -53,7 +51,6 @@
   </div>
 </div>
 <!--</div>-->
-
 <div class="portlet portlet-default">
   <div class="portlet-heading">
     <div class="portlet-title">
@@ -69,121 +66,110 @@
       <div class="form-group">
         <div class="col-md-3">
           <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" />
-
-          <!--<select class="form-group form-control ng-valid ng-dirty ng-touched" formcontrolname="seluserid" ng-reflect-name="seluserid">
-            <option value="ac" ng-reflect-value="ac">AC</option><option value="carpentary" ng-reflect-value="carpentary">Carpentry</option><option value="civil" ng-reflect-value="civil">Civil</option><option value="electrical" ng-reflect-value="electrical">Electrical</option><option value="gardening" ng-reflect-value="gardening">Gardening</option><option value="house_keeping" ng-reflect-value="house_keeping">House keeping</option><option value="infrastructure" ng-reflect-value="infrastructure">Infrastructure</option><option value="misc" ng-reflect-value="misc">Miscellaneous</option><option value="sanitation" ng-reflect-value="sanitation">Sanitation</option><option value="transportation" ng-reflect-value="transportation">Transportation</option><option value="water_supply" ng-reflect-value="water_supply">Water Supply</option>        
-          </select>-->
         </div>
-        <!--<div class="col-md-3">
-          <label for="email">Status</label>
-          <select class="form-control ng-valid ng-dirty ng-touched" formcontrolname="selstatus" ng-reflect-name="selstatus">
-            <option selected="" value="verified_resolved">Verified Resolved</option>
-            <option selected="" value="resolution_in_progress">Resolution in Progress</option>
-            <option value="pending">Pending</option>
-            <option value="cannot_be_resolved">Cannot be resolved</option>
-            <option value="user_deleted">User Deleted  </option> 
-            <option value="all">All </option> 
-          </select>
-          </div>-->
-        <!--<div class="col-md-2">
-            <button class="btn btn-primary col-md-6" style="margin-top: 25px;" type="submit">Submit</button>
-          </div>-->
       </div>
     </div>
     <div class="row">
-    <div class="col-md-12 tabel_overflow">
-      <!--<table class="table table-green table-bordered table-hover">-->
-      <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable"
-        [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-        <thead>
-          <tr>
-            <th>
-              <mfDefaultSorter by="insert_dt">Add Date</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
-            </th>
+      <div class="col-md-12 tabel_overflow">
+        <!--<table class="table table-green table-bordered table-hover">-->
+        <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+          [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+          <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter by="insert_dt">Add Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+              </th>
 
-            <th>
-              <mfDefaultSorter by="location">Location</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="problem">Problem</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
-            </th>
-            <th style="min-width: 90px;">
-              <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
-            </th>
+              <th>
+                <mfDefaultSorter by="location">Location</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="problem">Problem</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
+              </th>
+              <th style="min-width: 90px;">
+                <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
+              </th>
 
-            <th>
-              <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
-            </th>
+              <th>
+                <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
+              </th>
 
-            <th>
-              <mfDefaultSorter by="status"> Status</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="status"> Days</mfDefaultSorter>
-            </th>
-            <th>
-              <mfDefaultSorter by="status"> Images </mfDefaultSorter>
-            </th>
-           <th nowrap>
+              <th>
+                <mfDefaultSorter by="status"> Status</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="status"> Days</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="status"> Images </mfDefaultSorter>
+              </th>
+              <th nowrap>
                 Details if Edited
               </th>
-          </tr>
-        </thead>
-        <tbody *ngIf="mf.data.length != 0">
-          <tr *ngFor="let item of mf.data; let i=index;">
-            <td nowrap>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
-            <td>{{item.domain|titlecase}}</td>
+            </tr>
+          </thead>
+          <tbody *ngIf="mf.data.length != 0">
+            <tr *ngFor="let item of mf.data; let i=index;">
+              <td nowrap>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
+              <td>{{item.domain|titlecase}}</td>
 
-            <td>{{item.location}}</td>
-            <td>{{item.problem}}</td>
-            <td>{{item.issue_desc}}</td>
-            <td>{{item.repaired_on}}</td>
-            <td>{{item.priority}}</td>
+              <td>{{item.location}}</td>
+              <td>{{item.problem}}</td>
+              <td>{{item.issue_desc}}</td>
+              <td nowrap>{{item.repaired_on | date: 'dd-MM-yyyy'}}</td>
+              <td>{{item.priority}}</td>
 
-            <!--<td>{{item.status}}</td>-->
-            <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
-            <td nowrap *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
-            <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
-            <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
-            <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
-            <!--<td>{{-(item.days)}}-->
+              <!--<td>{{item.status}}</td>-->
+              <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
+              <td nowrap *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
+              <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
+              <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
+              <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
+              <td nowrap *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
+              <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
+              <td nowrap *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
 
-            <td *ngIf="item.days <= 0  && item.status == 'pending'">{{-(item.day)}} </td>
-            <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'">{{-(item.days)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'">{{-(item.day)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'">{{-(item.days)}}</td>
-            <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
-            <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-            <td nowrap>
-              <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
-              <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
-              <!--<a class="btn btn-danger btn-xs btn-square" (click)="delete(item)" >Delete</a>-->
+              <!--<td>{{-(item.days)}}-->
 
-            </td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="mf.data.length == 0">
-          <tr rowspan="2">
-            <td colspan="12">
-              <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="12">
-              <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+              <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
+              <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+              <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
+              <td nowrap>
+                <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
+                <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
+                <!--<a class="btn btn-danger btn-xs btn-square" (click)="delete(item)" >Delete</a>-->
+
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="mf.data.length == 0">
+            <tr rowspan="2">
+              <td colspan="12">
+                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="12">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
 </div>
