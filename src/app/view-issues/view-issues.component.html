@@ -9,18 +9,19 @@ td {
 <div class="portlet portlet-default">
   <div class="portlet-heading">
     <div class="portlet-title">
-      <h4> All Issues </h4>
+      <h4>   Issue Resolution Report </h4>
     </div>
     <div class="clearfix"></div>
   </div>
   <div class="portlet-body">
     <form (ngSubmit)="getSelIssueData()" method="post" class="form-horizontal" [formGroup]="issues_form" novalidate>
+      <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label>Category<span style="color:red">*</span></label>
 
-            <select formControlName="seluserid" class="form-group form-control" [(ngModel)]="selecteddomain" (change)="selCategory($event)">                
+            <select formControlName="seluserid" class="form-control" [(ngModel)]="selecteddomain" (change)="selCategory($event)">                
                <option value="all">All </option> 
               <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
             <!-- <option selected  value="all">All</option> -->
@@ -29,7 +30,7 @@ td {
                     <span *ngIf="issues_forms.get('seluserid').errors.required" style="color:red">  Please enter type </span>
                 </span>-->
           </div>
-          <div class="col-md-2">
+          <div class="col-md-3">
             <label for="email">Status <span style="color:red">*</span></label>
             <!-- <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" /> -->
             <select class=" form-control" formControlName="selstatus" [(ngModel)]="selecteddomain1" (change)="selStatus($event,'checked')">
@@ -77,38 +78,53 @@ td {
 
         </div>
       </div>
-
+      </div>
     </form>
+    <!-- <div class="row" *ngIf="table">
+      <label>No data Found</label>
+    </div> -->
+    <!-- <select class=" form-control" formControlName="chart" [(ngModel)]="selectchart">
+               
+               <option value="pie">Pie</option> 
+                <option value="line">Line</option>
+                <option value="bar">Bar  </option>
+                 <option value="spline">Spline</option>
+              
+                   
+              </select> -->
+    <style>
+      .t-padding {
+        padding: 3px;
+      }
+    </style>
     <div class="row">
       <div *ngIf="!summarydata" class="col-lg-7">
         <div class="">
-          <div style="padding-bottom: 25px;">
-            <ul class="topstats">
-              <li class="right-border li-padding" style="margin-left: -37px;">
-                <span class="title"><strong>Pending</strong></span>
-                <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{pending_tot}}</h4>
-                <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="right-border li-padding" style="padding: 0px 32px 0px 32px;">
-                <span class="title"><strong>Assigned</strong></span>
-                <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
-                <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
-                <span class="title"><strong>Resolution In-Progress</strong></span>
-                <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
-                <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="li-padding">
-                <span class="title"><strong>Verified &  Resolved</strong></span>
-                <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
-                <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-            </ul>
-          </div>
+          <ul class="topstats">
+            <li class="right-border li-padding" style="margin-left: -37px;">
+              <span class="title"><strong>Pending</strong></span>
+              <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{pending_tot}}</h4>
+              <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+            </li>
+            <li class="right-border li-padding" style="padding: 0px 32px 0px 32px;">
+              <span class="title"><strong>Assigned</strong></span>
+              <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
+              <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+            </li>
+            <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+              <span class="title"><strong>Resolution In-Progress</strong></span>
+              <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
+              <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+            </li>
+            <li class="li-padding">
+              <span class="title"><strong>Verified &  Resolved</strong></span>
+              <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
+              <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+            </li>
+          </ul>
         </div>
         <div class="row">
-          <div style="padding-bottom: 25px;" class="col-lg-12">
+          <div class="col-lg-12">
             <ul class="topstats">
               <li class="li-padding right-border" style="margin-left: -37px;">
                 <span class="title"><strong>User  Resolved</strong></span>
@@ -144,90 +160,103 @@ td {
         </div>
         <div class="row">
           <div class="col-lg-12" *ngIf="avgtable">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works in days </td>
+            <table class="table table-bordered t-padding">
+              <thead class="t-padding">
+                <tr class="t-padding">
+                  <td colspan="3" style="text-align: center; background-color: #eee" class="t-padding"><strong> Resolution Time for {{selecteddomain |titlecase}} Works in days </strong></td>
                 </tr>
               </thead>
-              <thead>
-                  <tr>
-                    <th style="text-align: center;">Minimum</th>
-                    <th style="text-align: center;">Average</th>
-                    <th style="text-align: center;">Maximum</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <tr *ngFor="let ad of avgdata;">
-                    <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
-                      <td *ngIf ="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
-                     <td *ngIf ="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+              <thead class="t-padding">
+                <tr class="t-padding">
+                  <th style="text-align: center;" class="t-padding">Minimum</th>
+                  <th style="text-align: center;" class="t-padding">Average</th>
+                  <th style="text-align: center;" class="t-padding">Maximum</th>
+                </tr>
+              </thead>
+              <tbody  class="t-padding">
 
-                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
-                     <td  *ngIf ="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
-                      <td *ngIf ="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
+                <tr *ngFor="let ad of avgdata;"  class="t-padding">
+                  <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
+                  <td *ngIf="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.minimum}}</td>
+                  <td *ngIf="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
 
-                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
-                    <td *ngIf ="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
-                    <td *ngIf ="ad.maximum == null"  style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
-                  </tr>
-                </tbody>
+                  <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
+                  <td *ngIf="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.average}}</td>
+                  <td *ngIf="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
+
+                  <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
+                  <td *ngIf="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.maximum}}</td>
+                  <td *ngIf="ad.maximum == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
-
       </div>
       <div *ngIf="summarydata" class="col-lg-7">
         <div class="">
-          <div style="padding-bottom: 25px;">
-            <ul class="topstats">
-              <li class="right-border li-padding" style="margin-left: -37px;">
-                <span class="title"><strong>ac total</strong></span>
-                <h4 *ngIf="pending_tot!=null" style="text-align: center;" Class="color-up title1"> {{ac_total}}</h4>
-                <h3 *ngIf="pending_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="right-border li-padding" style="padding: 0px 32px 0px 32px;">
-                <span class="title"><strong>Assigned</strong></span>
-                <h4 *ngIf="assigned_tot!=null" style="text-align: center;" Class="color-up title1"> {{assigned_tot}} </h4>
-                <h3 *ngIf="assigned_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
-                <span class="title"><strong>Resolution In-Progress</strong></span>
-                <h4 *ngIf="resolution_in_progress_tot!=null" style="text-align: center;" Class="color-up title1"> {{resolution_in_progress_tot}} </h4>
-                <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-              <li class="li-padding">
-                <span class="title"><strong>Verified &  Resolved</strong></span>
-                <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
-                <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
-              </li>
-            </ul>
-          </div>
+          <ul class="topstats">
+            <li class="right-border li-padding" style="margin-left: -37px;">
+              <span class="title"><strong>AC</strong></span>
+              <h4 *ngIf="ac_total!=null" style="text-align: center;" Class="color-up title1"> {{ac_total}}</h4>
+              
+            </li>
+            <li class="right-border li-padding">
+              <span class="title"><strong>Carpentary</strong></span>
+              <h4 *ngIf="carpentary_total!=null" style="text-align: center;" Class="color-up title1"> {{carpentary_total}} </h4>
+             
+            </li>
+            <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+              <span class="title"><strong>Civil</strong></span>
+              <h4 *ngIf="civil_total!=null" style="text-align: center;" Class="color-up title1"> {{civil_total}} </h4>
+              
+            </li>
+            <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+              <span class="title"><strong>Electrical</strong></span>
+              <h4 *ngIf="electrical_total!=null" style="text-align: center; " Class="color-up title1"> {{electrical_total}}</h4>
+            
+            </li>
+            <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
+              <span class="title"><strong>Miscellaneous</strong></span>
+              <h4 *ngIf="misc_total!=null" style="text-align: center; " Class="color-up title1"> {{misc_total}}</h4>
+            
+            </li>
+            <li class="li-padding" style="padding: 0 14px 0 14px;">
+              <span class="title"><strong>Transportation </strong></span>
+              <h4 *ngIf="transportation_total!=null" style="text-align: center; " Class="color-up title1"> {{transportation_total}}</h4>
+            
+            </li>
+            
+          </ul>
         </div>
         <div class="row">
-          <div style="padding-bottom: 25px;" class="col-lg-12">
+          <div class="col-lg-12">
             <ul class="topstats">
-              <li class="li-padding right-border" style="margin-left: -37px;">
-                <span class="title"><strong>User  Resolved</strong></span>
-                <h4 *ngIf="user_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_resolved_tot}} </h4>
-                <h3 *ngIf="user_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              <li class="li-padding right-border" style="margin-left: -37px; padding: 0px 14px 0 14px;">
+                <span class="title"><strong>Gardening </strong></span>
+                <h4 *ngIf="gardening_total!=null" style="text-align: center;" Class="color-up title1"> {{gardening_total}} </h4>
+                
               </li>
-              <li class="right-border li-padding">
-                <span class="title"><strong>User Deleted</strong></span>
-                <h4 *ngIf="user_deleted_tot!=null" style="text-align: center;" Class="color-up title1"> {{user_deleted_tot}} </h4>
-                <h3 *ngIf="user_deleted_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              <li class="right-border li-padding" style="padding: 0 12px 0 12px;">
+                <span class="title"><strong>Infrastructure </strong></span>
+                <h4 *ngIf="infrastructure_total!=null" style="text-align: center;" Class="color-up title1"> {{infrastructure_total}} </h4>
+              
               </li>
 
-              <li class="right-border li-padding">
-                <span class="title"><strong>On Hold</strong></span>
-                <h4 *ngIf="onhold_tot!=null" style="text-align: center; " Class="color-up title1"> {{onhold_tot}} </h4>
-                <h3 *ngIf="onhold_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              <li class="right-border li-padding" style="padding: 0 12px 0 12px;">
+                <span class="title"><strong>Sanitation</strong></span>
+                <h4 *ngIf="sanitation_total!=null" style="text-align: center; " Class="color-up title1"> {{sanitation_total}} </h4>
+                
               </li>
-              <li class="right-border li-padding" style="padding: 0 14px 0 14px;">
-                <span class="title"><strong>Cannot be Resolved</strong></span>
-                <h4 *ngIf="cannot_be_resolved_tot!=null" style="text-align: center;" Class="color-up title1"> {{cannot_be_resolved_tot}}</h4>
-                <h3 *ngIf="cannot_be_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
+              <li class="right-border li-padding">
+                <span class="title"><strong>Water Supply </strong></span>
+                <h4 *ngIf="water_supply_total!=null" style="text-align: center;" Class="color-up title1"> {{water_supply_total}}</h4>
+                
+              </li>
+              <li class="right-border li-padding">
+                <span class="title"><strong>House Keeping </strong></span>
+                <h4 *ngIf="house_keeping_total!=null" style="text-align: center;" Class="color-up title1"> {{house_keeping_total}}</h4>
+                
               </li>
               <!--<option value="assigned">Assigned  </option>
                   <option value="onhold">On Hold  </option>
@@ -242,41 +271,40 @@ td {
         </div>
         <div class="row">
           <div class="col-lg-12" *ngIf="avgtable">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <td colspan="3">Resolution Time for {{selecteddomain |titlecase}} Works in days </td>
+            <table class="table table-bordered t-padding">
+              <thead class="t-padding">
+                <tr class="t-padding">
+                  <td colspan="3" style="text-align: center; background-color: #eee" class="t-padding"><strong> Resolution Time for {{selecteddomain |titlecase}} Works in days </strong></td>
                 </tr>
               </thead>
-              <thead>
-                  <tr>
-                    <th style="text-align: center;">Minimum</th>
-                    <th style="text-align: center;">Average</th>
-                    <th style="text-align: center;">Maximum</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  <tr *ngFor="let ad of avgdata;">
-                    <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
-                      <td *ngIf ="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td>
-                     <td *ngIf ="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td> 
+              <thead class="t-padding">
+                <tr class="t-padding">
+                  <th style="text-align: center;" class="t-padding">Minimum</th>
+                  <th style="text-align: center;" class="t-padding">Average</th>
+                  <th style="text-align: center;" class="t-padding">Maximum</th>
+                </tr>
+              </thead>
+              <tbody  class="t-padding">
 
-                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
-                     <td  *ngIf ="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td>
-                      <td *ngIf ="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
+                <tr *ngFor="let ad of avgdata;"  class="t-padding">
+                  <!-- <td  style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.minimum}}</td> -->
+                  <td *ngIf="ad.minimum != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.minimum}}</td>
+                  <td *ngIf="ad.minimum  == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
 
-                    <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
-                    <td *ngIf ="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td>
-                    <td *ngIf ="ad.maximum == null"  style="text-align: center; font-weight: bold; color: #1b45e6;">0</td>
-                  </tr>
-                </tbody>
+                  <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.average}}</td> -->
+                  <td *ngIf="ad.average != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.average}}</td>
+                  <td *ngIf="ad.average == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
+
+                  <!-- <td style="text-align: center; font-weight: bold; color: #1b45e6;">{{ad.maximum}}</td> -->
+                  <td *ngIf="ad.maximum != null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">{{ad.maximum}}</td>
+                  <td *ngIf="ad.maximum == null" style="text-align: center; font-weight: bold; color: #1b45e6; font-size: 17px;"  class="t-padding">0</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
-
       </div>
-      <div *ngIf="!table" class="col-lg-5" style="padding-bottom: 25px; padding-left: 0px;">
+      <div *ngIf="!table" class="col-lg-5">
         <chart [options]="options"></chart>
       </div>
     </div>
@@ -340,7 +368,7 @@ td {
             <!--[ngClass]="item.status == 'pending' ? 'danger' : ''"-->
             <tr *ngFor="let item of mf.data; let i=index;">
 
-              <td>{{item.insert_dt|date:'dd-MM-yyyy'}}</td>
+              <td>{{item.insert_dt|date:'dd-MMM-yyyy'}}</td>
               <td>{{item.domain|titlecase}}</td>
               <td>{{item.issue_desc}}</td>
               <td>{{item.location}}</td>
@@ -354,9 +382,9 @@ td {
               <td *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
               <td *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
               <td *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
-               <td *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
-             <td  *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
-             <td  *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
+              <td *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
+              <td *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
+              <td *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
 
 
 

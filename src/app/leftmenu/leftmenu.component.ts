@@ -16,6 +16,7 @@ gender = localStorage.getItem('gender');
 dp =   localStorage.getItem('dp');
 role;
 img;
+utype;
 
   constructor(public api:ApiService,public router:Router) {
     // this.api.getRole(this.user_id).subscribe(data=>{
@@ -72,7 +73,8 @@ img;
          localStorage.setItem('role',data.data.role);
          if(this.role=='adm'){
           this.api.livePage='viewissues';
-         }else{
+         }
+        else{
            this.api.livePage='addissue';
          }
         }
@@ -82,18 +84,34 @@ img;
      
     
   }
-   logout(){
+
+  // getRole(){
+  //   console.log(this.reg_no);
+    
+  //     this.api.getRole(this.reg_no).subscribe(data=>{
+  //     if(data){
+  //       console.log(data);
+  //      // console.log(data.role,'hello');
+  //      this.role=data.role;
+  //        localStorage.setItem('role',data.role);
+  //    }
+  //   });
+  //   console.log('thell');
+    
+  // }
+  //  logout(){
    
-      // console.log(localStorage.getItem('currentUser'));
-      // console.log(localStorage.removeItem('currentUser'));
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('reg_no');
-        localStorage.removeItem('name');
-        localStorage.removeItem('role');
-        localStorage.removeItem('gender');
-        localStorage.removeItem('dp');
-      // this.router.navigate(['login']);
+  //     // console.log(localStorage.getItem('currentUser'));
+  //     // console.log(localStorage.removeItem('currentUser'));
+  //       localStorage.removeItem('currentUser');
+  //       localStorage.removeItem('reg_no');
+  //       localStorage.removeItem('name');
+  //       localStorage.removeItem('role');
+  //       localStorage.removeItem('gender');
+  //       localStorage.removeItem('dp');
+  //        localStorage.removeItem('utype');
+  //     // this.router.navigate(['login']);
    
       
-  }
+  // }
 }

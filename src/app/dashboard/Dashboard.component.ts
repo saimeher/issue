@@ -8,7 +8,7 @@ import {ApiService} from '../api.service';
 })
 export class DashboardComponent implements OnInit {
 reg_no=localStorage.getItem('reg_no');
- 
+role; 
     constructor(public router:Router,public api:ApiService,private activeR:ActivatedRoute) {
       // console.log(localStorage.getItem('currentUser'));
       // this.getRole();
@@ -20,15 +20,13 @@ reg_no=localStorage.getItem('reg_no');
       this.api.livePage=params['livePage'];
       console.log(params['livePage']);
       console.log(this.api.livePage);
-     
-      
+          
     });    
   }
 
-  role;
+  
   getRole(){
-    console.log(this.reg_no);
-    
+      
       this.api.getRole(this.reg_no).subscribe(data=>{
        if(data.data){
           console.log(data.data);
@@ -37,19 +35,22 @@ reg_no=localStorage.getItem('reg_no');
           localStorage.setItem('role','other');
           this.role='other';
            this.api.livePage='addissue';
-        }else{
+        }
+        else{
         this.role=data.data.role;
          localStorage.setItem('role',data.data.role);
          if(this.role=='adm'){
           this.api.livePage='viewissues';
-         }else{
+         }
+        else
+          {
            this.api.livePage='addissue';
          }
         }
       
      }
     });
-    console.log('thell');
+   
     
   }
    sidebarchage(type:string){

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, Form, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { RouterModule, Routes, Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -31,6 +32,11 @@ import { UploadService} from './upload.service';
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
+import {CalendarModule} from 'primeng/primeng';
+import { AddroleComponent } from './addrole/addrole.component';
+import { AddDomainComponent } from './add-domain/add-domain.component';
+import {MultiSelectModule} from 'primeng/primeng';
+
  declare var require: any;
 
 export function highchartsFactory() {
@@ -58,7 +64,9 @@ export function highchartsFactory() {
     ModalComponent,
     //RaiseIssueComponent,
      AddissueComponent,
-    MyissuesListComponent
+    MyissuesListComponent,
+  AddroleComponent,
+    AddDomainComponent
    // UrlService,
     // DataService,
    // AuthGuard,
@@ -67,6 +75,7 @@ export function highchartsFactory() {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
@@ -76,7 +85,10 @@ export function highchartsFactory() {
     DatePickerModule,
     //ChartModule.forRoot(require('highcharts')),
     MyDatePickerModule ,
-    ChartModule
+    ChartModule,
+    CalendarModule,
+    MultiSelectModule
+    
   ],
   providers: [ApiService,UrlService,AuthGuard,UploadService,{ provide: HighchartsStatic,
       useFactory: highchartsFactory}],

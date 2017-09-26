@@ -4,59 +4,87 @@
         <ul id="side" class="nav navbar-nav side-nav">
             <!-- begin SIDE NAV USER PANEL -->
             <li class="side-user hidden-xs">
-                <img class="img-circle" src="{{img}}"   height="150px" alt="">
+                <img class="img-circle" src="{{img}}" height="150px" alt="">
                 <p class="welcome">
                     <i class="fa fa-key"></i> Logged in as
                 </p>
                 <p class="name tooltip-sidebar-logout">
-                    {{name}}
+                    <!--{{name}}
                     <span class="last-name"></span> <a style="color: inherit" class="logout_open" (click)="logout()" data-toggle="tooltip"
-                        data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>
+                        data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>-->
+                    <span class="last-name">{{name}}</span> <a style="color: inherit" class="logout_open" href="#logout"
+                        data-toggle="tooltip" data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>
                 </p>
                 <div class="clearfix"></div>
             </li>
-             
+
             <li>
                 <a href="http://210.16.79.137/raghuerp"><i class="fa fa-dashboard"></i> Dashboard</a>
             </li>
+            <li *ngIf="utype=='adm'">
+                <a [ngClass]="{'active': (page=='staff')}" href="http://210.16.79.137/raghuerp/employee" s><i class="fa fa-users"></i> Employees</a>
+            </li>
+            <!-- For user -->
+            <li *ngIf="utype=='stf'">
+                <a [ngClass]="{'active': (page=='user')}" href="http://210.16.79.137/raghuerp/employee_staff"><i class="fa fa-users"></i> Personal Details</a>
+            </li>
+            <li *ngIf="utype=='std'">
+                <a [ngClass]="{'active': (page=='userstudent')}" href="http://210.16.79.137/raghuerp/userstudent"><i class="fa fa-users"></i> Personal Details</a>
+            </li>
+            <!-- For Students -->
+            <li *ngIf="utype=='adm'">
+                <a [ngClass]="{'active': (page=='students')}" href="http://210.16.79.137/raghuerp/students"><i class="fa fa-users"></i> Students </a>
+            </li>
+
+
             <li>
                 <a href="http://210.16.79.137/raghuerp/library"><i class="fa fa-book"></i> Library</a>
             </li>
-            
+
             <li class="panel active">
                 <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#pages">
                             <i class="fa fa-files-o"></i> Issue Register <i class="fa fa-caret-down"></i>
                         </a>
                 <ul class="nav" id="pages">
 
-                  <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')" [ngClass]="this.api.livePage == 'viewissues'?'active':''">
-                    <i class="fa fa-angle-double-right"></i>    View Issues </a>
+                    <li *ngIf="role=='adm'"> <a (click)="sidebarchage('viewissues')" [ngClass]="this.api.livePage == 'viewissues'?'active':''">
+                    <i class="fa fa-angle-double-right"></i>    View Reports </a>
                     </li>
-
+                    <li *ngIf="role=='adm'"> <a (click)="sidebarchage('addrole')" [ngClass]="this.api.livePage == 'addrole'?'active':''">
+                    <i class="fa fa-angle-double-right"></i>   Add Role </a>
+                    </li>
+                    <li *ngIf="role =='adm'"> <a (click)="sidebarchage('add_domain')" [ngClass]="this.api.livePage == 'add_domain'?'active':''">
+                    <i class="fa fa-angle-double-right"></i>   Add Domain </a>
+                    </li>
                     <!--<li *ngIf="role=='stf'"> <a (click)="sidebarchage('addissue')">-->
-                        <li *ngIf="role =='stf' "> <a  (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''" >
-                    <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
-                    </li> 
-                      <li *ngIf="role =='other' "> <a  (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''" >
+                    <li *ngIf="role =='stf' "> <a (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
                     </li>
-                      <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')" [ngClass]="this.api.livePage == 'myissues'?'active':''">
+                    <li *ngIf="role =='other' "> <a (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''">
+                    <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>
+                    </li>
+                    <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')" [ngClass]="this.api.livePage == 'myissues'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    View All Issues </a>
                     </li>
- 
-                    
+
+
+
                 </ul>
             </li>
 
-            
 
-                <li>
-                    <a href="http://210.16.79.137/raghuerp/leavesystem"><i class="fa fa-file-o"></i> Leave System</a>
-                </li>
-                <li>
-                    <a href="http://210.16.79.137/raghuerp/grievance"><i class="fa fa-comments"></i> Grievances & Complaints</a>
-                </li>
-                
+
+            <li>
+                <a href="http://210.16.79.137/raghuerp/leavesystem"><i class="fa fa-file-o"></i> Leave System</a>
+            </li>
+
+            <li>
+                <a href="http://210.16.79.137/raghuerp/grievance"><i class="fa fa-comments"></i> Grievances & Complaints</a>
+            </li>
+            <li>
+                <a href="http://210.16.79.137/raghuerp/mom"><i class="fa fa-file"></i> MOMs</a>
+            </li>
+
         </ul>
         <!-- /.side-nav -->
     </div>

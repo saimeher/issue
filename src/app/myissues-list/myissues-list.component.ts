@@ -57,12 +57,40 @@ export class MyissuesListComponent implements OnInit {
   bardetail: Object;
   avgtable = false;
   avgdata;
+
+
+  r = 1;
+  ac;
+  ac_total;
+  carpentary;
+  carpentary_total;
+  electrical;
+  electrical_total;
+  civil;
+  civil_total;
+  misc;
+  misc_total;
+  infrastructure;
+  infrastructure_total;
+  transportation;
+  transportation_total;
+  gardening;
+  gardening_total;
+  sanitation;
+  sanitation_total;
+  water_supply;
+  water_supply_total;
+  house_keeping;
+  house_keeping_total;
+  summarydata = false;
+
+
   // selecteddomain:any;
   selecteddomain1 = "all";
   selecteddomain = "all";
   // value1:any;
   //img_url = "http://localhost/issue_register/uploads";
-  img_url = "http://210.16.79.137/issueregister/server/uploads";
+  img_url = "http://210.16.79.137/raghuerp/issueregister/server/uploads";
   public filterQuery = "";
   public rowsOnPage = 10;
   public sortBy = "name";
@@ -88,14 +116,14 @@ export class MyissuesListComponent implements OnInit {
       priority: [''],
       status: [''],
       repaired_on: ['', [Validators.required]],
-      repaired_by: ['', [Validators.required]],
+      repaired_by: [''],
       date_of_resolution: ['', [Validators.required]],
       notes: [],
       did: []
     });
 
     this.getDomainsbyId();
-    this.getdetails();
+     this.getdetails();
   }
   by;
   Repaired_on1;
@@ -108,13 +136,13 @@ export class MyissuesListComponent implements OnInit {
     if (item.repaired_on != null) {
       this.repaired_onn = item.repaired_on
     } else {
-      this.repaired_onn = "YYYY-MM-DD"
+      this.repaired_onn = new Date();
     }
 
     if (item.date_of_resolution != null) {
       this.date_of_resolutionn = item.date_of_resolution
     } else {
-      this.date_of_resolutionn = "YYYY-MM-DD"
+      this.date_of_resolutionn = new Date();
     }
     this.by = item.raised_by;
     this.taskeditForm.patchValue({
@@ -125,40 +153,16 @@ export class MyissuesListComponent implements OnInit {
     });
     this.taskeditForm.patchValue(item);
     this.modal1.show();
-    
+
   }
   close() {
     this.taskeditForm.reset();
     this.modal1.hide()
   }
   editTask() {
-    let data = {};
-    let s = this.taskeditForm.value.repaired_on._d;
-    console.log(s.toString().substring(0, 24));
+   
 
-    console.log(this.taskeditForm.value.repaired_on._d);
-    console.log(this.taskeditForm.value);
-
-    data['did'] = this.taskeditForm.value.did;
-    data['status'] = this.taskeditForm.value.status;
-    data['priority'] = this.taskeditForm.value.priority;
-    if (this.taskeditForm.value.repaired_on._d == 'Invalid Date') {
-      data['repaired_on'] = this.Repaired_on1;
-    } else {
-      data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
-    }
-    if (this.taskeditForm.value.date_of_resolution._d == 'Invalid Date') {
-      data['date_of_resolution'] = this.date_of_resolution1;
-    } else {
-      data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
-    }
-    //data['repaired_on'] = this.taskeditForm.value.repaired_on._d;
-    data['repaired_by'] = this.taskeditForm.value.repaired_by;
-    // data['date_of_resolution'] = this.taskeditForm.value.date_of_resolution._d;
-    data['notes'] = this.taskeditForm.value.notes;
-    console.log(data);
-
-    this.api.UPDATEISSUE(data)
+    this.api.UPDATEISSUE(this.taskeditForm.value)
       .subscribe(
       data => {
         console.log(data);
@@ -182,7 +186,7 @@ export class MyissuesListComponent implements OnInit {
     this.onhold_tot = '0';
     this.user_resolved_tot = '0';
     this.total = '0';
-
+    this.summarydata = false;
     this.api.getdetails(this.reg_no).subscribe(alldata => {
       if (alldata) {
         console.log(alldata.data);
@@ -232,8 +236,8 @@ export class MyissuesListComponent implements OnInit {
               '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
             chart: {
 
-              height: 340,
-              width: 350,
+              height: 320,
+              width: 400,
               borderWidth: 1,
               borderRadius: 4,
               borderColor: '#2C3E50 ',
@@ -268,37 +272,37 @@ export class MyissuesListComponent implements OnInit {
               colorByPoint: true,
               data: [
                 {
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
-              },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
-              },
-              {
-                name: 'Resolution in Progress',
-                y: JSON.parse(this.resolution_in_progress_tot),
-              },
-               {
-                name: 'Verified Resolved',
-                y: JSON.parse(this.verified_resolved_tot),
-              },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
-              },
-              {
-                name: 'User Deleted',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-               {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'Cannot be Resolved',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              }        
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                }
               ]
             }]
           };
@@ -306,14 +310,14 @@ export class MyissuesListComponent implements OnInit {
 
       }
       if (alldata.data2 == 'NoAvgData') {
-          this.avgtable = false;
+        this.avgtable = false;
 
-        } else {
-          this.avgtable = true;
-          this.avgdata = alldata.data2;
-          console.log(this.avgdata);
+      } else {
+        this.avgtable = true;
+        this.avgdata = alldata.data2;
+        console.log(this.avgdata);
 
-        }
+      }
     })
   }
   domainsbyid;
@@ -322,7 +326,6 @@ export class MyissuesListComponent implements OnInit {
       if (data) {
         this.domainsbyid = data;
         console.log(this.domainsbyid);
-
       }
     })
   }
@@ -333,11 +336,26 @@ export class MyissuesListComponent implements OnInit {
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
     this.pending_tot = '0';
+    //  this.pending_tot = 0;
     this.user_deleted_tot = '0';
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
     this.user_resolved_tot = '0';
+    this.assigned_tot = '0';
+    this.onhold_tot = '0';
+    this.user_resolved_tot = '0';
+    this.gardening_total = '0';
+    this.ac_total = '0';
+    this.carpentary_total = '0';
+    this.electrical_total = '0';
+    this.civil_total = '0';
+    this.misc_total = '0';
+    this.transportation_total = '0';
+    this.sanitation_total = '0';
+    this.infrastructure_total = '0';
+    this.water_supply_total = '0';
+    this.house_keeping_total = '0';
     this.selection['category'] = this.issues_form.value.seluserid;
     this.selection['status'] = this.issues_form.value.selstatus;
     this.selection['from_date'] = this.from_date;
@@ -357,109 +375,258 @@ export class MyissuesListComponent implements OnInit {
           console.log(this.data2);
           this.data2.forEach(element => {
             this.total = element.t;
-            if (element.status == 'cannot_be_resolved') {
-              this.cannot_be_resolved_tot = element.tot;
+            if (this.issues_form.value.selstatus != 'all' && this.selecteddomain == 'all') {
+
+              this.summarydata = true;
+
+              if (element.status == 'ac') {
+                this.ac_total = element.tot;
+              }
+              if (element.status == 'carpentary') {
+                //  this.carpentary=  element.status;
+                this.carpentary_total = element.tot;
+              }
+              if (element.status == 'electrical') {
+                // this.electrical=  element.status;
+                this.electrical_total = element.tot;
+              }
+              if (element.status == 'civil') {
+                //this.civil=  element.status;
+                this.civil_total = element.tot;
+              }
+              if (element.status == 'misc') {
+                // this.misc=  element.status;
+                this.misc_total = element.tot;
+              }
+              if (element.status == 'transportation') {
+                // this.transportation=  element.status;
+                this.transportation_total = element.tot;
+              }
+              if (element.status == 'gardening') {
+                // this.gardening=  element.status;
+                this.gardening_total = element.tot;
+              }
+              if (element.status == 'infrastructure') {
+                // this.infrastructure=  element.status;
+                this.infrastructure_total = element.tot;
+              }
+              if (element.status == 'sanitation') {
+                // this.sanitation=  element.status;
+                this.sanitation_total = element.tot;
+              }
+              if (element.status == 'water_supply') {
+                // this.water_supply=  element.status;
+                this.water_supply_total = element.tot;
+              }
+              if (element.status == 'house_keeping') {
+                // this.house_keeping=  element.status;
+                this.house_keeping_total = element.tot;
+              }
+
+
             }
-            if (element.status == 'pending') {
-              this.pending_tot = element.tot;
-            }
-            if (element.status == 'resolution_in_progress') {
-              this.resolution_in_progress_tot = element.tot;
-            }
-            if (element.status == 'user_deleted') {
-              this.user_deleted_tot = element.tot;
-            }
-            if (element.status == 'verified_resolved') {
-              this.verified_resolved_tot = element.tot;
-            }
-            if (element.status == 'assigned') {
-              this.assigned_tot = element.tot;
-            }
-            if (element.status == 'onhold') {
-              this.onhold_tot = element.tot;
-            }
-            if (element.status == 'user_resolved') {
-              this.user_resolved_tot = element.tot;
+            else {
+              if (element.status == 'cannot_be_resolved') {
+                this.cannot_be_resolved_tot = element.tot;
+              }
+              if (element.status == 'pending') {
+                this.pending_tot = element.tot;
+              }
+              if (element.status == 'resolution_in_progress') {
+                this.resolution_in_progress_tot = element.tot;
+              }
+              if (element.status == 'user_deleted') {
+                this.user_deleted_tot = element.tot;
+              }
+              if (element.status == 'verified_resolved') {
+                this.verified_resolved_tot = element.tot;
+              }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              if (element.status == 'user_resolved') {
+                this.user_resolved_tot = element.tot;
+              }
             }
           });
-          this.options = {
-            credits: {
-              enabled: false
-            },
 
-            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-            chart: {
+          if (this.issues_form.value.selstatus != 'all' && this.selecteddomain == 'all') {
+            this.options = {
+              credits: {
+                enabled: false
+              },
 
-              height: 340,
-              width: 350,
-              borderWidth: 1,
-              borderRadius: 4,
-              borderColor: '#2C3E50 ',
-              plotBackgroundColor: null,
-              plotBorderWidth: null,
-              plotShadow: false,
-              type: 'pie',
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
 
-            },
-            exporting: {
+                height: 320,
+                width: 400,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
 
 
-              enabled: false
-            },
-            title: false,
-            tooltip: {
-               pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
-            },
-            plotOptions: {
-              pie: {
-                size: 160,
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                  enabled: true
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 180,
+                  allowPointSelect: false,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: true
+                  },
+                  showInLegend: false
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Ac',
+                  y: JSON.parse(this.ac_total),
                 },
-                showInLegend: false
-              }
-            },
-            series: [{
-              name: 'Total',
-              colorByPoint: true,
-              data: [{
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
+                {
+                  name: 'Carpentary',
+                  y: JSON.parse(this.carpentary_total),
+                },
+                {
+                  name: 'Electrical',
+                  y: JSON.parse(this.electrical_total),
+                },
+                {
+                  name: 'Civil',
+                  y: JSON.parse(this.civil_total),
+                },
+                {
+                  name: 'Miscellaneous',
+                  y: JSON.parse(this.misc_total),
+                },
+                {
+                  name: 'Infrastructure',
+                  y: JSON.parse(this.infrastructure_total),
+                },
+                {
+                  name: 'Transportation',
+                  y: JSON.parse(this.transportation_total),
+                },
+                {
+                  name: 'Gardening',
+                  y: JSON.parse(this.gardening_total),
+                },
+                {
+                  name: 'Sanitation',
+                  y: JSON.parse(this.sanitation_total),
+                },
+                {
+                  name: 'Water Supply',
+                  y: JSON.parse(this.water_supply_total),
+                },
+                {
+                  name: 'House Keeping',
+                  y: JSON.parse(this.house_keeping_total),
+                }
+                ]
+              }]
+
+            };
+
+          }
+          else {
+            this.options = {
+              credits: {
+                enabled: false
               },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
+
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
+
+                height: 320,
+                width: 400,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
               },
-              {
-                name: 'Resolution in Progress',
-                y: JSON.parse(this.resolution_in_progress_tot),
+              exporting: {
+
+
+                enabled: false
               },
-               {
-                name: 'Verified Resolved',
-                y: JSON.parse(this.verified_resolved_tot),
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
               },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
+              plotOptions: {
+                pie: {
+                  size: 160,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: true
+                  },
+                  showInLegend: false
+                }
               },
-              {
-                name: 'User Deleted',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-               {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'Cannot be Resolved',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              }
-              ]
-            }]
-          };
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                }
+                ]
+              }]
+            };
+          }
         }
         if (data.data2 == 'NoAvgData') {
           this.avgtable = false;
@@ -489,6 +656,7 @@ export class MyissuesListComponent implements OnInit {
       from_date: '',
       to_date: ''
     })
+    this.summarydata = false;
     console.log($event.target.value);
     this.data = '';
     this.total = '0';
@@ -506,7 +674,7 @@ export class MyissuesListComponent implements OnInit {
       'reg_no': this.reg_no
     }
     let value1 = $event.target.value;
-    
+
     this.selectvalue = $event.target.value;
 
     if (value1 == "all") {
@@ -561,8 +729,8 @@ export class MyissuesListComponent implements OnInit {
                 '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
               chart: {
 
-                height: 340,
-                width: 350,
+                height: 320,
+                width: 400,
                 borderWidth: 1,
                 borderRadius: 4,
                 borderColor: '#2C3E50 ',
@@ -590,16 +758,16 @@ export class MyissuesListComponent implements OnInit {
                     enabled: true
                   },
                   showInLegend: false,
-                  
-              
-              
+
+
+
                 },
-               
-                 
+
+
               },
               series: [{
                 name: 'Total',
-                 events: {
+                events: {
                   legendItemClick: function () {
 
                     return false;
@@ -607,37 +775,37 @@ export class MyissuesListComponent implements OnInit {
                 },
                 colorByPoint: true,
                 data: [{
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
-              },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
-              },
-              {
-                name: 'Resolution in Progress',
-                y: JSON.parse(this.resolution_in_progress_tot),
-              },
-               {
-                name: 'Verified Resolved',
-                y: JSON.parse(this.verified_resolved_tot),
-              },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
-              },
-              {
-                name: 'User Deleted',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-               {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'Cannot be Resolved',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              }      
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                }
                 ]
               }]
             };
@@ -647,26 +815,24 @@ export class MyissuesListComponent implements OnInit {
           //    this.total=element.t;
           //  });
 
-        } 
+        }
         // else {
         //   this.data = '';
         // }
         if (sellist.data2 == 'NoAvgData') {
-        this.avgtable = false;
+          this.avgtable = false;
 
-      } else {
-        this.avgtable = true;
-        this.avgdata = sellist.data2;
-        console.log(this.avgdata);
+        } else {
+          this.avgtable = true;
+          this.avgdata = sellist.data2;
+          console.log(this.avgdata);
 
-      }
+        }
 
       });
     }
 
   }
-
-  r = 1;
   getStatus($event, checked) {
 
     if (checked == 'checked') {
@@ -683,11 +849,23 @@ export class MyissuesListComponent implements OnInit {
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
     this.pending_tot = '0';
+    // this.pending_tot = 0;
     this.user_deleted_tot = '0';
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
     this.user_resolved_tot = '0';
+    this.gardening_total = '0';
+    this.ac_total = '0';
+    this.carpentary_total = '0';
+    this.electrical_total = '0';
+    this.civil_total = '0';
+    this.misc_total = '0';
+    this.transportation_total = '0';
+    this.sanitation_total = '0';
+    this.infrastructure_total = '0';
+    this.water_supply_total = '0';
+    this.house_keeping_total = '0';
 
     let value = {
       'status': $event.target.value,
@@ -712,111 +890,259 @@ export class MyissuesListComponent implements OnInit {
           console.log(this.data2);
           this.data2.forEach(element => {
             this.total = element.t;
-            if (element.status == 'cannot_be_resolved') {
-              this.cannot_be_resolved_tot = element.tot;
+            if ($event.target.value != 'all' && this.selecteddomain == 'all') {
+              this.summarydata = true;
+              if (element.status == 'ac') {
+                this.ac_total = element.tot;
+              }
+              if (element.status == 'carpentary') {
+                //  this.carpentary=  element.status;
+                this.carpentary_total = element.tot;
+              }
+              if (element.status == 'electrical') {
+                // this.electrical=  element.status;
+                this.electrical_total = element.tot;
+              }
+              if (element.status == 'civil') {
+                //this.civil=  element.status;
+                this.civil_total = element.tot;
+              }
+              if (element.status == 'misc') {
+                // this.misc=  element.status;
+                this.misc_total = element.tot;
+              }
+              if (element.status == 'transportation') {
+                // this.transportation=  element.status;
+                this.transportation_total = element.tot;
+              }
+              if (element.status == 'gardening') {
+                // this.gardening=  element.status;
+                this.gardening_total = element.tot;
+              }
+              if (element.status == 'infrastructure') {
+                // this.infrastructure=  element.status;
+                this.infrastructure_total = element.tot;
+              }
+              if (element.status == 'sanitation') {
+                // this.sanitation=  element.status;
+                this.sanitation_total = element.tot;
+              }
+              if (element.status == 'water_supply') {
+                // this.water_supply=  element.status;
+                this.water_supply_total = element.tot;
+              }
+              if (element.status == 'house_keeping') {
+                // this.house_keeping=  element.status;
+                this.house_keeping_total = element.tot;
+              }
             }
-            if (element.status == 'pending') {
-              this.pending_tot = element.tot;
-            }
-            if (element.status == 'resolution_in_progress') {
-              this.resolution_in_progress_tot = element.tot;
-            }
-            if (element.status == 'user_deleted') {
-              this.user_deleted_tot = element.tot;
-            }
-            if (element.status == 'verified_resolved') {
-              this.verified_resolved_tot = element.tot;
-            }
-            if (element.status == 'assigned') {
-              this.assigned_tot = element.tot;
-            }
-            if (element.status == 'onhold') {
-              this.onhold_tot = element.tot;
-            }
-            if (element.status == 'user_resolved') {
-              this.user_resolved_tot = element.tot;
+            else {
+              this.summarydata = false;
+
+              if (element.status == 'cannot_be_resolved') {
+                this.cannot_be_resolved_tot = element.tot;
+              }
+              if (element.status == 'pending') {
+                this.pending_tot = element.tot;
+              }
+              if (element.status == 'resolution_in_progress') {
+                this.resolution_in_progress_tot = element.tot;
+              }
+              if (element.status == 'user_deleted') {
+                this.user_deleted_tot = element.tot;
+              }
+              if (element.status == 'verified_resolved') {
+                this.verified_resolved_tot = element.tot;
+              }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              if (element.status == 'user_resolved') {
+                this.user_resolved_tot = element.tot;
+              }
             }
           });
-          this.options = {
-            credits: {
-              enabled: false
-            },
 
-            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-            chart: {
+          if ($event.target.value != 'all' && this.selecteddomain == 'all') {
+            this.options = {
+              credits: {
+                enabled: false
+              },
 
-              height: 340,
-              width: 350,
-              borderWidth: 1,
-              borderRadius: 4,
-              borderColor: '#2C3E50 ',
-              plotBackgroundColor: null,
-              plotBorderWidth: null,
-              plotShadow: false,
-              type: 'pie',
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
 
-            },
-            exporting: {
+                height: 320,
+                width: 400,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
 
 
-              enabled: false
-            },
-            title: false,
-            tooltip: {
-             pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
-            },
-            plotOptions: {
-              pie: {
-                size: 160,
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                  enabled: true
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 180,
+                  allowPointSelect: false,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: true
+                  },
+                  showInLegend: false
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Ac',
+                  y: JSON.parse(this.ac_total),
                 },
-                showInLegend: false
-              },
-           
-            },
-            series: [{
-              name: 'Total',
-              colorByPoint: true,
-              data: [{
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
-              },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
-              },
-              {
-                name: 'Resolution in Progress',
-                y: JSON.parse(this.resolution_in_progress_tot),
-              },
-               {
-                name: 'Verified Resolved',
-                y: JSON.parse(this.verified_resolved_tot),
-              },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
-              },
-              {
-                name: 'User Deleted',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-               {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'Cannot be Resolved',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              }      
-              ]
-            }]
+                {
+                  name: 'Carpentary',
+                  y: JSON.parse(this.carpentary_total),
+                },
+                {
+                  name: 'Electrical',
+                  y: JSON.parse(this.electrical_total),
+                },
+                {
+                  name: 'Civil',
+                  y: JSON.parse(this.civil_total),
+                },
+                {
+                  name: 'Miscellaneous',
+                  y: JSON.parse(this.misc_total),
+                },
+                {
+                  name: 'Infrastructure',
+                  y: JSON.parse(this.infrastructure_total),
+                },
+                {
+                  name: 'Transportation',
+                  y: JSON.parse(this.transportation_total),
+                },
+                {
+                  name: 'Gardening',
+                  y: JSON.parse(this.gardening_total),
+                },
+                {
+                  name: 'Sanitation',
+                  y: JSON.parse(this.sanitation_total),
+                },
+                {
+                  name: 'Water Supply',
+                  y: JSON.parse(this.water_supply_total),
+                },
+                {
+                  name: 'House Keeping',
+                  y: JSON.parse(this.house_keeping_total),
+                }
+                ]
+              }]
 
-          };
+            };
+
+
+          }
+          else {
+            this.options = {
+              credits: {
+                enabled: false
+              },
+
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
+
+                height: 320,
+                width: 400,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+
+              },
+              exporting: {
+
+
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 160,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: true
+                  },
+                  showInLegend: false
+                },
+
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'Resolution in Progress',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'Verified Resolved',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'User Resolved',
+                  y: JSON.parse(this.user_resolved_tot),
+                },
+                {
+                  name: 'User Deleted',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                {
+                  name: 'Cannot be Resolved',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                }
+                ]
+              }]
+
+            };
+          }
         }
       } if (sellist1.data2 == 'NoAvgData') {
         this.avgtable = false;

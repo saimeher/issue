@@ -123,7 +123,31 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     return this.callApi(this.url.getDatabyId_Status, 'post', body);
   }
 
+  allCollegesAndDeptsUrl(){
+    let body = JSON.stringify({});
+    return this.callApi(this.url.allCollegesAndDeptsUrl, 'post', body);
+  }
+  
+  getStaffData(value:any){
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.STAFF_DATA_API, 'post', body);
+  }
 
+  addDomain(value:any){
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.ADDDOMAIN_API, 'post', body); 
+  }
+
+  updateDomain(value:any){
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.UPDATEDOMAIN_API, 'post', body); 
+  }
+
+  updateIncharge(value:any){
+    let body = JSON.stringify(value);
+    return this.callApi(this.url.UPDATEINCHARGE_API, 'post', body); 
+  }
+  
   callApi(url: string, method: string, body: Object): Observable<any> {
 
     const headers = new Headers({ 'Content-Type': 'application/json', 'Accept': 'application/json' });

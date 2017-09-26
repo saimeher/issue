@@ -18,7 +18,8 @@
               <div class="col-md-2">
                 <label>Domain</label>
                 <select formControlName="domain" class="form-control">
-              <option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>
+              <!--<option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>-->
+              <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
               <!--<option selected value="verified_resolved">Verified Resolved</option>
               <option selected value="Electrical">Electrical</option>-->
             </select>
@@ -57,7 +58,7 @@
       <h4>Issues raised by me</h4>
     </div>
     <div class="portlet-widgets">
-      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i> <span class="divider"></span> Add Issue</a>
+      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i>  Add Issue</a>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -187,8 +188,8 @@
           <div class="form-group">
             <label class="col-sm-4 control-label">Domain</label>
             <div class="col-sm-6">
-              <select formControlName="domain" class="form-control">
-              <option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>
+              <select formControlName="domain" name="domain" class="form-control" disabled>
+              <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
               <!--<option selected value="verified_resolved">Verified Resolved</option>
               <option selected value="Electrical">Electrical</option>-->
           </select>

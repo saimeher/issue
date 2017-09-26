@@ -12,7 +12,8 @@
                     <div class="">
                             
                         <ol class="breadcrumb">
-                            <li class="active"><i class="fa fa-dashboard"></i> Dashboard / {{api.livePage|titlecase}}</li>
+                            <li class="active" *ngIf="api.livePage != 'viewissues' "><i class="fa fa-dashboard"></i> Dashboard / {{api.livePage|titlecase}}</li>
+                            <li class="active" *ngIf="api.livePage == 'viewissues' "><i class="fa fa-dashboard"></i> Dashboard / View Reports</li>
                             <li class="pull-right"> 
                                 <!--<div id="reportrange" class="btn btn-green btn-square date-picker">
                                         <i class="fa fa-calendar"></i>
@@ -30,6 +31,9 @@
             <app-view-issues *ngIf="this.api.livePage=='viewissues'" > </app-view-issues>
               <app-addissue *ngIf="this.api.livePage=='addissue'" > </app-addissue>
               <app-myissues-list *ngIf="this.api.livePage=='myissues'"></app-myissues-list>
+              <app-addrole *ngIf="this.api.livePage=='addrole'"></app-addrole>
+              <app-add-domain *ngIf="this.api.livePage=='add_domain'"></app-add-domain>
+             
                </div>
         </div>
         <!-- /.page-content -->

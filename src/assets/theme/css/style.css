@@ -2189,3 +2189,6 @@ li{
 .tabel_overflow{
     overflow: scroll;
 }
+.ui-multiselect-label-container{
+    width: 250px !important;
+}

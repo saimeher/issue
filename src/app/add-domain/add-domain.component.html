@@ -1,0 +1,209 @@
+<div class="row" *ngIf="addForm">
+  <div>
+    <div class="col-lg-12">
+      <div class="portlet portlet-default">
+        <div class="portlet-heading">
+          <div class="portlet-title">
+            <h4>Add Domain</h4>
+          </div>
+          <div class="portlet-widgets">
+            <a (click)="hideAddForm()" style="cursor: pointer !important"><i class="fa fa-times"></i></a>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="portlet-body">
+          <form class="form-horizontal" novalidate [formGroup]="domainForm" (ngSubmit)="addDomain()" role="form">
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <input type="text" formControlName="domain" name="domain" class="form-control">
+                <!--<select formControlName="domain" name="domain" class="form-control">
+                        <option value="">--Select--</option>
+                        
+                      </select>-->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Title <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <input type="text" formControlName="domain_title" name="domain_title" class="form-control" />
+
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Info <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <textarea rows="4" cols="50" name="comment" formControlName="domain_info" name="domain_info" class="form-control">    </textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Incharge <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                 <!--<select formControlName="domain_admin" name="domain" class="form-control">
+                        <option value="">--Select--</option>
+                        
+                </select>    -->
+                <p-multiSelect [maxSelectedLabels]="5" [options]="cities" [(ngModel)]="selectedCities" formControlName="domain_admin"></p-multiSelect>
+
+              </div>
+            </div>
+            <div class="form-group ">
+              <div class="col-sm-3 col-sm-offset-5">
+              <button type="submit" [disabled]=" !this.domainForm.valid || buttonClicked" class="btn btn-square btn-green col-md-offset-2"> Submit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+<div class="row" *ngIf="UpdateForm">
+  <div>
+    <div class="col-lg-12">
+      <div class="portlet portlet-default">
+        <div class="portlet-heading">
+          <div class="portlet-title">
+            <h4>Update Domain</h4>
+          </div>
+          <div class="portlet-widgets">
+            <a (click)="hideUpdateForm()" style="cursor: pointer !important"><i class="fa fa-times"></i></a>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="portlet-body">
+          <form class="form-horizontal" novalidate [formGroup]="domainUpdateForm" (ngSubmit)="UpdateDomain()" role="form">
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <input type="text" formControlName="domain" name="domain" class="form-control" readonly>
+                <!--<select formControlName="domain" name="domain" class="form-control">
+                        <option value="">--Select--</option>
+                        
+                      </select>-->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Title <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <input type="text" formControlName="domain_title" name="domain_title" class="form-control" />
+
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Info <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                <textarea rows="4" cols="50" name="comment" formControlName="domain_info" name="domain_info" class="form-control">    </textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-4 control-label">Domain Incharge <span style="color:red">*</span></label>
+              <div class="col-sm-4">
+                 <!--<textarea rows="4" cols="50" name="comment" formControlName="domain_admin" name="domain_admin" placeholder="Enter values separated by comma" class="form-control">    </textarea>-->
+                <p-multiSelect [maxSelectedLabels]="5" (onChange)="change($event.value)" [defaultLabel]="defaultLabel"  [options]="updateids" [(ngModel)]="selectedCities" formControlName="domain_admin"></p-multiSelect>
+
+
+              </div>
+            </div>
+            <div class="form-group ">
+              <div class="col-sm-3 col-sm-offset-5">
+                <button type="submit" [disabled]=" !this.domainUpdateForm.valid || buttonClicked" class="btn btn-square btn-green col-md-offset-2"> Submit</button>
+              </div>
+              
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<div class="portlet portlet-default">
+  <div class="portlet-heading">
+    <div class="portlet-title">
+      <h4>Domains List</h4>
+    </div>
+    <div class="portlet-widgets">
+      <a (click)="showAddForm()" class="" style="cursor: pointer !important"><i class="fa fa-plus-square"></i> Add Domain</a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="portlet-body">
+
+    <div class="row">
+      <div class="col-md-12 tabel_overflow">
+        <!--<table class="table table-green table-bordered table-hover">-->
+        <table class="table table-bordered table-green" [mfData]="domainsList | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+          [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+          <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter by="insert_dt">#</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+              </th>
+
+              <!--<th>
+                <mfDefaultSorter by="domain_title">Title</mfDefaultSorter>
+              </th>-->
+              <th>
+                <mfDefaultSorter by="domain_info">Domain Info</mfDefaultSorter>
+              </th>
+              <th nowrap>
+                <mfDefaultSorter by="domain_admin" style="width:200px">Domain Admin</mfDefaultSorter>
+              </th>
+              <th nowrap>
+                <mfDefaultSorter by="" style="width:200px">Options</mfDefaultSorter>
+              </th>
+
+
+            </tr>
+          </thead>
+          <tbody *ngIf="mf.data.length != 0">
+            <tr *ngFor="let dinfo of mf.data; let i=index;">
+
+              <td>{{i+1}}</td>
+              <td>{{dinfo.domain|titlecase}}</td>
+
+              <!--<td>{{dinfo.domain_title}}</td>-->
+              <td>{{dinfo.domain_info}}</td>
+              <td style="word-break: break-word;">{{dinfo.domain_admin}}</td>
+              <td>  <a class="btn btn-info btn-xs btn-square" (click)="updatePage(dinfo)" style="margin-right: 5px; width: 50px;">Edit</a></td>
+
+
+            </tr>
+          </tbody>
+          <tbody *ngIf="mf.data.length == 0">
+            <tr rowspan="2">
+              <td colspan="12">
+                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="12">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

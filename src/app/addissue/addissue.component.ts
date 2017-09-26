@@ -27,11 +27,13 @@ export class AddissueComponent implements OnInit {
   domain;
   did;
   issue;
+  domains;
+  domain1;
   public data;
-    public filterQuery = "";
-    public rowsOnPage = 10;
-    public sortBy = "name";
-    public sortOrder = "asc";
+  public filterQuery = "";
+  public rowsOnPage = 10;
+  public sortBy = "name";
+  public sortOrder = "asc";
   repaired_onn;
   date_of_resolutionn;
   AC = [];
@@ -51,24 +53,24 @@ export class AddissueComponent implements OnInit {
   formsuccess = false;
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
- 
+ categoriesList;
   //img_url = "http://localhost/issue_register/uploads";
-  img_url="http://210.16.79.137/issueregister/server/uploads";
+  img_url="http://210.16.79.137/raghuerp/issueregister/server/uploads";
  
   // domains: Array<{ title: string, value: string }>;
-  domains: Array<any> = [
-    { title: 'Electrical', info: 'Electrical (Fans / Lights / Power Supply / Motors / Line)', value: 'electrical' },
-    { title: 'Civil', info: 'Civil (Building / Walls / Roof / Leakages / Flooring…)', value: 'civil' },
-    { title: 'Water Supply', info: 'Water Supply (Drinking Water - Non-availability / Unclean / Leakages / Broken Taps / Broken Pipes...)', value: 'water_supply' },
-    { title: 'Sanitation', info: 'Sanitation (Normal Water - Non-availability / Leakages / Broken Taps / Broken Pipes / Smell / Breakage of Washroom Equipment / Doors…)', value: 'sanitation' },
-    { title: 'Carpentary', info: 'Carpentry (Tables / Benches / Doors…)', value: 'carpentary' },
-    { title: 'AC', info: 'AC (Wherever Available - Leakages / Not working / Tripping / No effect)', value: 'ac' },
-    { title: 'Transportation', info: 'Transportation (Bus / Route / Accident….)', value: 'transportation' },
-    { title: 'Infrastructure', info: 'Infrastructure (General Infrastructure - Phone, Internet / Intranet …)', value: 'infrastructure' },
-    { title: 'House keeping', info: 'House keeping (Cleaning, Security)', value: 'house_keeping' },
-    { title: 'Gardening', info: 'Gardening, Cattle Maintenance', value: 'gardening' },
-    { title: 'Miscellaneous', info: 'Miscellaneous (any others such as Postal Delivery …that are not covered above)', value: 'misc' }
-  ];
+  // domains: Array<any> = [
+  //   { title: 'Electrical', info: 'Electrical (Fans / Lights / Power Supply / Motors / Line)', value: 'electrical' },
+  //   { title: 'Civil', info: 'Civil (Building / Walls / Roof / Leakages / Flooring…)', value: 'civil' },
+  //   { title: 'Water Supply', info: 'Water Supply (Drinking Water - Non-availability / Unclean / Leakages / Broken Taps / Broken Pipes...)', value: 'water_supply' },
+  //   { title: 'Sanitation', info: 'Sanitation (Normal Water - Non-availability / Leakages / Broken Taps / Broken Pipes / Smell / Breakage of Washroom Equipment / Doors…)', value: 'sanitation' },
+  //   { title: 'Carpentary', info: 'Carpentry (Tables / Benches / Doors…)', value: 'carpentary' },
+  //   { title: 'AC', info: 'AC (Wherever Available - Leakages / Not working / Tripping / No effect)', value: 'ac' },
+  //   { title: 'Transportation', info: 'Transportation (Bus / Route / Accident….)', value: 'transportation' },
+  //   { title: 'Infrastructure', info: 'Infrastructure (General Infrastructure - Phone, Internet / Intranet …)', value: 'infrastructure' },
+  //   { title: 'House keeping', info: 'House keeping (Cleaning, Security)', value: 'house_keeping' },
+  //   { title: 'Gardening', info: 'Gardening, Cattle Maintenance', value: 'gardening' },
+  //   { title: 'Miscellaneous', info: 'Miscellaneous (any others such as Postal Delivery …that are not covered above)', value: 'misc' }
+  // ];
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
@@ -93,6 +95,7 @@ export class AddissueComponent implements OnInit {
     // this.getDomainsbyId();
     // this.getdetails();
     this.getissue();
+    this.getCategories();
     // this.delete();
   }
 
@@ -103,7 +106,15 @@ export class AddissueComponent implements OnInit {
   hideAddForm() {
     this.addFormStatus = false;
   }
-  
+  getCategories() {
+    this.api.getCategories().subscribe(categories => {
+      if (categories) {
+        console.log(categories);
+
+        this.categoriesList = categories;
+      }
+    })
+  }
   getSelIssueData() {
     let data = {}
     data['domain'] = this.issues_form.value.domain;
@@ -117,10 +128,12 @@ export class AddissueComponent implements OnInit {
     this.api.INSERTISSUE(data)
       .subscribe(data => {
         let id=data;
+        console.log(id,this.picName);
+        
       if(this.picName){        
-          this.upservice.makeFileRequest('http://210.16.79.137/issueregister/server/api/insert_docs', id, this.picName).subscribe(() => {
-      //this.upservice.makeFileRequest('http://localhost/issue_register/api/insert_docs', id, this.picName).subscribe(() => {
-
+         this.upservice.makeFileRequest('http://210.16.79.137/raghuerp/issueregister/server/api/insert_docs', id, this.picName).subscribe(() => {
+      //  this.upservice.makeFileRequest('http://localhost/issue_register/api/insert_docs', id, this.picName).subscribe(() => {
+ 
        // console.log('sent');
        
      });
@@ -135,8 +148,10 @@ export class AddissueComponent implements OnInit {
 
   details(item) {
     this.did=item.did;
+    this.domain1=item.domain
     console.log(item);
     this.issues_form.patchValue(item);
+    console.log(this.domain1);
     this.modal1.show();
   }
   
@@ -250,16 +265,13 @@ imageChange(event) {
 
 updateImage(id:any){
      if(this.updateFile){        
-          this.upservice.makeFileRequest('http://210.16.79.137/issueregister/server/api/update_docs', id, this.updateFile).subscribe(data=> {
+          this.upservice.makeFileRequest('http://210.16.79.137/raghuerp/issueregister/server/api/update_docs', id, this.updateFile).subscribe(data=> {
         // this.upservice.makeFileRequest('http://localhost/issue_register/api/update_docs', id, this.updateFile).subscribe(data=> {
 
-        console.log(data);
-       if(data){
-       this.updateimg_id='';
+     });
+      this.updateimg_id='';
        this.modal4.hide();
        this.getissue();
-       }
-     });
     }
 }
 

@@ -13,22 +13,30 @@ export class HeaderComponent implements OnInit {
   constructor(public router:Router,public api:ApiService) { }
 
   ngOnInit() {
+       setTimeout(function () {
+      $("#sidebar-toggle").click(function (e) {
+        e.preventDefault();
+        $(".navbar-side").toggleClass("collapsed");
+        $("#page-wrapper").toggleClass("collapsed");
+      });
+    }, 1000);
   }
 
-  logout(){
+  // logout(){
    
-      //     console.log(localStorage.getItem('currentUser'));
-      //  console.log(localStorage.removeItem('currentUser'));
-       localStorage.removeItem('currentUser');
-        localStorage.removeItem('reg_no');
-        localStorage.removeItem('name');
-        localStorage.removeItem('role'); 
-       localStorage.removeItem('gender');
-        localStorage.removeItem('dp');
+  //     //     console.log(localStorage.getItem('currentUser'));
+  //     //  console.log(localStorage.removeItem('currentUser'));
+  //      localStorage.removeItem('currentUser');
+  //       localStorage.removeItem('reg_no');
+  //       localStorage.removeItem('name');
+  //       localStorage.removeItem('role'); 
+  //      localStorage.removeItem('gender');
+  //       localStorage.removeItem('dp');
+  //        localStorage.removeItem('utype');
        
-       //this.router.navigate(['login']);
+  //      //this.router.navigate(['login']);
          
-  }
+  // }
 
   sidebarchage(type:any){
     this.api.livePage=type;
