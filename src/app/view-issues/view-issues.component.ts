@@ -57,7 +57,6 @@ export class ViewIssuesComponent implements OnInit {
   house_keeping;
   house_keeping_total;
   summarydata = false;
-
   domainname;
   today = new Date();
   // selecteddomain:any;

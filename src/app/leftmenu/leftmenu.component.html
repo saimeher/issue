@@ -53,9 +53,9 @@
                     <li *ngIf="role=='adm'"> <a (click)="sidebarchage('addrole')" [ngClass]="this.api.livePage == 'addrole'?'active':''">
                     <i class="fa fa-angle-double-right"></i>   Add Role </a>
                     </li>
-                    <li *ngIf="role =='adm'"> <a (click)="sidebarchage('add_domain')" [ngClass]="this.api.livePage == 'add_domain'?'active':''">
+                    <!-- <li *ngIf="role =='adm'"> <a (click)="sidebarchage('add_domain')" [ngClass]="this.api.livePage == 'add_domain'?'active':''">
                     <i class="fa fa-angle-double-right"></i>   Add Domain </a>
-                    </li>
+                    </li> -->
                     <!--<li *ngIf="role=='stf'"> <a (click)="sidebarchage('addissue')">-->
                     <li *ngIf="role =='stf' "> <a (click)="sidebarchage('addissue')" [ngClass]="this.api.livePage == 'addissue'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    Add/View Issues </a>

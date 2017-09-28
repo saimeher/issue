@@ -117,13 +117,13 @@
           </thead>
           <tbody *ngIf="mf.data.length != 0">
             <tr *ngFor="let item of mf.data; let i=index;">
-              <td nowrap>{{item.insert_dt | date: 'dd-MM-yyyy'}}</td>
+              <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td>
               <td>{{item.domain|titlecase}}</td>
 
               <td>{{item.location}}</td>
               <td>{{item.problem}}</td>
               <td>{{item.issue_desc}}</td>
-              <td nowrap>{{item.repaired_on | date: 'dd-MM-yyyy'}}</td>
+              <td nowrap>{{item.repaired_on | date: 'dd-MMM-yyyy'}}</td>
               <td>{{item.priority}}</td>
 
               <!--<td>{{item.status}}</td>-->

@@ -331,7 +331,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let items of mf.data; let k=index;">
-              <td nowrap>{{items.insert_dt| date :'dd-MM-yyyy'}}</td>
+              <td nowrap>{{items.insert_dt| date:'dd-MMM-yyyy'}}</td>
               <td>{{items.domain|titlecase}}</td>
               <td>{{items.location}}</td>
               <td>{{items.problem}}</td>

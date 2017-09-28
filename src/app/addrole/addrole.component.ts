@@ -25,159 +25,72 @@ import { SelectItem } from 'primeng/primeng';
   styleUrls: ['./addrole.component.css']
 })
 export class AddroleComponent implements OnInit {
-    cities: SelectItem[];
+  cities: SelectItem[];
   updateids: SelectItem[];
-  selectedCities: string[] = [];
-  defaultSelect;
-  domainUpdateForm: FormGroup;
-  error = false;
-  errorMessage = '';
-  isRequesting = false;
+  selectedCities: string[];
   buttonClicked = false;
-  tot_users = [];
-  details = [];
-  rolesform: FormGroup;
-  domains;
+  domainForm: FormGroup;
+  domainUpdateForm: FormGroup;
   domainsList;
+  tot_users;
+  defaultLabel;
   public data;
   public filterQuery = "";
   public rowsOnPage = 10;
   public sortBy = "name";
   public sortOrder = "asc";
-  constructor(
-    private fb: FormBuilder,
+
+  constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,public api: ApiService
-     ) {
-     const bodyData = {};
+    private router: Router, public api: ApiService) {
+    const bodyData = {};
     bodyData['token'] = localStorage.getItem('currentUser')
     bodyData['utype'] = localStorage.getItem('utype');
     this.api.getStaffData(bodyData).subscribe(data => {
-     
+      this.defaultLabel='choose';
       if (data.success) {
         this.cities = [];
         this.tot_users = data.data.data;
         this.tot_users.forEach(element => {
           this.cities.push({ label: element.name + '-' + element.reg_no, value: element.reg_no });
 
-
         });
-        console.log(this.cities,'test');
       }
     });
-     this.domainUpdateForm = this.fb.group({
+
+  }
+
+  ngOnInit() {
+    this.domainForm = this.fb.group({
       'domain': ['', [Validators.required]],
       'domain_title': ['', [Validators.required]],
       'domain_info': ['', [Validators.required]],
       'domain_admin': ['', [Validators.required]]
     });
-  }
-
-
-
-  ngOnInit() {
-   // this.roles();
-    this.staffData();
-     
-    this.rolesform = this.fb.group({
-      'domain': ['', [Validators.required ]],
-      'domain_admin': ['', [Validators.required]] 
-      
+    this.domainUpdateForm = this.fb.group({
+      'domain': ['', [Validators.required]],
+      'domain_title': ['', [Validators.required]],
+      'domain_info': ['', [Validators.required]],
+      'domain_admin': ['', [Validators.required]]
     });
     this.getCategories();
+
   }
 
-  // roles() {
-  //   const bodyData = {};
-  //   bodyData['token'] = localStorage.getItem('currentUser')
-  //   bodyData['role'] = localStorage.getItem('role')
-  //   this.api.getRole(bodyData)
-  //     .subscribe(response => {
-  //       this.details = response.data;
-  //     });
-  // }
+  addDomain() {
+    console.log(this.domainForm.value);
+    this.api.addDomain(this.domainForm.value).subscribe(data => {
+      if (data) {
+        this.addForm = false;
+        this.getCategories();
+        console.log('successfully inserted');
 
-
-  staffData() {
-    const bodyData = {};
-    bodyData['token'] = localStorage.getItem('currentUser')
-    bodyData['utype'] = localStorage.getItem('utype');
-    console.log(bodyData);
-    
-    this.api.getStaffData(bodyData).subscribe(data => {
-      if (data.success) {
-        this.tot_users = data.data.data;
-        console.log(data);
-        
       }
     });
   }
-
-
-  getCategories() {
-    this.api.getCategories().subscribe(categories => {
-      if (categories) {
-        console.log(categories);
-
-        this.domains = categories;
-        this.domainsList = categories;
-      }
-    })
-  }
-
-  // delete(data) {
-  //   const bodyData = {};
-  //   bodyData['token'] = localStorage.getItem('currentUser');
-  //   bodyData['role'] = localStorage.getItem('role');
-  //   bodyData['id'] = data.id;
-  //   bodyData['reg_no'] = data.reg_no;
-  //   bodyData['college'] = data.college;
-  //   this.api.getroledelete(bodyData)
-  //   .subscribe(data => {
-  //     if (data.success == true) {
-  //       this.roles();
-  //     }
-  //   });
-  // }
-
-  addFormStatus = false;
-  showAddForm() {
-    this.addFormStatus = true;
-  }
-  hideAddForm() {
-    this.addFormStatus = false;
-  }
-
-
-
-  addincharge() {
-    
-     console.log(this.rolesform.value);
-     
-           
-      this.api.updateIncharge(this.rolesform.value)
-        .subscribe(data => {
-          if (data.success == true) {
-            this.errorMessage = 'successful Updated.';
-            confirm(this.errorMessage);
-            this.rolesform.reset();
-         
-          } else {
-            this.error = true;
-            this.errorMessage = data.error;
-            confirm(this.errorMessage);
-          }
-          this.isRequesting = false;
-          this.buttonClicked = false;
-        });
-    
-  }
-
   UpdateForm = false;
   array;
-      getDimensionsByFilter(id){
-  return this.tot_users.filter(x => x.reg_no === id);
-}
+   
   updatePage(value: any) {
     this.updateids = [];
     //console.log(value);
@@ -189,13 +102,8 @@ export class AddroleComponent implements OnInit {
      
     this.array.forEach(element => {
       console.log(element);
-     
-     let test = this.getDimensionsByFilter(element);
-console.log(test);
-      this.updateids.push({ 'label': test[0].name , 'value': test[0].reg_no });
-       //this.defaultLabel = element;
-        this.defaultSelect = test[0].name+test[0].reg_no;
-       this.selectedCities.push(this.defaultSelect);
+      this.updateids.push({ 'label': element, 'value': element });
+       this.defaultLabel = element;
     });
     console.log(this.updateids);
     
@@ -208,15 +116,55 @@ console.log(test);
           this.tot_users = data.data.data;
           this.tot_users.forEach(element => {
           this.updateids.push({ 'label': element.name + '-' + element.reg_no, 'value': element.reg_no });
-          
-          
         });
       }
     });
     this.UpdateForm = true;
     this.domainUpdateForm.patchValue(value);
-    //this.addForm = false;
+    this.addForm = false;
   }
+
+  getCategories() {
+    this.api.getCategories().subscribe(categories => {
+      if (categories) {
+        console.log(categories);
+
+        this.domainsList = categories;
+      }
+    })
+  }
+  addForm = false;
+  showAddForm() {
+    this.addForm = true;
+  }
+
+  hideAddForm() {
+    this.addForm = false;
+  }
+
+  hideUpdateForm() {
+    this.UpdateForm = false;
+  }
+
+  UpdateDomain() {
+    console.log(this.domainUpdateForm.value);
+
+    this.api.updateDomain(this.domainUpdateForm.value).subscribe(data => {
+      if (data) {
+        this.UpdateForm = false;
+        this.getCategories();
+        console.log('successfully inserted');
+      }
+    });
+  }
+
+
+change($event){
+  console.log('hi');
+  
+  console.log($event);
+  
+}
 
 
 
