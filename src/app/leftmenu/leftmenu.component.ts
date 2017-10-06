@@ -68,7 +68,9 @@ utype;
           
           this.role='other';
            this.api.livePage='addissue';
-        }else{
+        }
+        else
+        {
         this.role=data.data.role;
          localStorage.setItem('role',data.data.role);
          if(this.role=='adm'){
