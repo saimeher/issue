@@ -416,32 +416,42 @@
           <div class="form-group">
             <label class="col-sm-4 control-label">Status</label>
             <div class="col-sm-6">
-              <select class="form-control" formControlName="status" >
-                   <option selected value="verified_resolved">Verified Resolved</option>
-                   <option selected value="resolution_in_progress">Resolution in Progress</option>
-                   <option value="pending">Pending</option>
+              <select class="form-control" formControlName="status" (change)="selStataus($event)">
+                  <option value="pending">Pending</option>
+                  <option value="assigned">Assigned  </option>
+                  <option selected value="resolution_in_progress">Resolution in Progress</option>   
+                  <option value="onhold">On Hold  </option>
+                   <option selected value="verified_resolved">Verified Resolved</option>         
                    <option value="cannot_be_resolved">Cannot be resolved</option>
-                   <option value="user_deleted">User Deleted  </option>
-                   <option value="assigned">Assigned  </option>
-                   <option value="onhold">On Hold  </option>
                    <option value="user_resolved">User Resolved  </option> 
+                   <option value="user_deleted">User Deleted  </option>
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <div *ngIf="showdays == 'assigned'" class="form-group">
             <label class="col-sm-4 control-label">Assigned To</label>
-            <div class="col-sm-6">
+            <div  class="col-sm-6">
               <input formControlName="repaired_by" name="repaired_by" type="text" class="form-control" >
             </div>
           </div>
-          <div class="form-group">
+
+          <div *ngIf="showdays == 'assigned'" class="form-group">
+              <label class="col-sm-4 control-label">Assigned  On <span style="color:red">*</span></label>
+              <div class="col-sm-6">
+               <div class="col-sm-12"  style="padding-left: 0px;"> <p-calendar formControlName="repaired_on" dateFormat="yy-mm-dd" [showIcon]="true" required ></p-calendar></div>
+              <div class="col-sm-12">
+                <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
+                  <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
+                </span>
+            </div>
+  
+              </div>
+            </div>
+
+          <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
             <label class="col-sm-4 control-label">Repaired On <span style="color:red">*</span></label>
             <div class="col-sm-6">
-              <!--<app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="repaired_on" (dateChange)="dateChanged('repaired_on', $event)">
-            </app-date>-->
-              <!--<date-picker formControlName="repaired_on" class="" ></date-picker>-->
              <div class="col-sm-12"  style="padding-left: 0px;"> <p-calendar formControlName="repaired_on" dateFormat="yy-mm-dd" [showIcon]="true" required ></p-calendar></div>
-              <!--<date-picker mode="datetime" formControlName="repaired_on" required></date-picker>-->
             <div class="col-sm-12">
               <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
                 <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
@@ -451,7 +461,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div *ngIf="showdays == 'verified_resolved'" class="form-group">
             <label class="col-sm-4 control-label">Date of Resolution <span style="color:red">*</span></label>
             <div class="col-sm-6">
               <!--<app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="date_of_resolution" (dateChange)="dateChanged('date_of_resolution', $event)">
@@ -478,9 +488,10 @@
       </div>
       <br/>
       <div class="app-modal-footer col-sm-offset-4">
-        <button type="submit" [disabled]="!f.valid" class="btn btn-default btn-square">Save Changes</button>
+        <button type="submit"  class="btn btn-default btn-square">Save Changes</button>
         <button type="button" class="btn btn-danger btn-square" (click)="close();">Close</button>
         <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
+        <!-- [disabled]="!f.valid" -->
       </div>
     </form>
   </div>

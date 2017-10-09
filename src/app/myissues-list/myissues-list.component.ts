@@ -58,7 +58,6 @@ export class MyissuesListComponent implements OnInit {
   avgtable = false;
   avgdata;
 
-
   r = 1;
   ac;
   ac_total;
@@ -106,31 +105,26 @@ export class MyissuesListComponent implements OnInit {
       from_date: ['', Validators.required],
       to_date: ['', Validators.required],
       selstatus: ['', Validators.required]
-
-
     });
-
-
-
     this.taskeditForm = this.fb.group({
       priority: [''],
       status: [''],
-      repaired_on: ['', [Validators.required]],
+      repaired_on: [''],
       repaired_by: [''],
-      date_of_resolution: ['', [Validators.required]],
+      date_of_resolution: [''],
       notes: [],
       did: []
     });
 
     this.getDomainsbyId();
-     this.getdetails();
+    this.getdetails();
   }
   by;
   Repaired_on1;
   date_of_resolution1;
+  showdays;
   details(item) {
     console.log(item);
-    this.value1 = this.value1;
     this.Repaired_on1 = item.repaired_on;
     this.date_of_resolution1 = item.date_of_resolution;
     if (item.repaired_on != null) {
@@ -1210,6 +1204,12 @@ export class MyissuesListComponent implements OnInit {
   }
   imageclose() {
     this.modal3.hide();
+  }
+
+  selStataus($event)
+  {
+    console.log('status',$event.target.value);
+    this.showdays= $event.target.value;
   }
 
 }

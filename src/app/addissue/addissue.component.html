@@ -147,11 +147,12 @@
               <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-              <td nowrap>
+              <td nowrap *ngIf ="item.status == 'pending' ||  item.status == 'resolution_in_progress' || item.status == 'assigned' ">
                 <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
                 <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
-                <!--<a class="btn btn-danger btn-xs btn-square" (click)="delete(item)" >Delete</a>-->
-
+              </td>
+              <td nowrap *ngIf ="item.status == 'user_deleted' ||  item.status == 'user_resolved' || item.status == 'verified_resolved' ">
+                <a class="btn btn-info btn-xs btn-default">closed</a>
               </td>
             </tr>
           </tbody>
