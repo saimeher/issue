@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, Form, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, Form, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormControl } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { DateComponent } from '../date/date.component';
 import { ModalComponent } from '../modal.component';
@@ -57,6 +57,8 @@ export class MyissuesListComponent implements OnInit {
   bardetail: Object;
   avgtable = false;
   avgdata;
+  issuedescription;
+  dropdownSettings = {};
 
   r = 1;
   ac;
@@ -82,6 +84,15 @@ export class MyissuesListComponent implements OnInit {
   house_keeping;
   house_keeping_total;
   summarydata = false;
+  dropdownList = [];
+  repaired_by;
+assigned_on;
+date_of_resolution;
+did;
+
+
+
+
 
 
   // selecteddomain:any;
@@ -96,7 +107,22 @@ export class MyissuesListComponent implements OnInit {
   public sortOrder = "asc";
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
-  constructor(public api: ApiService, public fb: FormBuilder) { }
+  constructor(public api: ApiService, public fb: FormBuilder) {
+    const vals = {
+      utype: 'adm',
+
+    }
+    this.api.getStaffData(vals).subscribe(dataa => {
+      console.log(dataa);
+      for (var i = 0; i < dataa.data.data.length; i++) {
+        if (localStorage.getItem('reg_no') != dataa.data.data[i].reg_no) {
+          this.dropdownList[i] = new Object();
+          this.dropdownList[i]["id"] = dataa.data.data[i].reg_no;
+          this.dropdownList[i]["itemName"] = dataa.data.data[i].reg_no + ' - ' + dataa.data.data[i].name;
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
@@ -109,43 +135,63 @@ export class MyissuesListComponent implements OnInit {
     this.taskeditForm = this.fb.group({
       priority: [''],
       status: [''],
+      assigned_on:[''],
+      onholdtext:[''],
+      assignedtext:[''],
+      cannottext:[''],
       repaired_on: [''],
       repaired_by: [''],
-      date_of_resolution: [''],
+      date_of_resolution: new FormControl(),
       notes: [],
       did: []
     });
 
     this.getDomainsbyId();
     this.getdetails();
+    this.dropdownSettings = {
+      singleSelection: true,
+      text: "Select ",
+      enableSearchFilter: true,
+      classes: "myclass custom-class",
+    };
+
   }
+
+
   by;
   Repaired_on1;
   date_of_resolution1;
   showdays;
   details(item) {
     console.log(item);
-    this.Repaired_on1 = item.repaired_on;
-    this.date_of_resolution1 = item.date_of_resolution;
-    if (item.repaired_on != null) {
-      this.repaired_onn = item.repaired_on
-    } else {
-      this.repaired_onn = new Date();
-    }
+    this.did = item.did;
+    // this.Repaired_on1 = item.repaired_on;
+    // this.date_of_resolution1 = item.date_of_resolution;
+    // if (item.repaired_on != null) {
+    //   this.repaired_onn = item.repaired_on
+    // } else {
+    //   this.repaired_onn = new Date();
+    // }
 
-    if (item.date_of_resolution != null) {
-      this.date_of_resolutionn = item.date_of_resolution
-    } else {
-      this.date_of_resolutionn = new Date();
-    }
+    // if (item.date_of_resolution != null) {
+    //   this.date_of_resolutionn = item.date_of_resolution
+    // } else {
+    //   this.date_of_resolutionn = new Date();
+    // }
     this.by = item.raised_by;
-    this.taskeditForm.patchValue({
+    this.issuedescription = item.issue_desc;
+    // this.taskeditForm.patchValue({
 
-      repaired_on: this.repaired_onn,
-      date_of_resolution: this.date_of_resolutionn,
+    //   repaired_on: this.repaired_onn,
+    //   date_of_resolution: this.date_of_resolutionn,
 
-    });
+    // });
     this.taskeditForm.patchValue(item);
+    this.taskeditForm.patchValue({ date_of_resolution: { formatted: item.date_of_resolution } });
+    this.date_of_resolution = item.date_of_resolution;
+    console.log('date',this.date_of_resolution);
+    this.showdays = item.status;
+    
     this.modal1.show();
 
   }
@@ -153,10 +199,22 @@ export class MyissuesListComponent implements OnInit {
     this.taskeditForm.reset();
     this.modal1.hide()
   }
-  editTask() {
-   
 
-    this.api.UPDATEISSUE(this.taskeditForm.value)
+  editTask() {
+    let edit={}
+    edit['priority'] =  this.taskeditForm.value.priority;
+    edit['status']= this.taskeditForm.value.status;
+    edit['assigned_on']= this.assigned_on;
+    edit['assigned_to']= this.id;
+    edit['assignedtext']= this.taskeditForm.value.assignedtext;
+    edit['onholdtext']= this.taskeditForm.value.onholdtext;
+    edit['date_of_resolution']= this.date_of_resolution;
+    edit['notes'] = this.taskeditForm.value.notes;
+    edit['cannottext'] = this.taskeditForm.value.cannottext;
+    edit['did'] = this.did;
+    console.log(edit);
+
+    this.api.UPDATEISSUE(edit)
       .subscribe(
       data => {
         console.log(data);
@@ -829,13 +887,13 @@ export class MyissuesListComponent implements OnInit {
   }
   getStatus($event, checked) {
 
-    if (checked == 'checked') {
-      if (this.r == 1) {
-        this.selectvalue = "all";
-      }
+    // if (checked == 'checked') {
+    //   if (this.r == 1) {
+    //     this.selectvalue = "all";
+    //   }
 
-      ++this.r;
-    }
+    //   ++this.r;
+    // }
 
     console.log($event.target.value);
     this.data = '';
@@ -1206,10 +1264,27 @@ export class MyissuesListComponent implements OnInit {
     this.modal3.hide();
   }
 
-  selStataus($event)
-  {
-    console.log('status',$event.target.value);
-    this.showdays= $event.target.value;
+  selStataus($event) {
+    console.log('status', $event.target.value);
+    this.showdays = $event.target.value;
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+    this.id = item.id;
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
   }
 
+  onDateChanged1(event: IMyDateModel) {
+
+    this.assigned_on = event.formatted;
+    this.myDatePickerOptions2.disableUntil.year = event.date.year
+    this.myDatePickerOptions2.disableUntil.month = event.date.month
+    this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
+  }
+  onDateChanged3(event: IMyDateModel) {
+    console.log(this.to_date, 'from date test');
+    this.date_of_resolution = event.formatted;
+  }
 }

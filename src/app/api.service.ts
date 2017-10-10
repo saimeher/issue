@@ -147,6 +147,13 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     let body = JSON.stringify(value);
     return this.callApi(this.url.UPDATEINCHARGE_API, 'post', body); 
   }
+
+  getissuesinprogress(id : any ='')
+  {
+    let body=JSON.stringify({'reg_no':id});
+    console.log(body);
+    return this.callApi(this.url.GETISSUESINPROGRESS_API, 'post', body); 
+  }
   
   callApi(url: string, method: string, body: Object): Observable<any> {
 

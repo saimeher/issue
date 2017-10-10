@@ -36,6 +36,11 @@ import {CalendarModule} from 'primeng/primeng';
 import { AddroleComponent } from './addrole/addrole.component';
 import { AddDomainComponent } from './add-domain/add-domain.component';
 import {MultiSelectModule} from 'primeng/primeng';
+import { ResolutionComponent } from './resolution/resolution.component';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
+
+
 
  declare var require: any;
 
@@ -66,7 +71,8 @@ export function highchartsFactory() {
      AddissueComponent,
     MyissuesListComponent,
   AddroleComponent,
-    AddDomainComponent
+    AddDomainComponent,
+    ResolutionComponent
    // UrlService,
     // DataService,
    // AuthGuard,
@@ -87,7 +93,8 @@ export function highchartsFactory() {
     MyDatePickerModule ,
     ChartModule,
     CalendarModule,
-    MultiSelectModule
+    MultiSelectModule,
+    AngularMultiSelectModule,
     
   ],
   providers: [ApiService,UrlService,AuthGuard,UploadService,{ provide: HighchartsStatic,

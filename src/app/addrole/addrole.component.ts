@@ -18,6 +18,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, Form, FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { SelectItem } from 'primeng/primeng';
+import {DropdownModule} from 'primeng/primeng';
 
 @Component({
   selector: 'app-addrole',
@@ -52,8 +53,8 @@ export class AddroleComponent implements OnInit {
         this.cities = [];
         this.tot_users = data.data.data;
         this.tot_users.forEach(element => {
-          this.cities.push({ label: element.name + '-' + element.reg_no, value: element.reg_no });
-
+       this.cities.push({ label: element.name + '-' + element.reg_no, value: element.reg_no });
+          // this.cities.push({label: element.name, value:{ name:  element.reg_no }});
         });
       }
     });

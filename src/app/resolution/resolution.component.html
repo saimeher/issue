@@ -1,0 +1,112 @@
+<div class="portlet portlet-default">
+  <div class="portlet-heading">
+    <div class="portlet-title">
+      <h4>Resolution In progress</h4>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="portlet-body">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <div class="col-md-3">
+          <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 tabel_overflow">
+        <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+          [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+          <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter by="insert_dt">Add Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+              </th>
+
+              <th>
+                <mfDefaultSorter by="location">Location</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="problem">Problem</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
+              </th>
+              <th style="min-width: 90px;">
+                <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
+              </th>
+
+              <th>
+                <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
+              </th>
+
+              <th>
+                <mfDefaultSorter by="status"> Status</mfDefaultSorter>
+              </th>
+              <th nowrap>
+                Details if Edited
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="mf.data.length != 0">
+            <tr *ngFor="let item of mf.data; let i=index;">
+              <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td>
+              <td>{{item.domain|titlecase}}</td>
+
+              <td>{{item.location}}</td>
+              <td>{{item.problem}}</td>
+              <td>{{item.issue_desc}}</td>
+              <td nowrap>{{item.repaired_on | date: 'dd-MMM-yyyy'}}</td>
+              <td>{{item.priority}}</td>
+               <!-- <td>{{item.status}}</td> -->
+           
+              
+              <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
+              <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
+              <td nowrap *ngIf="item.status=='completed'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Completed</span></td>
+
+              
+              <!-- <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
+              <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.days)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+              <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
+              <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td> -->
+              <!-- <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td> -->
+              <td>
+                <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Start</a>
+                <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">End</a>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="mf.data.length == 0">
+            <tr rowspan="2">
+              <td colspan="12">
+                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="12">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

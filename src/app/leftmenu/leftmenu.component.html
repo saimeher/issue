@@ -66,6 +66,9 @@
                     <li *ngIf="role =='stf'"> <a (click)="sidebarchage('myissues')" [ngClass]="this.api.livePage == 'myissues'?'active':''">
                     <i class="fa fa-angle-double-right"></i>    View All Issues </a>
                     </li>
+                    <li *ngIf="role =='other'"> <a (click)="sidebarchage('resolution')" [ngClass]="this.api.livePage == 'resolution'?'active':''">
+                        <i class="fa fa-angle-double-right"></i>    Resolution </a>
+                    </li>
 
 
 

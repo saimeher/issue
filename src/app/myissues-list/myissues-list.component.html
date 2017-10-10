@@ -37,23 +37,13 @@
             </div>
             <div class="col-md-2">
               <label for="email">From Date<span style="color:red">*</span></label>
-              <!--<app-date type="day" ngDefaultControl [endDate]="to_date" [startDate]="from_date"  (dateChange)="dateChanged('start_date', $event)">
-            </app-date>-->
               <my-date-picker locale="en" #start formControlName="from_date" name="startdate" placeholder="Ex:YYYY-MM-DD" required [options]="myDatePickerOptions"
                 (dateChanged)="onDateChanged($event)"></my-date-picker>
-              <!--<span *ngIf="(issues_forms.get('from_date').touched || issues_forms.get('from_date').dirty) && issues_forms.get('from_date').errors">
-                    <span *ngIf="issues_forms.get('from_date').errors.required" style="color:red">  Please enter type </span>
-                </span> -->
             </div>
             <div class="col-md-2">
               <label for="email">To Date <span style="color:red">*</span></label>
               <my-date-picker #end name="enddate" locale="en" formControlName="to_date" [options]="myDatePickerOptions2" placeholder="Ex:YYYY-MM-DD"
                 required (dateChanged)="onDateChanged2($event)"></my-date-picker>
-              <!--<div>
-              <span *ngIf="(issues_forms.get('to_date').touched || issues_forms.get('to_date').dirty) && issues_forms.get('to_date').errors">
-                    <span *ngIf="issues_forms.get('to_date').errors.required" style="color:red">  Please enter type </span>
-                </span>
-                </div>-->
             </div>
 
             <div class="col-md-3">
@@ -391,7 +381,7 @@
 <!--model popup-->
 <app-modal #modal1>
   <div class="app-modal-header">
-    <h4 style="color:black">Update Issue</h4>
+    <h4 style="color:black">{{issuedescription}}</h4>
   </div>
   <div class="app-modal-body">
     <form [formGroup]="taskeditForm" #f="ngForm" (ngSubmit)="editTask()" role="form">
@@ -406,7 +396,7 @@
           <div class="form-group">
             <label class="col-sm-4 control-label">Priority</label>
             <div class="col-sm-6">
-              <select class="form-control" formControlName="priority" >
+              <select class="form-control" formControlName="priority">
                    <option selected value="high">high</option>
                    <option selected value="low">low</option>
                    <option value="medium">Medium</option>
@@ -428,73 +418,75 @@
               </select>
             </div>
           </div>
+          <!-- for assigned -->
           <div *ngIf="showdays == 'assigned'" class="form-group">
             <label class="col-sm-4 control-label">Assigned To</label>
-            <div  class="col-sm-6">
-              <input formControlName="repaired_by" name="repaired_by" type="text" class="form-control" >
+            <div class="col-sm-6">
+              <angular2-multiselect [(ngModel)]="showusers" [data]="dropdownList" class="form-control" name="repaired_by" formControlName="repaired_by"
+                [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
+            </div>
+          </div> 
+
+
+           <div *ngIf="showdays == 'assigned'" class="form-group">
+            <label class="col-sm-4 control-label">Repaired On</label>
+            <div class="col-sm-4">
+              <my-date-picker #start name="assigned_on" locale="en" formControlName="assigned_on" [options]="myDatePickerOptions" placeholder="YYYY-MM-DD"
+                required (dateChanged)="onDateChanged1($event)"></my-date-picker>
+              
+
             </div>
           </div>
 
           <div *ngIf="showdays == 'assigned'" class="form-group">
-              <label class="col-sm-4 control-label">Assigned  On <span style="color:red">*</span></label>
-              <div class="col-sm-6">
-               <div class="col-sm-12"  style="padding-left: 0px;"> <p-calendar formControlName="repaired_on" dateFormat="yy-mm-dd" [showIcon]="true" required ></p-calendar></div>
-              <div class="col-sm-12">
-                <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
-                  <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
-                </span>
-            </div>
-  
-              </div>
-            </div>
-
-          <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
-            <label class="col-sm-4 control-label">Repaired On <span style="color:red">*</span></label>
+            <label class="col-sm-4 control-label">Remarks</label>
             <div class="col-sm-6">
-             <div class="col-sm-12"  style="padding-left: 0px;"> <p-calendar formControlName="repaired_on" dateFormat="yy-mm-dd" [showIcon]="true" required ></p-calendar></div>
-            <div class="col-sm-12">
-              <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
-                <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
-              </span>
+              <textarea class="form-control" name="assignedtext" formControlName="assignedtext"></textarea>
+            </div>
           </div>
 
+
+          <!-- for verified & resolved -->
+          <div *ngIf="showdays == 'verified_resolved'" class="form-group">
+            <label class="col-sm-4 control-label">Repaired On</label>
+            <div class="col-sm-4">
+              <my-date-picker #start name="date_of_resolution" locale="en" formControlName="date_of_resolution" [options]="myDatePickerOptions"
+                placeholder="YYYY-MM-DD" required (dateChanged)="onDateChanged3($event)"></my-date-picker>
             </div>
           </div>
 
           <div *ngIf="showdays == 'verified_resolved'" class="form-group">
-            <label class="col-sm-4 control-label">Date of Resolution <span style="color:red">*</span></label>
+            <label class="col-sm-4 control-label">Notes</label>
             <div class="col-sm-6">
-              <!--<app-date type="day" ngDefaultControl value="" [endDate]="start_date" formControlName="date_of_resolution" (dateChange)="dateChanged('date_of_resolution', $event)">
-            </app-date>--> 
-            <div class="col-sm-12"  style="padding-left: 0px;"><p-calendar formControlName="date_of_resolution" dateFormat="yy-mm-dd" [showIcon]="true" required ></p-calendar></div>
-            <div class="col-sm-12">
-            
-              <!--<date-picker formControlName="date_of_resolution" mode="datetime" required></date-picker>-->
-              <span *ngIf="(taskeditForm.get('date_of_resolution').touched || taskeditForm.get('date_of_resolution').dirty) && taskeditForm.get('date_of_resolution').errors">
-                <span *ngIf="taskeditForm.get('date_of_resolution').errors.required" style="color:red">  Please enter your date. </span>
-              </span></div>
-
+              <textarea class="form-control" name="notes" formControlName="notes"></textarea>
             </div>
           </div>
-          <!--<input type="hidden" formControlName="did" name="did" value="" class="form-control">-->
-          <div class="form-group">
-            <label class="col-sm-4 control-label">Notes</label>
-            <!--<input type="text" class="form-control" />-->
+          <!-- for On hold -->
+          <div *ngIf="showdays == 'onhold'" class="form-group">
+            <label class="col-sm-4 control-label">Remarks for On hold</label>
             <div class="col-sm-6">
-              <textarea class="form-control" name="notes" formControlName="notes" ></textarea>
+              <textarea class="form-control" name="onholdtext" formControlName="onholdtext"></textarea>
+            </div>
+          </div>
+          <!-- for cannot be resolved -->
+          <div *ngIf="showdays == 'cannot_be_resolved'" class="form-group">
+            <label class="col-sm-4 control-label">Remarks for cannot be resolved</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="cannottext" formControlName="cannottext"></textarea>
             </div>
           </div>
         </div>
-      </div>
-      <br/>
-      <div class="app-modal-footer col-sm-offset-4">
-        <button type="submit"  class="btn btn-default btn-square">Save Changes</button>
-        <button type="button" class="btn btn-danger btn-square" (click)="close();">Close</button>
-        <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
-        <!-- [disabled]="!f.valid" -->
-      </div>
+        </div>
+
+        <br/>
+        <div class="app-modal-footer col-sm-offset-4">
+          <button type="submit" class="btn btn-default btn-square">Save Changes</button>
+          <button type="button" class="btn btn-danger btn-square" (click)="close();">Close</button>
+          <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
+          <!-- [disabled]="!f.valid" -->
+        </div>
     </form>
-  </div>
+    </div>
 </app-modal>
 
 <app-modal #modal3>
@@ -523,3 +515,32 @@
     <button type="button" class="btn btn-danger btn-square" (click)="imageclose();">Close</button>
   </div>
 </app-modal>
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
+    <label class="col-sm-4 control-label">Repaired On <span style="color:red">*</span></label>
+    <div class="col-sm-6">
+      <div class="col-sm-12" style="padding-left: 0px;">
+        <p-calendar formControlName="repaired_on" dateFormat="yy-mm-dd" [showIcon]="true" required></p-calendar>
+      </div>
+      <div class="col-sm-12">
+        <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
+        <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
+        </span>
+      </div>
+
+    </div>
+  </div> -->
+
+
+  <!-- <div class="col-sm-12">
+              <span *ngIf="(taskeditForm.get('repaired_on').touched || taskeditForm.get('repaired_on').dirty) && taskeditForm.get('repaired_on').errors">
+                <span *ngIf="taskeditForm.get('repaired_on').errors.required" style="color:red">  Please selet  date. </span>
+              </span>
+          </div> -->

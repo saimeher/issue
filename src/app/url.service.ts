@@ -34,6 +34,8 @@ export class UrlService {
   public  ADDDOMAIN_API: string = this.Url + 'addDomain';
   public  UPDATEDOMAIN_API: string = this.Url + 'updateDomain';
   public UPDATEINCHARGE_API: string = this.Url + 'updateIncharge';
+
+  public GETISSUESINPROGRESS_API : string =  this.Url + 'GETISSUESINPROGRESS';
   
   constructor() { }
 

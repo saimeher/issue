@@ -78,8 +78,6 @@ export class AddDomainComponent implements OnInit {
    
   updatePage(value: any) {
     this.updateids = [];
-    //console.log(value);
-    //console.log(value.domain_admin);
     let string = value.domain_admin;
     this.array = string.split(',');
 
