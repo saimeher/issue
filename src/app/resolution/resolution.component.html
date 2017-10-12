@@ -1,3 +1,4 @@
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>
 <div class="portlet portlet-default">
   <div class="portlet-heading">
     <div class="portlet-title">
@@ -14,14 +15,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 tabel_overflow">
+      <div class="col-md-12">
         <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
           [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
           <thead>
             <tr>
-              <th>
+              <!-- <th>
                 <mfDefaultSorter by="insert_dt">Add Date</mfDefaultSorter>
-              </th>
+              </th> -->
               <th>
                 <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
               </th>
@@ -35,7 +36,11 @@
               <th>
                 <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
               </th>
-              <th style="min-width: 90px;">
+              <th nowrap>
+                <mfDefaultSorter by="expected_resolution_date">Exp Res Date </mfDefaultSorter>
+              </th>
+
+              <th>
                 <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
               </th>
 
@@ -47,28 +52,41 @@
                 <mfDefaultSorter by="status"> Status</mfDefaultSorter>
               </th>
               <th nowrap>
-                Details if Edited
+                Action
               </th>
             </tr>
           </thead>
           <tbody *ngIf="mf.data.length != 0">
             <tr *ngFor="let item of mf.data; let i=index;">
-              <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td>
+              <!-- <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td> -->
               <td>{{item.domain|titlecase}}</td>
 
               <td>{{item.location}}</td>
               <td>{{item.problem}}</td>
               <td>{{item.issue_desc}}</td>
+              <td nowrap>{{item.expected_resolution_date | date: 'dd-MMM-yyyy'}}</td>
               <td nowrap>{{item.repaired_on | date: 'dd-MMM-yyyy'}}</td>
               <td>{{item.priority}}</td>
-               <!-- <td>{{item.status}}</td> -->
-           
-              
-              <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
-              <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
-              <td nowrap *ngIf="item.status=='completed'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Completed</span></td>
+              <!-- <td>{{item.status}}</td> -->
+              <td nowrap *ngIf="item.status=='resolution_in_progress'">
+                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span>
+              </td>
+              <td nowrap *ngIf="item.status=='assigned'">
+                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span>
+              </td>
+              <td nowrap *ngIf="item.status=='closed'">
+                <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span>
+              </td>
+              <td nowrap *ngIf="item.status=='verified_resolved'">
+                <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified Resolved</span>
+              </td>
+              <td nowrap *ngIf="item.status=='onhold'">
+                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span>
+              </td>
+              <td nowrap *ngIf="item.status=='cannot_be_resolved'">
+                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span>
+              </td>
 
-              
               <!-- <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
@@ -79,8 +97,12 @@
               <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td> -->
               <!-- <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td> -->
               <td>
-                <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Start</a>
-                <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">End</a>
+                <a *ngIf="item.status == 'assigned'" class="btn btn-info btn-xs btn-square" (click)="details(item)" >Work Start</a>
+                <a *ngIf="item.status == 'onhold'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Work Start</a>
+                <a *ngIf="item.status == 'cannot_be_resolved'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Work Start</a>
+                <a *ngIf="item.status == 'resolution_in_progress'" class="btn btn-danger btn-xs btn-square" (click)="closed(item)">Work Progress</a>
+                <a *ngIf=" item.status == 'closed'" class="btn btn-default btn-xs btn-square">Issue Closed</a>
+                <a *ngIf=" item.status == 'verified_resolved'" class="btn btn-default btn-xs btn-square">Verified Resolved</a>
               </td>
             </tr>
           </tbody>
@@ -104,9 +126,112 @@
   </div>
 </div>
 
+<app-modal #modal1>
+  <div class="app-modal-header">
+    <h4 style="color:black">{{issuedescription}}
+      <a data-dismiss="modal" class="pull-right" (click)="close()">x</a>
+    </h4>
+  </div>
+  <div class="app-modal-body">
+    <form [formGroup]="resolutioninform" role="form">
+      <div class="form-horizontal">
+        <div class="box-body">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Status</label>
+            <div class="col-sm-6">
+              <select class="form-control" formControlName="status" (change)="selStataus($event)">
+                <option selected value="resolution_in_progress">Resolution in Progress</option>
+                <option value="onhold">On Hold </option>
+                <option value="cannot_be_resolved">Cannot be resolved</option>
+                <option value="closed">Closed</option>
+                <option value="assigned">Assigned </option>
+              </select>
+            </div>
+          </div>
+
+
+          <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
+            <label class="col-sm-4 control-label">Expected Resolution Date</label>
+            <div class="col-sm-4">
+              <my-date-picker #start name="expected_resolution_date" locale="en" formControlName="expected_resolution_date" [options]="myDatePickerOptions"
+                placeholder="YYYY-MM-DD" (dateChanged)="onDateChanged3($event)"></my-date-picker>
+            </div>
+          </div>
+
+          <div *ngIf="showdays == 'closed'" class="form-group">
+            <label class="col-sm-4 control-label">Notes</label>
+            <div class="col-sm-6">
+              <!--<input type="text" class="form-control" />-->
+              <textarea class="form-control" name="repairedtext" value="repairedtext" formControlName="repairedtext"></textarea>
+            </div>
+          </div>
+
+          <div *ngIf="showdays == 'onhold'" class="form-group">
+            <label class="col-sm-4 control-label">Notes</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="onholdtext" formControlName="onholdtext" style="resize: vertical"></textarea>
+            </div>
+          </div>
+          <div *ngIf="showdays == 'cannot_be_resolved'" class="form-group">
+            <label class="col-sm-4 control-label">Notes</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="cannottext" formControlName="cannottext" style="resize: vertical"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-4">
+              <button (click)="resolutioninprogress()" class="btn btn-default btn-square col-md-4" style="margin-top: 25px;">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+      </div>
+    </form>
+  </div>
+</app-modal>
 
 
 
+
+<app-modal #modal2>
+  <div class="app-modal-header">
+    <h4 style="color:black">{{issuedescription}}
+      <a data-dismiss="modal" class="pull-right" (click)="close2()">x</a>
+    </h4>
+  </div>
+  <div class="app-modal-body">
+    <form [formGroup]="resolutionclosedform" role="form">
+      <div class="form-horizontal">
+        <div class="box-body">
+          <!-- <div class="form-group">
+            <label class="col-sm-4 control-label">Repaired On</label>
+            <div class="col-sm-4">
+              <my-date-picker #start name="repaired_on" readonly locale="en" formControlName="repaired_on" [options]="myDatePickerOptions" placeholder="YYYY-MM-DD"
+                (dateChanged)="onDateChanged2($event)"></my-date-picker>
+            </div>
+          </div> -->
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">Notes</label>
+            <div class="col-sm-6">
+              <!--<input type="text" class="form-control" />-->
+              <textarea class="form-control" name="repairedtext" value="repairedtext" formControlName="repairedtext"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4">
+              <button (click)="resolutionclosed()" class="btn btn-default btn-square col-md-6" style="margin-top: 25px;">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+      </div>
+    </form>
+  </div>
+</app-modal>
 
 
 

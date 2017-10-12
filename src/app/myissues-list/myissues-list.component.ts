@@ -4,6 +4,8 @@ import { ApiService } from '../api.service';
 import { DateComponent } from '../date/date.component';
 import { ModalComponent } from '../modal.component';
 import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
+import { ToasterContainerComponent, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
+
 @Component({
   selector: 'app-myissues-list',
   templateUrl: './myissues-list.component.html',
@@ -12,6 +14,13 @@ import { IMyOptions, IMyDateModel, IMyDpOptions } from 'mydatepicker';
 export class MyissuesListComponent implements OnInit {
   @ViewChild('modal1') modal1: ModalComponent;
   @ViewChild('modal3') modal3: ModalComponent;
+  @ViewChild('modal2') modal2: ModalComponent;
+  public toasterconfig: ToasterConfig =
+  new ToasterConfig({
+    timeout: 5000
+  });
+
+  public toasterService: ToasterService;
   taskeditForm: FormGroup;
   issues_form: FormGroup;
   role;
@@ -59,6 +68,7 @@ export class MyissuesListComponent implements OnInit {
   avgdata;
   issuedescription;
   dropdownSettings = {};
+  showusers=[];
 
   r = 1;
   ac;
@@ -89,10 +99,19 @@ export class MyissuesListComponent implements OnInit {
 assigned_on;
 date_of_resolution;
 did;
+today = new Date();
 
 
-
-
+date;
+raised_by;
+problem;
+location;
+issue;
+on;
+resolution;
+notes;
+domain1;
+description;
 
 
   // selecteddomain:any;
@@ -107,7 +126,8 @@ did;
   public sortOrder = "asc";
   reg_no = localStorage.getItem('reg_no');
   name = localStorage.getItem('name');
-  constructor(public api: ApiService, public fb: FormBuilder) {
+  constructor(public api: ApiService, public fb: FormBuilder,toasterService: ToasterService) {  
+    this.toasterService = toasterService ;
     const vals = {
       utype: 'adm',
 
@@ -140,7 +160,7 @@ did;
       assignedtext:[''],
       cannottext:[''],
       repaired_on: [''],
-      repaired_by: [''],
+      repaired_by: [],
       date_of_resolution: new FormControl(),
       notes: [],
       did: []
@@ -149,6 +169,7 @@ did;
     this.getDomainsbyId();
     this.getdetails();
     this.dropdownSettings = {
+
       singleSelection: true,
       text: "Select ",
       enableSearchFilter: true,
@@ -163,7 +184,7 @@ did;
   date_of_resolution1;
   showdays;
   details(item) {
-    console.log(item);
+    console.log(item,'3sdfhjksd');
     this.did = item.did;
     // this.Repaired_on1 = item.repaired_on;
     // this.date_of_resolution1 = item.date_of_resolution;
@@ -186,9 +207,25 @@ did;
     //   date_of_resolution: this.date_of_resolutionn,
 
     // });
+    // let temp =  item.repaired_by;
+    // console.log(temp,temp.length);
+    // this.dropdownList=[];
+    //   for (let  j = 0; j < temp.length; j++) {
+    //     this.dropdownList[j] = new Object();
+    //     this.dropdownList[j]["id"] = item.reg_no;
+    //     this.dropdownList[j]["itemName"] = temp[j];
+    //   }
+    // console.log('fully arrya',this.dropdownList);
+    this.showusers=[];
+    this.showusers[0]=new Object();
+     this.showusers[0]['id'] = item.repaired_by;
+     this.showusers[0]['itemName'] = item.repaired_by;
+     console.log(this.showusers);
     this.taskeditForm.patchValue(item);
     this.taskeditForm.patchValue({ date_of_resolution: { formatted: item.date_of_resolution } });
+    this.taskeditForm.patchValue({ assigned_on: { formatted: item.assigned_on } });
     this.date_of_resolution = item.date_of_resolution;
+    this.assigned_on= item.assigned_on;
     console.log('date',this.date_of_resolution);
     this.showdays = item.status;
     
@@ -218,7 +255,7 @@ did;
       .subscribe(
       data => {
         console.log(data);
-
+        this.popToast1();
         // this.taskeditForm.reset();
         this.getdetails();
         this.modal1.hide();
@@ -1216,7 +1253,7 @@ did;
     editableDateField: false,
     disableWeekends: false,
     // disableDays: this.service.holidays,
-    //  disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
+      disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
     // disableUntil: {year: , month: 5 , day: 17}
 
   };
@@ -1287,4 +1324,23 @@ did;
     console.log(this.to_date, 'from date test');
     this.date_of_resolution = event.formatted;
   }
+
+  resolveddetails(item)
+    {
+      this.date = item.insert_dt;
+      this.raised_by = item.raised_by;
+      this.problem = item.problem;
+      this.location = item.location;
+      this.issue = item.issue_desc;
+      this.id = item.did;
+      this.on = item.repaired_on;
+      this.resolution = item.date_of_resolution;
+      this.notes = item.notes;
+      this.domain1=item.domain;
+      this.description = item.issue_desc;
+      this.modal2.show();
+    }
+    popToast1() {
+      this.toasterService.pop('success', '', 'Updated Successfully');
+    }
 }

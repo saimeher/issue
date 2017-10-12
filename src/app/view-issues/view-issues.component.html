@@ -52,13 +52,8 @@ td {
           </div>
           <div class="col-md-2">
             <label for="email">From Date<span style="color:red">*</span></label>
-            <!--<app-date type="day"     ngDefaultControl [endDate]="to_date" [startDate]="from_date"  (dateChange)="dateChanged('start_date', $event)">
-            </app-date>-->
             <my-date-picker locale="en" #start formControlName="from_date" name="startdate" placeholder="Ex:YYYY-MM-DD" required [options]="myDatePickerOptions"
               (dateChanged)="onDateChanged($event)"></my-date-picker>
-            <!--<span *ngIf="(issues_forms.get('from_date').touched || issues_forms.get('from_date').dirty) && issues_forms.get('from_date').errors">
-                    <span *ngIf="issues_forms.get('from_date').errors.required" style="color:red">  Please enter type </span>
-                </span> -->
           </div>
           <div class="col-md-2">
             <label for="email">To Date <span style="color:red">*</span></label>

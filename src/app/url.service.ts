@@ -36,6 +36,8 @@ export class UrlService {
   public UPDATEINCHARGE_API: string = this.Url + 'updateIncharge';
 
   public GETISSUESINPROGRESS_API : string =  this.Url + 'GETISSUESINPROGRESS';
+  public RESOLUTIONINPROGRESS_API : string = this.Url + 'RESOLUTIONINPROGRESS';
+  public RESOLUTIONCLOSED_API : string = this.Url + 'RESOLUTIONCLOSED';
   
   constructor() { }
 

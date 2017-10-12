@@ -39,6 +39,10 @@ import {MultiSelectModule} from 'primeng/primeng';
 import { ResolutionComponent } from './resolution/resolution.component';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 
+//third part
+import { ToasterModule, ToasterService } from 'angular2-toaster';
+import { TooltipModule } from "ng2-tooltip";
+
 
 
 
@@ -67,12 +71,14 @@ export function highchartsFactory() {
     DataFilterPipe,
     DateComponent,
     ModalComponent,
+
     //RaiseIssueComponent,
      AddissueComponent,
     MyissuesListComponent,
   AddroleComponent,
     AddDomainComponent,
-    ResolutionComponent
+    ResolutionComponent,
+   
    // UrlService,
     // DataService,
    // AuthGuard,
@@ -89,12 +95,14 @@ export function highchartsFactory() {
     DataTableModule,
     OverlayModule,
     DatePickerModule,
+    ToasterModule,
     //ChartModule.forRoot(require('highcharts')),
     MyDatePickerModule ,
     ChartModule,
     CalendarModule,
     MultiSelectModule,
     AngularMultiSelectModule,
+    TooltipModule,
     
   ],
   providers: [ApiService,UrlService,AuthGuard,UploadService,{ provide: HighchartsStatic,

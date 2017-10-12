@@ -154,6 +154,18 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     console.log(body);
     return this.callApi(this.url.GETISSUESINPROGRESS_API, 'post', body); 
   }
+
+  resolutioninprogress(body)
+  {
+    console.log(body);
+    return this.callApi(this.url.RESOLUTIONINPROGRESS_API, 'post', body); 
+  }
+
+  resolutionclosed(body)
+  {
+    console.log(body);
+    return this.callApi(this.url.RESOLUTIONCLOSED_API, 'post', body); 
+  }
   
   callApi(url: string, method: string, body: Object): Observable<any> {
 

@@ -1,4 +1,5 @@
 <!--<div *ngIf="role =='adm'">-->
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>
 <div class="portlet portlet-default" *ngIf="addFormStatus">
   <div class="portlet-heading">
     <div class="portlet-title">
@@ -71,7 +72,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 tabel_overflow">
+      <div class="col-md-12">
         <!--<table class="table table-green table-bordered table-hover">-->
         <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
           [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -127,20 +128,28 @@
               <td>{{item.priority}}</td>
 
               <!--<td>{{item.status}}</td>-->
-              <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
+              <!-- <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">Pending</span></td>
               <td nowrap *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">Verified Resolved</span></td>
               <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Resolution in Progress</span></td>
               <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;"> Cannot be Resolved </span></td>
               <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;">User Deleted</span></td>
               <td nowrap *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
               <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
-              <td nowrap *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
-
+              <td nowrap *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td> -->
+              <td nowrap *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified Resolved</span></td>
+              <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span></td>
+              <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.userdeletedtext}}">User Deleted</span></td>
+              <td nowrap *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span></td>
+              <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="">Pending</span></td>
+              <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span></td>
+              <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span></td>
+              <td nowrap *ngIf="item.status=='closed'"><span class="badge default" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span></td>
               <!--<td>{{-(item.days)}}-->
 
               <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
+              <td *ngIf="item.days <= 0  && item.status == 'closed'" style="text-align: center;">{{-(item.day)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
               <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
@@ -151,8 +160,8 @@
                 <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
                 <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
               </td>
-              <td nowrap *ngIf ="item.status == 'user_deleted' ||  item.status == 'user_resolved' || item.status == 'verified_resolved' ">
-                <a class="btn btn-info btn-xs btn-default">closed</a>
+              <td nowrap *ngIf ="item.status == 'user_deleted' ||  item.status == 'user_resolved' || item.status == 'verified_resolved' ||  item.status == 'closed'">
+                <a class="btn btn-info btn-xs btn-default">Issue Closed</a>
               </td>
             </tr>
           </tbody>

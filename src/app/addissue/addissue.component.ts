@@ -4,6 +4,7 @@ import { ApiService } from '../api.service';
 import { DateComponent } from '../date/date.component';
 import { ModalComponent } from '../modal.component';
 import { UploadService} from '../upload.service';
+import { ToasterContainerComponent, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
 @Component({
   selector: 'app-addissue',
   templateUrl: './addissue.component.html',
@@ -11,12 +12,18 @@ import { UploadService} from '../upload.service';
 })
 export class AddissueComponent implements OnInit {
   model3: any;
+  public toasterconfig: ToasterConfig =
+  new ToasterConfig({
+    timeout: 5000
+  });
+
+  public toasterService: ToasterService;
   @ViewChild('day') dayElement: ElementRef;
   @ViewChild('modal1') modal1: ModalComponent;
   @ViewChild('modal2') modal2: ModalComponent;
   @ViewChild('modal3') modal3: ModalComponent;
   @ViewChild('modal4') modal4: ModalComponent;
-  constructor(public api: ApiService, public fb: FormBuilder,public upservice:UploadService) { }
+  constructor(public api: ApiService, public fb: FormBuilder,public upservice:UploadService,  toasterService: ToasterService) {  this.toasterService = toasterService;}
   issues_form: FormGroup;
   taskeditForm: FormGroup;
   role;
@@ -129,6 +136,9 @@ export class AddissueComponent implements OnInit {
       .subscribe(data => {
         let id=data;
         console.log(id,this.picName);
+        if(data){
+          this.popToast();
+        }
         
       if(this.picName){        
          this.upservice.makeFileRequest('http://210.16.79.137/raghuerp/issueregister/server/api/insert_docs', id, this.picName).subscribe(() => {
@@ -144,6 +154,7 @@ export class AddissueComponent implements OnInit {
         this.getissue();
  
       });
+      
   }
 
   details(item) {
@@ -171,6 +182,7 @@ getissue()
   
   console.log(this.data);
 }
+
 EditIssue()
 {
    let data = {}
@@ -179,13 +191,14 @@ EditIssue()
     data['location'] = this.issues_form.value.location;
     data['problem'] = this.issues_form.value.problem;
     data['issue_desc'] = this.issues_form.value.issue_desc;
-    
 
   this.api.updateissues(data).subscribe(data=>{
+    if(data){
     this.data3=data;
     this.issues_form.reset();
+    this.popToast1();
     this.getissue();
-    this.modal1.hide();
+    this.modal1.hide();}
   });
 
 
@@ -279,5 +292,10 @@ updateclose(){
   this.updateimg_id='';
  this.modal4.hide();
 }
- 
+popToast() {
+  this.toasterService.pop('success', '', 'Successfully submitted your request');
+}
+popToast1() {
+  this.toasterService.pop('success', '', 'Updated Successfully');
+}
 }
