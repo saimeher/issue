@@ -3,7 +3,7 @@
 <div class="portlet portlet-default" *ngIf="addFormStatus">
   <div class="portlet-heading">
     <div class="portlet-title">
-      <h4> Add Issue </h4>
+      <h4> Add an Issue </h4>
     </div>
     <div class="portlet-widgets">
       <a (click)="hideAddForm()" style="cursor: pointer !important"><i class="fa fa-times"></i></a>
@@ -59,7 +59,7 @@
       <h4>Issues raised by me</h4>
     </div>
     <div class="portlet-widgets">
-      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i>  Add Issue</a>
+      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i>  Add an Issue</a>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -156,7 +156,7 @@
               <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td>
               <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-              <td nowrap *ngIf ="item.status == 'pending' ||  item.status == 'resolution_in_progress' || item.status == 'assigned' ">
+              <td nowrap *ngIf ="item.status == 'pending' ||  item.status == 'resolution_in_progress' || item.status == 'assigned' || item.status == 'onhold'">
                 <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
                 <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
               </td>

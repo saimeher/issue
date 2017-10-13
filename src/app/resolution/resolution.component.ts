@@ -78,7 +78,7 @@ export class ResolutionComponent implements OnInit {
   expected_resolution_date = '';
   repaired_on;
   showdays = '';
-  //img_url = "http://localhost/issue_register/uploads";
+  // img_url = "http://localhost/issue_register/uploads";
   img_url = "http://210.16.79.137/raghuerp/issueregister/server/uploads";
 
 
@@ -147,6 +147,8 @@ export class ResolutionComponent implements OnInit {
   }
 
   close() {
+    
+    // this.resolutioninform.patchValue(item);
     this.resolutioninform.reset();
     this.modal1.hide()
   }
@@ -261,44 +263,9 @@ export class ResolutionComponent implements OnInit {
   imageclose() {
     this.modal3.hide();
   }
-  updateimg_id;
-  updateImagepopup(id: any) {
-
-    this.modal4.show();
-    this.modal3.hide();
-    console.log(id);
-    this.updateimg_id = id;
-    // this.api.updateImage(id).subscribe(data=>{
-    //   console.log(data);
-
-    // })
-  }
-  updateFile: any;
-  imageChange(event) {
-
-    console.log('onChange', event);
-    var files = event.srcElement.files;
-    this.updateFile = files;
-    console.log(files);
-
-  }
-
-  updateImage(id: any) {
-    if (this.updateFile) {
-      this.upservice.makeFileRequest('http://210.16.79.137/raghuerp/issueregister/server/api/update_docs', id, this.updateFile).subscribe(data => {
-        // this.upservice.makeFileRequest('http://localhost/issue_register/api/update_docs', id, this.updateFile).subscribe(data=> {
-
-      });
-      this.updateimg_id = '';
-      this.modal4.hide();
-    }
-  }
-
-  updateclose() {
-    this.updateimg_id = '';
-    this.modal4.hide();
-  }
-
+  
+ 
+ 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd-mmm-yyyy',
@@ -341,8 +308,6 @@ export class ResolutionComponent implements OnInit {
     console.log(this.showdays);
 
   }
-
-
   popToast() {
     this.toasterService.pop('success', '', 'Successfully submitted your request');
   }

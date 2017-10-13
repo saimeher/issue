@@ -101,7 +101,8 @@ export class ViewIssuesComponent implements OnInit {
   cannot_be_resolved_tot;
   assigned_tot;
   onhold_tot;
-  user_resolved_tot;
+  closed_tot;
+
   getAllIssues() {
     this.verified_resolved_tot = '0';
     this.resolution_in_progress_tot = '0';
@@ -110,7 +111,8 @@ export class ViewIssuesComponent implements OnInit {
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    this.closed_tot = '0';
+    // this.user_resolved_tot = '0';
     this.total = '0';
     this.api.getAllIssues().subscribe(alldata => {
       if (alldata) {
@@ -147,8 +149,11 @@ export class ViewIssuesComponent implements OnInit {
             if (element.status == 'onhold') {
               this.onhold_tot = element.tot;
             }
-            if (element.status == 'user_resolved') {
-              this.user_resolved_tot = element.tot;
+            // if (element.status == 'user_resolved') {
+            //   this.user_resolved_tot = element.tot;
+            // }
+            if (element.status == 'closed') {
+              this.closed_tot = element.tot;
             }
             console.log(element.status, '-', element.tot);
 
@@ -213,9 +218,13 @@ export class ViewIssuesComponent implements OnInit {
                 name: 'Verified & Resolved',
                 y: JSON.parse(this.verified_resolved_tot),
               },
+              // {
+              //   name: 'User Resolved',
+              //   y: JSON.parse(this.user_resolved_tot),
+              // },
               {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
+                name: 'Closed',
+                y: JSON.parse(this.closed_tot),
               },
               {
                 name: 'User Deleted',
@@ -297,7 +306,8 @@ export class ViewIssuesComponent implements OnInit {
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
+    this.closed_tot = '0';
     console.log('his', $event.target.value);
     let value = $event.target.value;
     this.selectvalue = $event.target.value;
@@ -342,8 +352,11 @@ export class ViewIssuesComponent implements OnInit {
               if (element.status == 'onhold') {
                 this.onhold_tot = element.tot;
               }
-              if (element.status == 'user_resolved') {
-                this.user_resolved_tot = element.tot;
+              // if (element.status == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
               }
             });
             this.options = {
@@ -405,9 +418,13 @@ export class ViewIssuesComponent implements OnInit {
                   name: 'Verified Resolved',
                   y: JSON.parse(this.verified_resolved_tot),
                 },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -462,10 +479,10 @@ export class ViewIssuesComponent implements OnInit {
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
-     this.assigned_tot = '0';
+    // this.user_resolved_tot = '0';
+    this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
     this.gardening_total = '0';
     this.ac_total = '0';
     this.carpentary_total = '0';
@@ -477,6 +494,7 @@ export class ViewIssuesComponent implements OnInit {
     this.infrastructure_total = '0';
     this.water_supply_total = '0';
     this.house_keeping_total = '0';
+    this.closed_tot = '0';
     this.selection['category'] = this.issues_form.value.seluserid;
     this.selection['status'] = this.issues_form.value.selstatus;
     this.selection['from_date'] = this.from_date;
@@ -486,8 +504,6 @@ export class ViewIssuesComponent implements OnInit {
       if (data) {
         this.data = data.data;
         this.data2 = data.data1;
-
-        console.log(this.data3);
         if (this.data2 == 'NoData') {
           this.table = true;
         }
@@ -505,7 +521,7 @@ export class ViewIssuesComponent implements OnInit {
 
 
               if (element.status == 'ac') {
-                  this.ac_total = element.tot;
+                this.ac_total = element.tot;
               }
               if (element.status == 'carpentary') {
                 //  this.carpentary=  element.status;
@@ -547,36 +563,39 @@ export class ViewIssuesComponent implements OnInit {
                 // this.house_keeping=  element.status;
                 this.house_keeping_total = element.tot;
               }
-            }else{
-              this.summarydata=false;
-            if (element.status == 'cannot_be_resolved') {
-              this.cannot_be_resolved_tot = element.tot;
-            }
-            if (element.status == 'pending') {
-              this.pending_tot = element.tot;
-            }
-            if (element.status == 'resolution_in_progress') {
-              this.resolution_in_progress_tot = element.tot;
-            }
-            if (element.status == 'user_deleted') {
-              this.user_deleted_tot = element.tot;
-            }
-            if (element.status == 'verified_resolved') {
-              this.verified_resolved_tot = element.tot;
-            }
-            if (element.status == 'assigned') {
-              this.assigned_tot = element.tot;
-            }
-            if (element.status == 'onhold') {
-              this.onhold_tot = element.tot;
-            }
-            if (element.status == 'user_resolved') {
-              this.user_resolved_tot = element.tot;
-            }
+            } else {
+              this.summarydata = false;
+              if (element.status == 'cannot_be_resolved') {
+                this.cannot_be_resolved_tot = element.tot;
+              }
+              if (element.status == 'pending') {
+                this.pending_tot = element.tot;
+              }
+              if (element.status == 'resolution_in_progress') {
+                this.resolution_in_progress_tot = element.tot;
+              }
+              if (element.status == 'user_deleted') {
+                this.user_deleted_tot = element.tot;
+              }
+              if (element.status == 'verified_resolved') {
+                this.verified_resolved_tot = element.tot;
+              }
+              if (element.status == 'assigned') {
+                this.assigned_tot = element.tot;
+              }
+              if (element.status == 'onhold') {
+                this.onhold_tot = element.tot;
+              }
+              // if (element.status == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
+              }
             }
           });
-          
-          if(this.issues_form.value.selstatus != 'all' && this.domainname == 'all'){
+
+          if (this.issues_form.value.selstatus != 'all' && this.domainname == 'all') {
             this.options = {
               credits: {
                 enabled: false
@@ -669,91 +688,95 @@ export class ViewIssuesComponent implements OnInit {
 
             };
 
-          }else{
+          } else {
             this.options = {
-            credits: {
-              enabled: false
-            },
+              credits: {
+                enabled: false
+              },
 
-            colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
-              '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
-            chart: {
+              colors: ['#2980b9', '#e74c3c', "#f39c12", "#ed87a6", '#16a085', '#8bbc21', '#0d233a',
+                '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a'],
+              chart: {
 
-              height: 320,
-              width: 400,
-              borderWidth: 1,
-              borderRadius: 4,
-              borderColor: '#2C3E50 ',
-              plotBackgroundColor: null,
-              plotBorderWidth: null,
-              plotShadow: false,
-              type: 'pie',
+                height: 320,
+                width: 400,
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#2C3E50 ',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
 
-            },
-            exporting: {
+              },
+              exporting: {
 
 
-              enabled: false
-            },
-            title: false,
-            tooltip: {
-              pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
-            },
-            plotOptions: {
-              pie: {
-                size: 160,
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                  enabled: true
+                enabled: false
+              },
+              title: false,
+              tooltip: {
+                pointFormat: '{series.name}: <b>{point.y}  ({point.percentage:.1f}%)</b>'
+              },
+              plotOptions: {
+                pie: {
+                  size: 160,
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                    enabled: true
+                  },
+                  showInLegend: false
+                }
+              },
+              series: [{
+                name: 'Total',
+                colorByPoint: true,
+                data: [{
+                  name: 'Pending',
+                  y: JSON.parse(this.pending_tot),
                 },
-                showInLegend: false
-              }
-            },
-            series: [{
-              name: 'Total',
-              colorByPoint: true,
-              data: [{
-                name: 'Pending',
-                y: JSON.parse(this.pending_tot),
-              },
-              {
-                name: 'user_deleted_tot',
-                y: JSON.parse(this.user_deleted_tot),
-              },
-              {
-                name: 'resolution_in_progress_tot',
-                y: JSON.parse(this.resolution_in_progress_tot),
-              },
-              {
-                name: 'cannot_be_resolved_tot',
-                y: JSON.parse(this.cannot_be_resolved_tot),
-              },
-              {
-                name: 'verified_resolved_tot',
-                y: JSON.parse(this.verified_resolved_tot),
-              },
-              {
-                name: 'Assigned',
-                y: JSON.parse(this.assigned_tot),
-              },
-              {
-                name: 'On Hold',
-                y: JSON.parse(this.onhold_tot),
-              },
-              {
-                name: 'User Resolved',
-                y: JSON.parse(this.user_resolved_tot),
-              }
-              ]
-            }]
-          };
+                {
+                  name: 'user_deleted_tot',
+                  y: JSON.parse(this.user_deleted_tot),
+                },
+                {
+                  name: 'resolution_in_progress_tot',
+                  y: JSON.parse(this.resolution_in_progress_tot),
+                },
+                {
+                  name: 'cannot_be_resolved_tot',
+                  y: JSON.parse(this.cannot_be_resolved_tot),
+                },
+                {
+                  name: 'verified_resolved_tot',
+                  y: JSON.parse(this.verified_resolved_tot),
+                },
+                {
+                  name: 'Assigned',
+                  y: JSON.parse(this.assigned_tot),
+                },
+                {
+                  name: 'On Hold',
+                  y: JSON.parse(this.onhold_tot),
+                },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // }
+                {
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
+                }
+                ]
+              }]
+            };
           }
 
 
 
-          
-          
+
+
 
 
         }
@@ -794,7 +817,8 @@ export class ViewIssuesComponent implements OnInit {
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    this.closed_tot = '0';
+    // this.user_resolved_tot = '0';
     this.gardening_total = '0';
     this.ac_total = '0';
     this.carpentary_total = '0';
@@ -843,7 +867,7 @@ export class ViewIssuesComponent implements OnInit {
 
 
               if (element.status == 'ac') {
-                  this.ac_total = element.tot;
+                this.ac_total = element.tot;
               }
               if (element.status == 'carpentary') {
                 //  this.carpentary=  element.status;
@@ -909,9 +933,13 @@ export class ViewIssuesComponent implements OnInit {
               if (element.status == 'onhold') {
                 this.onhold_tot = element.tot;
               }
-              if (element.status == 'user_resolved') {
-                this.user_resolved_tot = element.tot;
+              // if (element.status == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
               }
+
             }
 
           });
@@ -1073,9 +1101,13 @@ export class ViewIssuesComponent implements OnInit {
                   name: 'Verified Resolved',
                   y: JSON.parse(this.verified_resolved_tot),
                 },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -1118,14 +1150,14 @@ export class ViewIssuesComponent implements OnInit {
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
-    dateFormat: 'yyyy-mm-dd',
+    dateFormat: 'dd-mmm-yyyy',
     editableDateField: false,
     disableWeekends: false,
 
   };
   public myDatePickerOptions2: IMyDpOptions = {
     // other options...
-    dateFormat: 'yyyy-mm-dd',
+    dateFormat: 'dd-mmm-yyyy',
     editableDateField: false,
     disableWeekends: false,
 
@@ -1138,17 +1170,27 @@ export class ViewIssuesComponent implements OnInit {
   picker1month;
   picker1year;
 
+  // onDateChanged(event: IMyDateModel) {
+
+  //   this.from_date = event.formatted;
+  //   this.myDatePickerOptions2.disableUntil.year = event.date.year
+  //   this.myDatePickerOptions2.disableUntil.month = event.date.month
+  //   this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
+  // }
   onDateChanged(event: IMyDateModel) {
 
-    this.from_date = event.formatted;
+    // this.from_date = event.formatted;
+    this.from_date = event.date.year + '-' + event.date.month + '-' + event.date.day;
     this.myDatePickerOptions2.disableUntil.year = event.date.year
     this.myDatePickerOptions2.disableUntil.month = event.date.month
     this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
   }
 
   onDateChanged2(event: IMyDateModel) {
+   
+    // this.to_date = event.formatted
+    this.to_date = event.date.year + '-' + event.date.month + '-' + event.date.day;
     console.log(this.to_date, 'from date test');
-    this.to_date = event.formatted
   }
   img_data;
   getImagesbyId(img_id, reg_no) {

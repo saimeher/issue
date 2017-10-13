@@ -59,7 +59,7 @@ export class MyissuesListComponent implements OnInit {
   cannot_be_resolved_tot;
   assigned_tot;
   onhold_tot;
-  user_resolved_tot;
+  // user_resolved_tot;
   formsuccess = false;
   options: Object;
   overall: Object;
@@ -100,7 +100,7 @@ assigned_on;
 date_of_resolution;
 did;
 today = new Date();
-
+closed_tot;
 
 date;
 raised_by;
@@ -112,6 +112,14 @@ resolution;
 notes;
 domain1;
 description;
+priority1;
+by;
+Repaired_on1;
+date_of_resolution1;
+showdays;
+assignedon;
+resstart
+
 
 
   // selecteddomain:any;
@@ -178,60 +186,38 @@ description;
 
   }
 
-
-  by;
-  Repaired_on1;
-  date_of_resolution1;
-  showdays;
   details(item) {
     console.log(item,'3sdfhjksd');
     this.did = item.did;
-    // this.Repaired_on1 = item.repaired_on;
-    // this.date_of_resolution1 = item.date_of_resolution;
-    // if (item.repaired_on != null) {
-    //   this.repaired_onn = item.repaired_on
-    // } else {
-    //   this.repaired_onn = new Date();
-    // }
-
-    // if (item.date_of_resolution != null) {
-    //   this.date_of_resolutionn = item.date_of_resolution
-    // } else {
-    //   this.date_of_resolutionn = new Date();
-    // }
+   
     this.by = item.raised_by;
     this.issuedescription = item.issue_desc;
-    // this.taskeditForm.patchValue({
-
-    //   repaired_on: this.repaired_onn,
-    //   date_of_resolution: this.date_of_resolutionn,
-
-    // });
-    // let temp =  item.repaired_by;
-    // console.log(temp,temp.length);
-    // this.dropdownList=[];
-    //   for (let  j = 0; j < temp.length; j++) {
-    //     this.dropdownList[j] = new Object();
-    //     this.dropdownList[j]["id"] = item.reg_no;
-    //     this.dropdownList[j]["itemName"] = temp[j];
-    //   }
-    // console.log('fully arrya',this.dropdownList);
-    this.showusers=[];
-    this.showusers[0]=new Object();
-     this.showusers[0]['id'] = item.repaired_by;
-     this.showusers[0]['itemName'] = item.repaired_by;
-     console.log(this.showusers);
     this.taskeditForm.patchValue(item);
+     this.showusers=[];
+    this.showusers[0]=new Object();
+    this.showusers[0]['id'] = item.repaired_by;
+    this.showusers[0]['itemName'] = item.repaired_by;
+    this.id = item.repaired_by;
     this.taskeditForm.patchValue({ date_of_resolution: { formatted: item.date_of_resolution } });
     this.taskeditForm.patchValue({ assigned_on: { formatted: item.assigned_on } });
     this.date_of_resolution = item.date_of_resolution;
     this.assigned_on= item.assigned_on;
+    // this.repaired_by = item.repaired_by;
+    // console.log(this.repaired_by);
     console.log('date',this.date_of_resolution);
     this.showdays = item.status;
     
     this.modal1.show();
 
   }
+  onItemSelect(item: any) {
+    console.log(item);
+    this.id = item.id;
+  }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+  }
+
   close() {
     this.taskeditForm.reset();
     this.modal1.hide()
@@ -255,13 +241,24 @@ description;
       .subscribe(
       data => {
         console.log(data);
-        this.popToast1();
-        // this.taskeditForm.reset();
-        this.getdetails();
-        this.modal1.hide();
-        // this.getdetails();
-        // this.ngOnInit();
-
+        if(data.success){
+          this.id = null
+          this.popToast1();
+          // this.taskeditForm.reset();
+          this.getdetails();
+         
+          this.issues_form.patchValue({
+            seluserid: 'all',
+            selstatus: 'all',
+            from_date: '',
+            to_date: ''
+          })
+          this.modal1.hide();
+        }
+         
+          else{
+            this.popToast();
+          }
       });
   }
 
@@ -273,20 +270,21 @@ description;
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
+    this.closed_tot='0';
     this.total = '0';
     this.summarydata = false;
     this.api.getdetails(this.reg_no).subscribe(alldata => {
       if (alldata) {
-        console.log(alldata.data);
-        console.log(alldata.data1);
+        // console.log(alldata.data);
+        // console.log(alldata.data1);
         this.data2 = alldata.data1;
         this.data = alldata.data;
         if (this.data2 == 'NoData') {
           this.table = true;
         } else {
           this.table = false;
-          console.log(this.data2);
+          // console.log(this.data2);
           this.data2.forEach(element => {
             this.total = element.t;
             if (element.status == 'cannot_be_resolved') {
@@ -310,8 +308,11 @@ description;
             if (element.status == 'onhold') {
               this.onhold_tot = element.tot;
             }
-            if (element.status == 'user_resolved') {
-              this.user_resolved_tot = element.tot;
+            // if (element.status == 'user_resolved') {
+            //   this.user_resolved_tot = element.tot;
+            // }
+            if (element.status == 'closed') {
+              this.closed_tot = element.tot;
             }
             console.log(element.status, '-', element.tot);
 
@@ -376,9 +377,13 @@ description;
                   name: 'Verified Resolved',
                   y: JSON.parse(this.verified_resolved_tot),
                 },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -414,7 +419,7 @@ description;
     this.api.getDomainsbyId(this.reg_no).subscribe(data => {
       if (data) {
         this.domainsbyid = data;
-        console.log(this.domainsbyid);
+        // console.log(this.domainsbyid);
       }
     })
   }
@@ -430,10 +435,10 @@ description;
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
     this.gardening_total = '0';
     this.ac_total = '0';
     this.carpentary_total = '0';
@@ -445,6 +450,7 @@ description;
     this.infrastructure_total = '0';
     this.water_supply_total = '0';
     this.house_keeping_total = '0';
+    this.closed_tot = '0';
     this.selection['category'] = this.issues_form.value.seluserid;
     this.selection['status'] = this.issues_form.value.selstatus;
     this.selection['from_date'] = this.from_date;
@@ -536,8 +542,11 @@ description;
               if (element.status == 'onhold') {
                 this.onhold_tot = element.tot;
               }
-              if (element.status == 'user_resolved') {
-                this.user_resolved_tot = element.tot;
+              // if (element.status == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
               }
             }
           });
@@ -696,9 +705,13 @@ description;
                   name: 'Verified Resolved',
                   y: JSON.parse(this.verified_resolved_tot),
                 },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -756,7 +769,8 @@ description;
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
+    this.closed_tot = '0';
 
     let value = {
       'domain': $event.target.value,
@@ -805,9 +819,13 @@ description;
               if (element.status == 'onhold') {
                 this.onhold_tot = element.tot;
               }
-              if (element.status == 'user_resolved') {
-                this.user_resolved_tot = element.tot;
+              // if (element.status == 'user_resolved') {
+              //   this.user_resolved_tot = element.tot;
+              // }
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
               }
+              
             });
             this.options = {
               credits: {
@@ -879,9 +897,13 @@ description;
                   name: 'Verified Resolved',
                   y: JSON.parse(this.verified_resolved_tot),
                 },
+                // {
+                //   name: 'User Resolved',
+                //   y: JSON.parse(this.user_resolved_tot),
+                // },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -932,7 +954,7 @@ description;
     //   ++this.r;
     // }
 
-    console.log($event.target.value);
+    // console.log($event.target.value);
     this.data = '';
     this.total = '0';
     this.verified_resolved_tot = '0';
@@ -943,7 +965,7 @@ description;
     this.cannot_be_resolved_tot = '0';
     this.assigned_tot = '0';
     this.onhold_tot = '0';
-    this.user_resolved_tot = '0';
+    // this.user_resolved_tot = '0';
     this.gardening_total = '0';
     this.ac_total = '0';
     this.carpentary_total = '0';
@@ -955,6 +977,8 @@ description;
     this.infrastructure_total = '0';
     this.water_supply_total = '0';
     this.house_keeping_total = '0';
+    this.closed_tot = '0';
+
 
     let value = {
       'status': $event.target.value,
@@ -1049,8 +1073,8 @@ description;
               if (element.status == 'onhold') {
                 this.onhold_tot = element.tot;
               }
-              if (element.status == 'user_resolved') {
-                this.user_resolved_tot = element.tot;
+              if (element.status == 'closed') {
+                this.closed_tot = element.tot;
               }
             }
           });
@@ -1212,8 +1236,8 @@ description;
                   y: JSON.parse(this.verified_resolved_tot),
                 },
                 {
-                  name: 'User Resolved',
-                  y: JSON.parse(this.user_resolved_tot),
+                  name: 'Closed',
+                  y: JSON.parse(this.closed_tot),
                 },
                 {
                   name: 'User Deleted',
@@ -1239,7 +1263,7 @@ description;
       } else {
         this.avgtable = true;
         this.avgdata = sellist1.data2;
-        console.log(this.avgdata);
+        // console.log(this.avgdata);
 
       }
 
@@ -1249,19 +1273,31 @@ description;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
-    dateFormat: 'yyyy-mm-dd',
+    dateFormat: 'dd-mmm-yyyy',
     editableDateField: false,
     disableWeekends: false,
     // disableDays: this.service.holidays,
-      disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
+      // disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
     // disableUntil: {year: , month: 5 , day: 17}
 
   };
 
+  // public myDatePickerOptions3: IMyDpOptions = {
+  //   // other options...
+  //   dateFormat: 'yyyy-mm-dd',
+  //   editableDateField: false,
+  //   disableWeekends: false,
+  //   // disableDays: this.service.holidays,
+  //  disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
+  //   // disableUntil: {year: , month: 5 , day: 17}
+
+  // };
+
+
 
   public myDatePickerOptions2: IMyDpOptions = {
     // other options...
-    dateFormat: 'yyyy-mm-dd',
+    dateFormat: 'dd-mmm-yyyy',
     editableDateField: false,
     disableWeekends: false,
 
@@ -1276,7 +1312,8 @@ description;
 
   onDateChanged(event: IMyDateModel) {
 
-    this.from_date = event.formatted;
+    // this.from_date = event.formatted;
+    this.from_date = event.date.year + '-' + event.date.month + '-' + event.date.day;
     this.myDatePickerOptions2.disableUntil.year = event.date.year
     this.myDatePickerOptions2.disableUntil.month = event.date.month
     this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
@@ -1284,7 +1321,8 @@ description;
 
   onDateChanged2(event: IMyDateModel) {
     console.log(this.to_date, 'from date test');
-    this.to_date = event.formatted
+    // this.to_date = event.formatted
+    this.to_date = event.date.year + '-' + event.date.month + '-' + event.date.day;
   }
 
   img_data;
@@ -1305,14 +1343,7 @@ description;
     console.log('status', $event.target.value);
     this.showdays = $event.target.value;
   }
-  onItemSelect(item: any) {
-    console.log(item);
-    this.id = item.id;
-  }
-  OnItemDeSelect(item: any) {
-    console.log(item);
-  }
-
+  
   onDateChanged1(event: IMyDateModel) {
 
     this.assigned_on = event.formatted;
@@ -1321,12 +1352,12 @@ description;
     this.myDatePickerOptions2.disableUntil.day = event.date.day - 1
   }
   onDateChanged3(event: IMyDateModel) {
-    console.log(this.to_date, 'from date test');
+    // console.log(this.to_date, 'from date test');
     this.date_of_resolution = event.formatted;
   }
 
   resolveddetails(item)
-    {
+   {
       this.date = item.insert_dt;
       this.raised_by = item.raised_by;
       this.problem = item.problem;
@@ -1338,9 +1369,15 @@ description;
       this.notes = item.notes;
       this.domain1=item.domain;
       this.description = item.issue_desc;
+      this.priority1 = item.priority;
+      this.resstart = item.resolutionstarted;
+      this.assignedon = item.assigned_on;
       this.modal2.show();
-    }
-    popToast1() {
-      this.toasterService.pop('success', '', 'Updated Successfully');
-    }
+  }
+  popToast1() {
+    this.toasterService.pop('success', '', 'Updated Successfully');
+  }
+  popToast() {
+    this.toasterService.pop('warning', '', 'Please select Assigned to ');
+  }
 }
