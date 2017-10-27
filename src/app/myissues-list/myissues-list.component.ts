@@ -118,9 +118,15 @@ Repaired_on1;
 date_of_resolution1;
 showdays;
 assignedon;
-resstart
-
-
+resstart;
+name1 ='';
+assigned_to;
+cannottext;
+dat1;
+registration_no='';
+fullname='';
+expected_resolution_date = '';
+status1='';
 
   // selecteddomain:any;
   selecteddomain1 = "all";
@@ -141,7 +147,7 @@ resstart
 
     }
     this.api.getStaffData(vals).subscribe(dataa => {
-      console.log(dataa);
+      // console.log(dataa);
       for (var i = 0; i < dataa.data.data.length; i++) {
         if (localStorage.getItem('reg_no') != dataa.data.data[i].reg_no) {
           this.dropdownList[i] = new Object();
@@ -169,6 +175,9 @@ resstart
       cannottext:[''],
       repaired_on: [''],
       repaired_by: [],
+      expected_resolution_date:[''],
+      
+      resolutiontext:[''],
       date_of_resolution: new FormControl(),
       notes: [],
       did: []
@@ -176,6 +185,7 @@ resstart
 
     this.getDomainsbyId();
     this.getdetails();
+    // this.getname();
     this.dropdownSettings = {
 
       singleSelection: true,
@@ -191,20 +201,28 @@ resstart
     this.did = item.did;
    
     this.by = item.raised_by;
+    this.status1=item.status;
     this.issuedescription = item.issue_desc;
     this.taskeditForm.patchValue(item);
      this.showusers=[];
     this.showusers[0]=new Object();
+    console.log(item.repaired_by);
+    // console.log(item.repaired_by.substr(0,8))
+    // console.log(item.repaired_by.split("-")[0]);
     this.showusers[0]['id'] = item.repaired_by;
     this.showusers[0]['itemName'] = item.repaired_by;
     this.id = item.repaired_by;
+    // this.name1 = item.repaired_by;
     this.taskeditForm.patchValue({ date_of_resolution: { formatted: item.date_of_resolution } });
     this.taskeditForm.patchValue({ assigned_on: { formatted: item.assigned_on } });
+    this.taskeditForm.patchValue({ expected_resolution_date:  { jsdate: new Date(item.expected_resolution_date)} });
     this.date_of_resolution = item.date_of_resolution;
+    this.expected_resolution_date = item.expected_resolution_date;
+    console.log(this.expected_resolution_date);
     this.assigned_on= item.assigned_on;
     // this.repaired_by = item.repaired_by;
     // console.log(this.repaired_by);
-    console.log('date',this.date_of_resolution);
+    console.log('date',this.expected_resolution_date);
     this.showdays = item.status;
     
     this.modal1.show();
@@ -213,6 +231,7 @@ resstart
   onItemSelect(item: any) {
     console.log(item);
     this.id = item.id;
+    this.name1 = item.itemName;
   }
   OnItemDeSelect(item: any) {
     console.log(item);
@@ -224,16 +243,20 @@ resstart
   }
 
   editTask() {
+    console.log(this.name1);
     let edit={}
     edit['priority'] =  this.taskeditForm.value.priority;
     edit['status']= this.taskeditForm.value.status;
     edit['assigned_on']= this.assigned_on;
     edit['assigned_to']= this.id;
+    // edit['assigned_to'] = this.name1;
     edit['assignedtext']= this.taskeditForm.value.assignedtext;
     edit['onholdtext']= this.taskeditForm.value.onholdtext;
     edit['date_of_resolution']= this.date_of_resolution;
     edit['notes'] = this.taskeditForm.value.notes;
     edit['cannottext'] = this.taskeditForm.value.cannottext;
+    edit['resolutiontext'] = this.taskeditForm.value.resolutiontext;
+    edit['expected_resolution_date'] =this.expected_resolution_date;
     edit['did'] = this.did;
     console.log(edit);
 
@@ -243,6 +266,7 @@ resstart
         console.log(data);
         if(data.success){
           this.id = null
+          // this.name1 =null
           this.popToast1();
           // this.taskeditForm.reset();
           this.getdetails();
@@ -1358,7 +1382,17 @@ resstart
 
   resolveddetails(item)
    {
-      this.date = item.insert_dt;
+    this.registration_no = item.reg_no;
+      let nams={};
+      nams['reg_no'] = this.registration_no;
+      nams['utype'] = 'stf';
+      this.api.getname(nams).subscribe(dat1=>{
+        this.dat1=dat1;
+        console.log(this.dat1);
+        this.fullname =dat1.data.certificates.firstname;
+        
+      })
+      this.date = item.insert_dt;  
       this.raised_by = item.raised_by;
       this.problem = item.problem;
       this.location = item.location;
@@ -1372,6 +1406,8 @@ resstart
       this.priority1 = item.priority;
       this.resstart = item.resolutionstarted;
       this.assignedon = item.assigned_on;
+      this.assigned_to  = item.repaired_by;
+      this.cannottext = item.cannottext;
       this.modal2.show();
   }
   popToast1() {
@@ -1380,4 +1416,30 @@ resstart
   popToast() {
     this.toasterService.pop('warning', '', 'Please select Assigned to ');
   }
+  onDateChanged4(event: IMyDateModel) {
+    // this.expected_resolution_date = event.formatted;
+    this.expected_resolution_date = event.date.year + '-' + event.date.month + '-' + event.date.day;
+    console.log(event);
+    console.log(this.expected_resolution_date, 'from date test');
+  }
+  // getname()
+  //   {
+  //     let nams={};
+  //     nams['reg_no'] = this.registration_no;
+  //     nams['utype'] = 'stf';
+  //     this.api.getname(nams).subscribe(dat1=>{
+  //       this.dat1=dat1;
+  //       console.log(this.dat1);
+  //     })
+  //   }
+  public myDatePickerOptions4: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd-mmm-yyyy',
+    editableDateField: false,
+    disableWeekends: false,
+    // disableDays: this.service.holidays,
+    disableUntil: { year: this.today.getFullYear(), month: this.today.getMonth() + 1, day: this.today.getDate() - 1 }
+    // disableUntil: {year: , month: 5 , day: 17}
+
+  };
 }

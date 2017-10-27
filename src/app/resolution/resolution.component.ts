@@ -67,6 +67,7 @@ export class ResolutionComponent implements OnInit {
   MISC = [];
   INFRASTRUCTURE = [];
   addFormStatus = false;
+  display = true;
   table = false;
   formsuccess = false;
   reg_no = localStorage.getItem('reg_no');
@@ -122,6 +123,7 @@ export class ResolutionComponent implements OnInit {
 
   showAddForm() {
     this.addFormStatus = true;
+    this.display = false;
   }
   hideAddForm() {
     this.addFormStatus = false;
@@ -208,6 +210,8 @@ export class ResolutionComponent implements OnInit {
   }
   close2() {
     this.resolutionclosedform.reset();
+    this.addFormStatus = false;
+    this.display = true;
     this.modal2.hide()
   }
 

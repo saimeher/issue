@@ -10,6 +10,7 @@ export class UrlService {
   public allCollegesAndDeptsUrl = "http://210.16.79.137/raghuerp/server/api/allCollegesAndDepts";
   public getStaffDataByIdApi: string = "http://210.16.79.137/raghuerp/server/api/getStaffData";
   public STAFF_DATA_API: string = 'http://210.16.79.137/raghuerp/server/api/getStaffData';
+ public GETNAME_API: string='http://210.16.79.137/raghuerp/server/api/personaldatabyid';
 //  public LOGIN_API: string = this.Url + 'loginCheck';
   public GETROLE_API: string = this.Url + 'getRole';
   public GETISSUESLIST: string = this.Url + 'getIssuesList';
@@ -34,7 +35,6 @@ export class UrlService {
   public  ADDDOMAIN_API: string = this.Url + 'addDomain';
   public  UPDATEDOMAIN_API: string = this.Url + 'updateDomain';
   public UPDATEINCHARGE_API: string = this.Url + 'updateIncharge';
-
   public GETISSUESINPROGRESS_API : string =  this.Url + 'GETISSUESINPROGRESS';
   public RESOLUTIONINPROGRESS_API : string = this.Url + 'RESOLUTIONINPROGRESS';
   public RESOLUTIONCLOSED_API : string = this.Url + 'RESOLUTIONCLOSED';

@@ -2187,8 +2187,12 @@ li{
     list-style-type: none;
 }
 .tabel_overflow{
-    overflow: scroll;
+    overflow-x: scroll;
 }
 .ui-multiselect-label-container{
     width: 250px !important;
+}
+
+.table-responsive{
+    overflow-x: scroll;
 }

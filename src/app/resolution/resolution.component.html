@@ -2,7 +2,7 @@
 <div class="portlet portlet-default">
   <div class="portlet-heading">
     <div class="portlet-title">
-      <h4>Resolution In progress</h4>
+      <h4>Resolution progress</h4>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -16,115 +16,121 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
-          [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-          <thead>
-            <tr>
-              <!-- <th>
+        <div class="table-responsive">
+          <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+            [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+              <tr>
+                <!-- <th>
                 <mfDefaultSorter by="insert_dt">Add Date</mfDefaultSorter>
               </th> -->
-              <th>
-                <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
-              </th>
+                <th>
+                  <mfDefaultSorter by="domain">Domain</mfDefaultSorter>
+                </th>
 
-              <th>
-                <mfDefaultSorter by="location">Location</mfDefaultSorter>
-              </th>
-              <th>
-                <mfDefaultSorter by="problem">Problem</mfDefaultSorter>
-              </th>
-              <th>
-                <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
-              </th>
-              <th nowrap>
-                <mfDefaultSorter by="expected_resolution_date">Exp Res Date </mfDefaultSorter>
-              </th>
+                <th>
+                  <mfDefaultSorter by="location">Location</mfDefaultSorter>
+                </th>
+                <th>
+                  <mfDefaultSorter by="problem">Problem</mfDefaultSorter>
+                </th>
+                <th>
+                  <mfDefaultSorter by="issue_desc">Issue</mfDefaultSorter>
+                </th>
+                <th nowrap>
+                  <mfDefaultSorter by="expected_resolution_date">Exp Res Date </mfDefaultSorter>
+                </th>
 
-              <th>
-                <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
-              </th>
+                <th>
+                  <mfDefaultSorter by="repaired_on">Rep Date </mfDefaultSorter>
+                </th>
 
-              <th>
-                <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
-              </th>
-              <th>
-                <mfDefaultSorter by="img_name">Img</mfDefaultSorter>
-              </th>
-              <th>
-                <mfDefaultSorter by="status"> Status</mfDefaultSorter>
-              </th>
-              <th>
-                <mfDefaultSorter by="days">Elapsed days</mfDefaultSorter>
-              </th>
-              <th nowrap>
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody *ngIf="mf.data.length != 0">
-            <tr *ngFor="let item of mf.data; let i=index;">
-              <!-- <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td> -->
-              <td>{{item.domain|titlecase}}</td>
-              <td>{{item.location}}</td>
-              <td>{{item.problem}}</td>
-              <td>{{item.issue_desc}}</td>
-              <td nowrap>{{item.expected_resolution_date | date: 'dd-MMM-yyyy'}}</td>
-              <td nowrap>{{item.repaired_on | date: 'dd-MMM-yyyy'}}</td>
-              <td>{{item.priority}}</td>
-              <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-              <!-- <td>{{item.status}}</td> -->
-              <td nowrap *ngIf="item.status=='resolution_in_progress'">
-                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span>
-              </td>
-              <td nowrap *ngIf="item.status=='assigned'">
-                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span>
-              </td>
-              <td nowrap *ngIf="item.status=='closed'">
-                <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span>
-              </td>
-              <td nowrap *ngIf="item.status=='verified_resolved'">
-                <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified Resolved</span>
-              </td>
-              <td nowrap *ngIf="item.status=='onhold'">
-                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span>
-              </td>
-              <td nowrap *ngIf="item.status=='cannot_be_resolved'">
-                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span>
-              </td>
+                <th>
+                  <mfDefaultSorter by="priority">Priority</mfDefaultSorter>
+                </th>
+                <th>
+                  <mfDefaultSorter by="img_name">Img</mfDefaultSorter>
+                </th>
+                <th>
+                  <mfDefaultSorter by="status"> Status</mfDefaultSorter>
+                </th>
+                <!-- <th>
+                  <mfDefaultSorter by="days">Elapsed days</mfDefaultSorter>
+                </th> -->
+                <th nowrap>
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="mf.data.length != 0">
+              <tr *ngFor="let item of mf.data; let i=index;">
+                <!-- <td nowrap>{{item.insert_dt | date: 'dd-MMM-yyyy'}}</td> -->
+                <td>{{item.domain|titlecase}}</td>
+                <td>{{item.location}}</td>
+                <td>{{item.problem}}</td>
+                <td>{{item.issue_desc}}</td>
+                <td nowrap>{{item.expected_resolution_date | date: 'dd-MMM-yyyy'}}</td>
+                <td nowrap>{{item.repaired_on | date: 'dd-MMM-yyyy'}}</td>
+                <td>{{item.priority}}</td>
+                <td>
+                  <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a>
+                </td>
+                <!-- <td>{{item.status}}</td> -->
+                <td nowrap *ngIf="item.status=='resolution_in_progress'">
+                  <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span>
+                </td>
+                <td nowrap *ngIf="item.status=='assigned'">
+                  <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span>
+                </td>
+                <td nowrap *ngIf="item.status=='closed'">
+                  <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span>
+                </td>
+                <td nowrap *ngIf="item.status=='verified_resolved'">
+                  <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified & Resolved</span>
+                </td>
+                <td nowrap *ngIf="item.status=='onhold'">
+                  <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span>
+                </td>
+                <td nowrap *ngIf="item.status=='cannot_be_resolved'">
+                  <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span>
+                </td>
 
-              <td *ngIf="item.days <= 0  && item.status == 'closed'" style="text-align: center;">{{-(item.days)}}</td>
-              <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.da)}}</td>
-              <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
-              <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.day)}}</td>
-              <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
-              <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
-              <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
-              <!-- <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td> -->
-              <td>
-                <a *ngIf="item.status == 'assigned'" class="btn btn-info btn-xs btn-square" (click)="details(item)" >Work Starts</a>
-                <a *ngIf="item.status == 'onhold'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Work Starts</a>
-                <a *ngIf="item.status == 'cannot_be_resolved'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Work Starts</a>
-                <a *ngIf="item.status == 'resolution_in_progress'" class="btn btn-danger btn-xs btn-square" (click)="closed(item)">Close Issue</a>
-                <a *ngIf=" item.status == 'closed'" class="btn btn-default btn-xs btn-square">Issue Closed</a>
-                <a *ngIf=" item.status == 'verified_resolved'" class="btn btn-default btn-xs btn-square">Verified Resolved</a>
-              </td>
-            </tr>
-          </tbody>
-          <tbody *ngIf="mf.data.length == 0">
-            <tr rowspan="2">
-              <td colspan="12">
-                <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="12">
-                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+                <!-- <td *ngIf="item.days <= 0  && item.status == 'closed'" style="text-align: center;">{{-(item.days)}}</td>
+                <td *ngIf="item.days <= 0  && item.status == 'verified_resolved'" style="text-align: center;">{{-(item.da)}}</td>
+                <td *ngIf="item.days <= 0  && item.status == 'resolution_in_progress'" style="text-align: center;">{{-(item.day)}}</td>
+                <td *ngIf="item.days <= 0  && item.status == 'cannot_be_resolved'" style="text-align: center;">{{-(item.day)}}</td>
+                <td *ngIf="item.days <= 0  && item.status == 'user_deleted'"></td>
+                <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
+                <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td> -->
+                <!-- <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td> -->
+                <td style="text-align: center;">
+                  <a *ngIf="item.status == 'assigned'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Start Work</a>
+                  <a *ngIf="item.status == 'onhold'" class="btn btn-info btn-xs btn-square" (click)="details(item)">Start Work</a>
+                  <a *ngIf="item.status == 'cannot_be_resolved'" class="btn btn-default btn-xs btn-square">Issue Closed</a>
+                  <a *ngIf="item.status == 'resolution_in_progress'" class="btn btn-danger btn-xs btn-square" (click)="closed(item)">Close Issue</a>
+                  <a *ngIf="item.status == 'closed'" class="btn btn-default btn-xs btn-square">Issue Closed</a>
+                  <a *ngIf="item.status == 'verified_resolved'">
+                    <i class="fa fa-check" style="color: rgb(102, 201, 102)" aria-hidden="true"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="mf.data.length == 0">
+              <tr rowspan="2">
+                <td colspan="12">
+                  <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="12">
+                  <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -185,8 +191,9 @@
 
           <div class="form-group">
             <div *ngIf="showdays == 'assigned'" class="col-sm-offset-4">
-              </div>
-            <div  *ngIf="showdays == 'onhold' || showdays == 'cannot_be_resolved' ||  showdays == 'closed' || showdays =='resolution_in_progress' " class="col-sm-offset-4">
+            </div>
+            <div *ngIf="showdays == 'onhold' || showdays == 'cannot_be_resolved' ||  showdays == 'closed' || showdays =='resolution_in_progress' "
+              class="col-sm-offset-4">
               <button (click)="resolutioninprogress()" class="btn btn-default btn-square col-md-4" style="margin-top: 25px;">Submit</button>
             </div>
           </div>
@@ -207,7 +214,19 @@
       <a data-dismiss="modal" class="pull-right" (click)="close2()">x</a>
     </h4>
   </div>
-  <div class="app-modal-body">
+  <!-- <div class="app-modal-header">
+    
+  </div> -->
+  <div *ngIf="display" class="app-modal-body">
+    <h4 style="color:black">
+      <div>Are you want to close this {{issuedescription}} ?</div>
+    </h4>
+    <div class="app-modal-footer" style="margin-top: 15px;">
+      <button type="button" class="btn btn-default btn-square" (click)="showAddForm()">Yes</button>
+      <button type="button" class="btn btn-danger btn-square" (click)="close2();">No</button>
+    </div>
+  </div>
+  <div class="app-modal-body" *ngIf="addFormStatus">
     <form [formGroup]="resolutionclosedform" role="form">
       <div class="form-horizontal">
         <div class="box-body">
@@ -223,7 +242,7 @@
             <label class="col-sm-4 control-label"> Resolution Notes</label>
             <div class="col-sm-6">
               <!--<input type="text" class="form-control" />-->
-              <textarea class="form-control" name="repairedtext" value="repairedtext" formControlName="repairedtext"></textarea>
+              <textarea class="form-control" name="repairedtext" value="repairedtext" formControlName="repairedtext" style="resize: vertical"></textarea>
             </div>
           </div>
           <div class="form-group">
@@ -260,6 +279,3 @@
     <button type="button" class="btn btn-danger btn-square" (click)="imageclose();">Close</button>
   </div>
 </app-modal>
-
-
-

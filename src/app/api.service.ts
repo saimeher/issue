@@ -166,6 +166,12 @@ return this.callApi(this.url.DELETEISSUE,'post',body);
     console.log(body);
     return this.callApi(this.url.RESOLUTIONCLOSED_API, 'post', body); 
   }
+  getname(body)
+  {
+    console.log(body);
+    return this.callApi(this.url.GETNAME_API, 'post', body); 
+  }
+  
   
   callApi(url: string, method: string, body: Object): Observable<any> {
 

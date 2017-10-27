@@ -35,6 +35,9 @@ export class AddroleComponent implements OnInit {
   domainsList;
   tot_users;
   defaultLabel;
+  dropdownList = [];
+  showusers=[];
+  dropdownSettings ={};
   public data;
   public filterQuery = "";
   public rowsOnPage = 10;
@@ -58,6 +61,14 @@ export class AddroleComponent implements OnInit {
         });
       }
     });
+    // this.api.getStaffData(bodyData).subscribe(dataa => {
+    //   console.log(dataa);
+    //   for (var i = 0; i < dataa.data.data.length; i++) {
+    //       this.dropdownList[i] = new Object();
+    //       this.dropdownList[i]["id"] = dataa.data.data[i].reg_no;
+    //       this.dropdownList[i]["itemName"] = dataa.data.data[i].reg_no + ' - ' + dataa.data.data[i].name;
+    //   }
+    // });
 
   }
 
@@ -75,6 +86,15 @@ export class AddroleComponent implements OnInit {
       'domain_admin': ['', [Validators.required]]
     });
     this.getCategories();
+    this.dropdownSettings = {
+      singleSelection: false,
+      text: " Select ",
+      enableSearchFilter: true,
+      classes: "myclass custom-class",
+      badgeShowLimit: 4,
+      // disabled:true
+ 
+    };
 
   }
 
@@ -93,6 +113,16 @@ export class AddroleComponent implements OnInit {
   array;
    
   updatePage(value: any) {
+// console.log(value);
+//     let temp =  value.domain_admin.split(",")
+//     console.log(temp,temp.length);
+//     this.showusers=[];
+//      for(let j=0;j<temp.length; j++){
+//       this.showusers[j]= new Object();
+//       this.showusers[j]['id'] = value.domain_admin;
+//       this.showusers[j]['itemName'] =value.domain_admin;
+//     }
+//     console.log('fully arrya',this.showusers);
     this.updateids = [];
     //console.log(value);
     //console.log(value.domain_admin);
@@ -153,6 +183,8 @@ export class AddroleComponent implements OnInit {
     this.api.updateDomain(this.domainUpdateForm.value).subscribe(data => {
       if (data) {
         this.UpdateForm = false;
+        this.domainUpdateForm.reset();
+        this.updateids =[];
         this.getCategories();
         console.log('successfully inserted');
       }
@@ -165,6 +197,15 @@ change($event){
   
   console.log($event);
   
+}
+
+onItemSelect(item: any) {
+  console.log(item);
+  // this.id = item.id;
+  // this.name1 = item.itemName;
+}
+OnItemDeSelect(item: any) {
+  console.log(item);
 }
 
 

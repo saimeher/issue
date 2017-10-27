@@ -437,7 +437,7 @@ td {
   </div>
 </div>
 
-<app-modal #modal1>
+<!-- <app-modal #modal1>
   <div class="app-modal-header">
     <h4 style="color:black">View issue </h4>
   </div>
@@ -494,9 +494,8 @@ td {
 
   <div class="app-modal-footer">
     <button type="button" class="btn btn-default" (click)="modal1.hide()">Close</button>
-    <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
   </div>
-</app-modal>
+</app-modal>  -->
 
 <app-modal #modal3>
   <div class="app-modal-header">
@@ -523,4 +522,87 @@ td {
     <!--<button type="button" class="btn btn-default btn-square" (click)="delete1();">Yes</button>-->
     <button type="button" class="btn btn-danger btn-square" (click)="imageclose();">Close</button>
   </div>
+</app-modal>
+
+<app-modal #modal1>
+    <div class="app-modal-header">
+      <h4 style="color:black">{{description}} </h4>
+    </div>
+    <div class="app-modal-body">
+  
+      <table class="table table-bordered table-responsive">
+        <tr>
+          <th>Raised By</th>
+          <td>{{raised_by}}</td>
+        </tr>
+        <tr>
+          <th>Date</th>
+          <td>{{date | date:'dd-MMM-yyyy'}}</td>
+        </tr>
+        <tr>
+          <th>Domain</th>
+          <td>{{domain1}}</td>
+        </tr>
+  
+        <tr>
+          <th>Location</th>
+          <td>{{location}}</td>
+        </tr>
+        <tr>
+          <th>Problem</th>
+          <td>{{problem}}</td>
+        </tr>
+        <tr>
+          <th>Issue Description</th>
+          <td>{{issue}}</td>
+        </tr>
+        <tr>
+          <th>Priority</th>
+          <td>{{priority1}}</td>
+        </tr>
+
+       
+        <tr *ngIf="assigned_to!=null">
+          <th> Assigned To</th>
+          <td *ngIf="assigned_to == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="assigned_to !=null">{{assigned_to}} - {{fullname}}</td>
+        </tr>
+        <tr *ngIf="assignedon!=null">
+          <th> Assigned On</th>
+          <td *ngIf="assignedon == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="assignedon !=null">{{assignedon | date:'medium'}}</td>
+        </tr>
+        <tr *ngIf="on!=null">
+          <th>Resolution Started On</th>
+          <td *ngIf="resstart == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="resstart !=null">{{resstart | date:'medium'}}</td>
+        </tr>
+        <tr *ngIf="on!=null">
+          <th>Issue closed On</th>
+          <td *ngIf="on == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="on !=null">{{on | date:'medium'}}</td>
+        </tr>
+        <tr *ngIf="resolution!=null">
+          <th>Verified & Resolved On</th>
+          <td *ngIf="resolution == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="resolution !=null">{{resolution | date:'medium'}}</td>
+        </tr>
+        <tr *ngIf="notes!=null">
+          <th>Notes</th>
+          <td *ngIf="notes == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="notes !=null">{{notes}}</td>
+        </tr>
+        <tr *ngIf="cannottext!=null">
+          <th> Notes</th>
+          <td *ngIf="cannottext == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="cannottext !=null">{{cannottext}}</td>
+        </tr>
+  
+      </table>
+    </div>
+  
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-default" (click)="modal1.hide()">Close</button>
+      <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
+    </div>
 </app-modal>

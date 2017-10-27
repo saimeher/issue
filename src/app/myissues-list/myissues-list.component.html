@@ -30,7 +30,7 @@
                 <option value="pending">Pending</option>
                 <option value="assigned">Assigned  </option>
                 <option value="resolution_in_progress">Resolution in Progress</option>
-                <option value="verified_resolved">Verified Resolved</option>
+                <option value="verified_resolved">Verified & Resolved</option>
                 <!-- <option value="user_resolved">User Resolved  </option>  -->
                 <option value="closed">Closed  </option> 
                 <option value="user_deleted">User Deleted  </option> 
@@ -85,7 +85,7 @@
               <h3 *ngIf="resolution_in_progress_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
             </li>
             <li class="li-padding">
-              <span class="title"><strong>Verified &  Resolved</strong></span>
+              <span class="title"><strong>Verified & Resolved</strong></span>
               <h4 *ngIf="verified_resolved_tot!=null" style="text-align: center; " Class="color-up title1"> {{verified_resolved_tot}}</h4>
               <h3 *ngIf="verified_resolved_tot==''" style="text-align: center;" Class="color-up title1"> {{0}}</h3>
             </li>
@@ -284,7 +284,7 @@
           [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
           <thead>
             <tr>
-              <th>
+              <th nowrap>
                 <mfDefaultSorter by="insert_dt">Issue Raised On</mfDefaultSorter>
               </th>
               <th>
@@ -296,16 +296,16 @@
               <th>
                 <mfDefaultSorter by="problem">Impact</mfDefaultSorter>
               </th>
-              <th>
+              <th nowrap>
                 <mfDefaultSorter by="issue_desc">Issue Description</mfDefaultSorter>
               </th>
-              <th>
+              <th nowrap>
                 <mfDefaultSorter by="raised_by">Raised By</mfDefaultSorter>
               </th>
               <th>
                 <mfDefaultSorter by="status"> Status</mfDefaultSorter>
               </th>
-              <th>
+              <th nowrap>
                 <mfDefaultSorter by="days"> Elapsed Days</mfDefaultSorter>
               </th>
 
@@ -339,7 +339,7 @@
               <td nowrap *ngIf="items.status=='user_resolved'"><span class="badge blue" style="margin: 0px 40px 0px 2px;">User Resolved</span></td>
               <td nowrap *ngIf="items.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td> -->
               
-              <td nowrap *ngIf="items.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{items.notes}}">Verified Resolved</span></td>
+              <td nowrap *ngIf="items.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{items.notes}}">Verified & Resolved</span></td>
               <td nowrap *ngIf="items.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{items.cannottext}}">Cannot be Resolved</span></td>
               <td nowrap *ngIf="items.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{items.userdeletedtext}}">User Deleted</span></td>
               <td nowrap *ngIf="items.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{items.onholdtext}}">On Hold</span></td>
@@ -418,7 +418,7 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
+          <div  class="form-group">
             <label class="col-sm-4 control-label">Status</label>
             <div class="col-sm-6">
               <select class="form-control" formControlName="status" (change)="selStataus($event)">
@@ -427,13 +427,22 @@
                   <option selected value="resolution_in_progress">Resolution in Progress</option>   
                   <option value="onhold">On Hold  </option>
                   <option value="cannot_be_resolved">Cannot be resolved</option>
-                  <option selected value="verified_resolved">Verified Resolved</option>         
+                  <option selected value="verified_resolved">Verified & Resolved</option>         
                   <option value="closed">Closed</option> 
                   <!-- <option value="user_resolved">User Resolved  </option>  -->
                   <!-- <option value="user_deleted">User Deleted  </option> -->
               </select>
             </div>
           </div>
+          <!-- <div *ngIf="status1 == 'resolution_in_progress'" class="form-group">
+            <label class="col-sm-4 control-label">Status</label>
+            <div class="col-sm-6">
+              <select class="form-control" formControlName="status" (change)="selStataus($event)">
+                  <option selected value="resolution_in_progress">Resolution in Progress</option>   
+                  <option selected value="verified_resolved">Verified & Resolved</option>         
+              </select>
+            </div>
+          </div> -->
           <!-- for assigned -->
           <div *ngIf="showdays == 'assigned'" class="form-group">
             <label class="col-sm-4 control-label">Assigned To</label>
@@ -442,6 +451,22 @@
                 [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"  (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
             </div>
           </div> 
+
+          <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
+            <label class="col-sm-4 control-label">Expected Resolution Date</label>
+            <div class="col-sm-4">
+              <my-date-picker #start name="expected_resolution_date" locale="en" formControlName="expected_resolution_date" [options]="myDatePickerOptions4"
+                placeholder="DD-MMM-YYYY" (dateChanged)="onDateChanged4($event)"></my-date-picker>
+            </div>
+          </div>
+
+          <div *ngIf="showdays == 'resolution_in_progress'" class="form-group">
+            <label class="col-sm-4 control-label">Notes</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="resolutiontext" formControlName="resolutiontext" style="resize: vertical"></textarea>
+            </div>
+          </div>
+
 
 
           <!-- <div *ngIf="showdays == 'assigned'" class="form-group">
@@ -493,13 +518,13 @@
         </div>
 
         <br/>
-        <div *ngIf="showdays == 'pending' || showdays == 'resolution_in_progress' || showdays == 'user_deleted' || showdays == 'closed'" class="app-modal-footer col-sm-offset-4">
+        <div *ngIf="showdays == 'pending'  || showdays == 'user_deleted' || showdays == 'closed'" class="app-modal-footer col-sm-offset-4">
           <!-- <button type="submit" class="btn btn-default btn-square">Save Changes</button> -->
           <button type="button" class="btn btn-danger btn-square" (click)="close();">Close</button>
           <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
           <!-- [disabled]="!f.valid" -->
         </div>
-        <div *ngIf="showdays == 'assigned' || showdays == 'verified_resolved'   || showdays == 'onhold'  ||  showdays == 'cannot_be_resolved'" class="app-modal-footer col-sm-offset-4">
+        <div *ngIf="showdays == 'assigned' ||  showdays == 'resolution_in_progress' || showdays == 'verified_resolved'   || showdays == 'onhold'  ||  showdays == 'cannot_be_resolved'" class="app-modal-footer col-sm-offset-4">
             <button type="submit" class="btn btn-default btn-square">Submit</button>
             <button type="button" class="btn btn-danger btn-square" (click)="close();">Close</button>
             <!--<button type="button" class="btn btn-primary" (click)="ok()">OK</button>-->
@@ -574,30 +599,42 @@
           <th>Priority</th>
           <td>{{priority1}}</td>
         </tr>
+
+       
+        <tr *ngIf="assigned_to!=null">
+          <th> Assigned To</th>
+          <td *ngIf="assigned_to == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="assigned_to !=null">{{assigned_to}} - {{fullname}}</td>
+        </tr>
         <tr *ngIf="assignedon!=null">
-          <th> Assigned</th>
+          <th> Assigned On</th>
           <td *ngIf="assignedon == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td *ngIf="assignedon !=null">{{assignedon | date:'medium'}}</td>
         </tr>
         <tr *ngIf="on!=null">
-          <th>Resolution Started</th>
+          <th>Resolution Started On</th>
           <td *ngIf="resstart == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td *ngIf="resstart !=null">{{resstart | date:'medium'}}</td>
         </tr>
         <tr *ngIf="on!=null">
-          <th>Issue closed</th>
+          <th>Issue closed On</th>
           <td *ngIf="on == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td *ngIf="on !=null">{{on | date:'medium'}}</td>
         </tr>
         <tr *ngIf="resolution!=null">
-          <th>Verified Resolved</th>
+          <th>Verified & Resolved on</th>
           <td *ngIf="resolution == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-          <td *ngIf="resolution !=null">{{resolution | date:'dd-MMM-yyyy'}}</td>
+          <td *ngIf="resolution !=null">{{resolution | date:'medium'}}</td>
         </tr>
         <tr *ngIf="notes!=null">
           <th>Notes</th>
           <td *ngIf="notes == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           <td *ngIf="notes !=null">{{notes}}</td>
+        </tr>
+        <tr *ngIf="cannottext!=null">
+          <th> Notes</th>
+          <td *ngIf="cannottext == null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td *ngIf="cannottext !=null">{{cannottext}}</td>
         </tr>
   
       </table>

@@ -6,7 +6,9 @@
       <h4> Add an Issue </h4>
     </div>
     <div class="portlet-widgets">
-      <a (click)="hideAddForm()" style="cursor: pointer !important"><i class="fa fa-times"></i></a>
+      <a (click)="hideAddForm()" style="cursor: pointer !important">
+        <i class="fa fa-times"></i>
+      </a>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -19,11 +21,11 @@
               <div class="col-md-2">
                 <label>Domain</label>
                 <select formControlName="domain" class="form-control">
-              <!--<option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>-->
-              <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
-              <!--<option selected value="verified_resolved">Verified Resolved</option>
+                  <!--<option *ngFor="let cl of domains" value="{{cl.value}}">{{cl.title}}</option>-->
+                  <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
+                  <!--<option selected value="verified_resolved">Verified Resolved</option>
               <option selected value="Electrical">Electrical</option>-->
-            </select>
+                </select>
               </div>
               <div class="col-md-3">
                 <label for="email">Location/Serial Number</label>
@@ -37,10 +39,10 @@
                 <label for="email">Issue Description</label>
                 <!--<input type="text" class="form-control" />-->
                 <textarea class="form-control" name="issue_desc" value="issue_desc" formControlName="issue_desc" style="resize: vertical;"></textarea>
-              </div>              
+              </div>
               <div class="col-md-2">
                 <label class="control-label">file upload</label>
-                <input type="file" multiple name="photo" (change)="onChange($event)"/>
+                <input type="file" multiple name="photo" (change)="onChange($event)" />
               </div>
             </div>
           </div>
@@ -59,7 +61,8 @@
       <h4>Issues raised by me</h4>
     </div>
     <div class="portlet-widgets">
-      <a (click)="showAddForm()" style="cursor: pointer !important"><i class="fa fa-plus-square"></i>  Add an Issue</a>
+      <a (click)="showAddForm()" style="cursor: pointer !important">
+        <i class="fa fa-plus-square"></i> Add an Issue</a>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -72,7 +75,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 tabel_overflow">
         <!--<table class="table table-green table-bordered table-hover">-->
         <table class="table table-bordered table-green" [mfData]="data | dataFilter:filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
           [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -136,14 +139,30 @@
               <td nowrap *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;">On Hold</span></td>
               <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;">Assigned</span></td>
               <td nowrap *ngIf="item.status=='user_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;">User Resolved</span></td> -->
-              <td nowrap *ngIf="item.status=='verified_resolved'"><span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified Resolved</span></td>
-              <td nowrap *ngIf="item.status=='cannot_be_resolved'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span></td>
-              <td nowrap *ngIf="item.status=='user_deleted'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.userdeletedtext}}">User Deleted</span></td>
-              <td nowrap *ngIf="item.status=='onhold'"><span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span></td>
-              <td nowrap *ngIf="item.status=='pending'"><span class="badge blue" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="">Pending</span></td>
-              <td nowrap *ngIf="item.status=='resolution_in_progress'"><span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span></td>
-              <td nowrap *ngIf="item.status=='assigned'"><span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span></td>
-              <td nowrap *ngIf="item.status=='closed'"><span class="badge default" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span></td>
+              <td nowrap *ngIf="item.status=='verified_resolved'">
+                <span class="badge green" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.notes}}">Verified & Resolved</span>
+              </td>
+              <td nowrap *ngIf="item.status=='cannot_be_resolved'">
+                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.cannottext}}">Cannot be Resolved</span>
+              </td>
+              <td nowrap *ngIf="item.status=='user_deleted'">
+                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.userdeletedtext}}">User Deleted</span>
+              </td>
+              <td nowrap *ngIf="item.status=='onhold'">
+                <span class="badge red" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.onholdtext}}">On Hold</span>
+              </td>
+              <td nowrap *ngIf="item.status=='pending'">
+                <span class="badge blue" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="">Pending</span>
+              </td>
+              <td nowrap *ngIf="item.status=='resolution_in_progress'">
+                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.resolutiontext}}">Resolution in Progress</span>
+              </td>
+              <td nowrap *ngIf="item.status=='assigned'">
+                <span class="badge orange" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.assignedtext}}">Assigned</span>
+              </td>
+              <td nowrap *ngIf="item.status=='closed'">
+                <span class="badge default" style="margin: 0px 40px 0px 2px;" tooltipPlacement="top" tooltip="{{item.repairedtext}}">Closed</span>
+              </td>
               <!--<td>{{-(item.days)}}-->
 
               <td *ngIf="item.days <= 0  && item.status == 'pending'" style="text-align: center;">{{-(item.day)}} </td>
@@ -155,13 +174,20 @@
               <td *ngIf="item.days <= 0  && item.status == 'onhold'" style="text-align: center;">{{-(item.day)}}</td>
               <td *ngIf="item.days <= 0  && item.status == 'assigned'" style="text-align: center;">{{-(item.day)}} </td>
               <td *ngIf="item.days <= 0  && item.status == 'user_resolved'" style="text-align: center;">{{-(item.days)}}</td>
-              <td> <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a> </td>
-              <td nowrap *ngIf ="item.status == 'pending' ||  item.status == 'resolution_in_progress' || item.status == 'assigned' || item.status == 'onhold'">
+              <td>
+                <a *ngIf="item.img_name" (click)="getImagesbyId(item.did,item.reg_no)"> View </a>
+              </td>
+              <td nowrap *ngIf="item.status == 'pending' ||  item.status == 'resolution_in_progress' || item.status == 'assigned' || item.status == 'onhold'">
                 <a class="btn btn-info btn-xs btn-square" (click)="details(item)" style="margin-right: 5px; width: 50px;">Edit</a>
                 <a class="btn btn-danger btn-xs btn-square" (click)="delete(item)">Delete</a>
               </td>
-              <td nowrap *ngIf ="item.status == 'user_deleted' ||  item.status == 'user_resolved' || item.status == 'verified_resolved' ||  item.status == 'closed'">
+              <td nowrap *ngIf="item.status == 'user_deleted' ||  item.status == 'user_resolved' ||   item.status == 'closed' || item.status == 'cannot_be_resolved'">
                 <a class="btn btn-info btn-xs btn-default">Issue Closed</a>
+              </td>
+              <td style="text-align: center;" *ngIf=" item.status == 'verified_resolved'">
+                <a>
+                  <i class="fa fa-check" style="color: rgb(102, 201, 102)" aria-hidden="true"></i>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -189,7 +215,9 @@
 
 <app-modal #modal1>
   <div class="app-modal-header">
-    <h4 style="color:black">Update issue <a data-dismiss="modal" class="pull-right" (click)="close()">x</a> </h4>
+    <h4 style="color:black">Update issue
+      <a data-dismiss="modal" class="pull-right" (click)="close()">x</a>
+    </h4>
   </div>
   <div class="app-modal-body">
     <form [formGroup]="issues_form" (ngSubmit)="EditIssue()" role="form">
@@ -199,10 +227,10 @@
             <label class="col-sm-4 control-label">Domain</label>
             <div class="col-sm-6">
               <select formControlName="domain" name="domain" class="form-control" disabled>
-              <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
-              <!--<option selected value="verified_resolved">Verified Resolved</option>
+                <option *ngFor="let cl of categoriesList" value="{{cl.domain}}">{{cl.domain_title}}</option>
+                <!--<option selected value="verified_resolved">Verified Resolved</option>
               <option selected value="Electrical">Electrical</option>-->
-          </select>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -300,4 +328,3 @@
     <button type="button" class="btn btn-danger btn-square" (click)="updateclose();">Close</button>
   </div>
 </app-modal>
-

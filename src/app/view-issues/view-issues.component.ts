@@ -58,6 +58,19 @@ export class ViewIssuesComponent implements OnInit {
   house_keeping_total;
   summarydata = false;
   domainname;
+  domain1;
+  description;
+  cannottext;
+  priority1;
+  resstart;
+  assignedon;
+  assigned_to;
+  registration_no;
+  fullname;
+  dat1;
+
+
+
   today = new Date();
   // selecteddomain:any;
   selecteddomain1 = "all";
@@ -272,7 +285,15 @@ export class ViewIssuesComponent implements OnInit {
   issue;
   details(item) {
     console.log(item);
-
+    this.registration_no = item.reg_no;
+    let nams={};
+    nams['reg_no'] = this.registration_no;
+    nams['utype'] = 'stf';
+    this.api.getname(nams).subscribe(dat1=>{
+      this.dat1=dat1;
+      console.log(this.dat1);
+      this.fullname =dat1.data.certificates.firstname;
+    })
     this.date = item.insert_dt;
     this.raised_by = item.raised_by;
     this.problem = item.problem;
@@ -280,9 +301,15 @@ export class ViewIssuesComponent implements OnInit {
     this.issue = item.issue_desc;
     this.id = item.did;
     this.on = item.repaired_on;
-    this.by = item.repaired_by;
     this.resolution = item.date_of_resolution;
     this.notes = item.notes;
+    this.domain1=item.domain;
+    this.description = item.issue_desc;
+    this.priority1 = item.priority;
+    this.resstart = item.resolutionstarted;
+    this.assignedon = item.assigned_on;
+    this.assigned_to  = item.repaired_by;
+    this.cannottext = item.cannottext;
     this.modal1.show();
   }
   showstatus = true;

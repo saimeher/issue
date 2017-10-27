@@ -107,12 +107,22 @@
             <div class="form-group">
               <label class="col-sm-4 control-label">Domain Incharge <span style="color:red">*</span></label>
               <div class="col-sm-4">
-                 <!--<textarea rows="4" cols="50" name="comment" formControlName="domain_admin" name="domain_admin" placeholder="Enter values separated by comma" class="form-control">    </textarea>-->
+        
                 <p-multiSelect [maxSelectedLabels]="5" (onChange)="change($event.value)" [defaultLabel]="defaultLabel"  [options]="updateids" [(ngModel)]="selectedCities" formControlName="domain_admin"></p-multiSelect>
 
 
               </div>
             </div>
+            <!-- <div class="form-group">
+                <label class="col-sm-4 control-label">Domain Incharge<span style="color:red">*</span></label>
+                <div class="col-sm-4">
+                  <angular2-multiselect [(ngModel)]="showusers" [data]="dropdownList" placeholder="Select" class="form-control" name="domain_admin" formControlName="domain_admin"
+                    [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"  (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
+                </div>
+              </div>  -->
+
+
+
             <div class="form-group ">
               <div class="col-sm-3 col-sm-offset-5">
                 <button type="submit" [disabled]=" !this.domainUpdateForm.valid || buttonClicked" class="btn btn-square btn-green col-md-offset-2"> Submit</button>
